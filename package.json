@@ -1,0 +1,19 @@
+{
+  "name": "hmwk",
+  "version": "1.0.0",
+  "description": "Web app to organize homework",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marco2002/HmwkWebApp.git"
+  },
+  "author": "Marco Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marco2002/HmwkWebApp/issues"
+  },
+  "homepage": "https://github.com/Marco2002/HmwkWebApp#readme"
+}
