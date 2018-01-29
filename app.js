@@ -1,14 +1,18 @@
 // Main file
 
 // Packages
-var express = require("express"),
+var express     = require("express"),
+    mongoose    = require("mongoose"),
 
 // Routes
-    indexRoutes = require("./routes/index"),
-    homeworkRoutes = require("./routes/homework");
+    indexRoutes     = require("./routes/index"),
+    homeworkRoutes  = require("./routes/homework");
 
 // express setup
 var app = express();
+
+// mongoose setup
+mongoose.connect("mongodb://localhost/hmwk_db");
 
 // ejs setup
 app.set("view engine", "ejs");
