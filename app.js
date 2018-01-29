@@ -1,15 +1,18 @@
 // Main file
 
 // Packages
-var express     = require("express"),
+const express   = require("express"),
     mongoose    = require("mongoose"),
+
+// Models
+    Homework = require("./models/homework"),
 
 // Routes
     indexRoutes     = require("./routes/index"),
     homeworkRoutes  = require("./routes/homework");
 
 // express setup
-var app = express();
+const app = express();
 
 // mongoose setup
 mongoose.connect("mongodb://localhost/hmwk_db");
@@ -21,6 +24,6 @@ app.set("view engine", "ejs");
 app.use(indexRoutes);
 app.use("/homework", homeworkRoutes);
 
-app.listen(process.env.PORT, process.env.IP, function() {
-    console.log("server online");
-});
+app.listen(process.env.PORT, process.env.IP, () =>
+    console.log("server online")
+);
