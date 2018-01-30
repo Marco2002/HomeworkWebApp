@@ -1,0 +1,39 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="card">
+        <form method="POST" action="/homework">
+            <div class="row"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" placeholder="Exercises in the book">
+                        <label class="active" for="homeworkTitle">Homework Title</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" placeholder="10 May, 2018">
+                        <label class="active" for="homeworkDate">Date of Camparison</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input name="homework[subject]" id="homeworkSubject" type="text" class="validate" placeholder="Maths">
+                        <label class="active" for="homeworkSubject">Subject</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input name="homework[author]" id="homeworkAuthor" type="text" class="validate" placeholder="Marco">
+                        <label class="active" for="homeworAuthor">Author</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input name="homework[description]" id="homeworkDescription" type="text" class="validate" placeholder="Do exercise 1 and 2 on p23 in the exercise-book">
+                        <label class="active" for="homeworkDescription">Description</label>
+                    </div>
+                    <button class="btn waves-effect waves-light col s6 push-s3 m4 push-m4" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <div class="row"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% include ../partials/footer %>

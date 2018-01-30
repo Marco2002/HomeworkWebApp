@@ -2,8 +2,25 @@
 <html>
     <header>
         <title>Homework Web App</title>
+
         <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body>
+        <nav>
+            <div class="nav-wrapper">
+                <div class="container">
+                    <div class="brand-logo center"><%=title%></div>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="/homework">Homework</a></li>
+                        <li><a href="/homework/new">Add Homework</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row"></div>

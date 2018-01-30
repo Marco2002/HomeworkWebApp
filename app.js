@@ -1,8 +1,11 @@
+//=============================
 // Main file
+//=============================
 
 // Packages
 const express   = require("express"),
     mongoose    = require("mongoose"),
+    bodyParser  = require("body-parser"),
 
 // Models
     Homework = require("./models/homework"),
@@ -15,10 +18,16 @@ const express   = require("express"),
 const app = express();
 
 // mongoose setup
-mongoose.connect("mongodb://localhost/hmwk_db");
+mongoose.connect("mongodb://localhost/hmwk_db_v0_1");
 
 // ejs setup
 app.set("view engine", "ejs");
+
+// setup public directory
+app.use(express.static(__dirname + "/public"));
+
+// body-parser setup
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Routes setup
 app.use(indexRoutes);

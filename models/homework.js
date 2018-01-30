@@ -5,6 +5,7 @@ const homeworkSchema = new mongoose.Schema({
     subject: String,
     description: String,
     author: String,
+    date: String,
 });
 
 module.exports = mongoose.model("Homework", homeworkSchema);
