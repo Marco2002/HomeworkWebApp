@@ -2,33 +2,33 @@
 
 <div class="container">
     <div class="row">
-    <% homework.forEach(function(h) {%>
-    <div class="container col s12 l6">
-        <div class="card">
-            <div class="card-content">
-                <div class="row no-m">
-                    <div class="col s9">
-                        <div class="row no-m">
-                            <div class="card-title"><%= h.subject %></div>
+        <% homework.forEach(function(h) {%>
+        <div class="container col s12 l6">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row no-m">
+                        <div class="col s9">
+                            <div class="row no-m">
+                                <div class="card-title"><%= h.subject %></div>
+                            </div>
+                            <div class="row no-m">
+                                <h4 class="no-m"><%= h.title %></h4>
+                            </div>
                         </div>
-                        <div class="row no-m">
-                            <h4 class="no-m"><%= h.title %></h4>
+                        <div class="col s3">
+                            <div class="row">
+                                <a href="/homework/<%=h._id%>" class="waves-effect waves-light btn col s12">More</a>
+                            </div>
+                            <div class="row no-m">
+                                <p>until <%= h.date %></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col s3">
-                        <div class="row">
-                            <a href="/homework/<%=h._id%>" class="waves-effect waves-light btn col s12">More</a>
-                        </div>
-                        <div class="row no-m">
-                            <p>until <%= h.date %></p>
-                        </div>
-                    </div>
+                    
                 </div>
-                
             </div>
-        </div>
-    </div> 
-    <% }); %>
+        </div> 
+        <% }); %>
     </div>
 </div>
 

@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="card-title col"><%=h.subject%></div>
+                <p id="show-date" class="col right">until <%=h.date%></p>
+            </div>
+            <h4><%= h.description %></h4>
+            <hr>
+            <div class="row"></div>
+            <div class="row no-m">
+                <p class="col s4 m8">by <%=h.author%></p>
+                <div class="container col s4 m2">
+                    <div class="row no-m">
+                        <a href="/homework/<%=h._id%>/edit" class="waves-effect waves-light btn yellow accent-4 black-text col s10 push-s1">Edit</a>
+                    </div>
+                </div>
+                <div class="container col s4 m2">
+                    <div class="row no-m">
+                        <form action="/homework/<%=h._id%>?_method=DELETE" method="POST">
+                            <button class="waves-effect waves-light btn red darken-1 col s10 push-s1">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

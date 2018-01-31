@@ -1,12 +1,13 @@
 //=============================
-// Main file
+// HMWK v0.2
 //=============================
 
 // Packages
-const express   = require("express"),
-    mongoose    = require("mongoose"),
-    bodyParser  = require("body-parser"),
-
+const express       = require("express"),
+    mongoose        = require("mongoose"),
+    bodyParser      = require("body-parser"),
+    methodOverride  = require("method-override"),
+    
 // Models
     Homework = require("./models/homework"),
 
@@ -18,7 +19,7 @@ const express   = require("express"),
 const app = express();
 
 // mongoose setup
-mongoose.connect("mongodb://localhost/hmwk_db_v0_1");
+mongoose.connect("mongodb://localhost/hmwk_db_v0_2");
 
 // ejs setup
 app.set("view engine", "ejs");
@@ -28,6 +29,9 @@ app.use(express.static(__dirname + "/public"));
 
 // body-parser setup
 app.use(bodyParser.urlencoded({extended: true}));
+
+// method-override setup
+app.use(methodOverride("_method"));
 
 // Routes setup
 app.use(indexRoutes);
