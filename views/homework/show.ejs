@@ -1,7 +1,40 @@
 <% include ../partials/header %>
-
+<% let color%>
+<!-- Get the color -->
+<% switch(h.subject) { case "Maths": %>
+    <% color="yellow accent-1"; %>
+    <% break; %>
+<% case "Physics": %>
+    <% color="blue-grey lighten-1"; %>
+    <% break; %>
+<% case "English": %>
+    <% color="red accent-2"; %>
+    <% break; %>
+<% case "Physical Education": %>
+    <% color="green accent-3"; %>
+    <% break; %>
+<% case "Science": %>
+    <% color="grey lighten-1"; %>
+    <% break; %>
+<% case "Art": %>
+    <% color="pink accent-1"; %>
+    <% break; %>
+<% case "Music": %>
+    <% color="teal accent-4"; %>
+    <% break; %>
+<% case "Geography": %>
+    <% color="brown lighten-1"; %>
+    <% break; %>
+<% case "History": %>
+    <% color="blue lighten-2"; %>
+    <% break %>
+<% case "Other": %>
+    <% color="white"; %>
+    <% break; %>
+<% } %>
+        
 <div class="container">
-    <div class="card">
+    <div class="card <%= color %>">
         <div class="card-content">
             <div class="row">
                 <div class="card-title col"><%=h.subject%></div>
@@ -14,13 +47,13 @@
                 <p class="col s4 m8">by <%=h.author%></p>
                 <div class="container col s4 m2">
                     <div class="row no-m">
-                        <a href="/homework/<%=h._id%>/edit" class="waves-effect waves-light btn yellow accent-4 black-text col s10 push-s1">Edit</a>
+                        <a href="/homework/<%=h._id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit</a>
                     </div>
                 </div>
                 <div class="container col s4 m2">
                     <div class="row no-m">
                         <form action="/homework/<%=h._id%>?_method=DELETE" method="POST">
-                            <button class="waves-effect waves-light btn red darken-1 col s10 push-s1">Delete</button>
+                            <button class="waves-effect waves-light btn red accent-4 col s10 push-s1">Delete</button>
                         </form>
                     </div>
                 </div>

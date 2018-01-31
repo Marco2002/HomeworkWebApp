@@ -15,8 +15,20 @@
                         <label class="active" for="homeworkDate">Deadline</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input name="homework[subject]" id="homeworkSubject" type="text" class="validate" placeholder="Maths" maxlength="20">
-                        <label class="active" for="homeworkSubject">Subject</label>
+                        <select  name="homework[subject]" id="homeworkSubject" placeholder="Maths" maxlength="20">
+                            <option value="" disabled selected>Choose a subject</option>
+                            <option value="Maths">Maths</option>
+                            <option value="Physics">Physics</option>
+                            <option value="English">English</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Science">Science</option>
+                            <option value="Art">Art</option>
+                            <option value="Music">Music</option>
+                            <option value="Geography">Geography</option>
+                            <option value="History">History</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label>Subject</label>
                     </div>
                     <div class="input-field col s12 m6">
                         <input name="homework[author]" id="homeworkAuthor" type="text" class="validate" placeholder="Marco" maxlength="20">

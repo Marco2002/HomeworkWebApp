@@ -13,6 +13,11 @@ $('.datepicker').pickadate({
     format: 'dd/mm/yy',
 });
 
+// subject selection setup
+$(document).ready(function() {
+    $('select').material_select();
+});
+
 // Form Configuration
 function formConfig() {
     if(formConfigTitle() &&
@@ -68,7 +73,7 @@ function formConfigDes() {
 
 function formConfigSubject() {
     var x = $("#homeworkSubject").val();
-    if (x == "") { 
+    if (x == undefined) { 
         Materialize.toast('Please enter a value for the Subject!', 4000);
     } else if( x.length > 20 ) {
         Materialize.toast('Description cant be longer than 20 characters!', 4000);

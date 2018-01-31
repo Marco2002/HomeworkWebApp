@@ -1,10 +1,44 @@
 <% include ../partials/header %>
+<% let color%>
 
 <div class="container">
     <div class="row">
         <% homework.forEach(function(h) {%>
+        <!-- Get the color -->
+        <% switch(h.subject) { case "Maths": %>
+            <% color="yellow accent-1"; %>
+            <% break; %>
+        <% case "Physics": %>
+            <% color="blue-grey lighten-1"; %>
+            <% break; %>
+        <% case "English": %>
+            <% color="red accent-2"; %>
+            <% break; %>
+        <% case "Physical Education": %>
+            <% color="green accent-3"; %>
+            <% break; %>
+        <% case "Science": %>
+            <% color="grey lighten-1"; %>
+            <% break; %>
+        <% case "Art": %>
+            <% color="pink accent-1"; %>
+            <% break; %>
+        <% case "Music": %>
+            <% color="teal accent-4"; %>
+            <% break; %>
+        <% case "Geography": %>
+            <% color="brown lighten-1"; %>
+            <% break; %>
+        <% case "History": %>
+            <% color="blue lighten-2"; %>
+            <% break %>
+        <% case "Other": %>
+            <% color="white"; %>
+            <% break; %>
+        <% } %>
+    
         <div class="container col s12 l6">
-            <div class="card">
+            <div class="card <%=color%>">
                 <div class="card-content">
                     <div class="row no-m">
                         <div class="col s9">
@@ -28,7 +62,7 @@
                 </div>
             </div>
         </div> 
-        <% }); %>
+        <% })%>
     </div>
 </div>
 
