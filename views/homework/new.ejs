@@ -2,12 +2,12 @@
 
 <div class="container">
     <div class="card">
-        <form method="POST" action="/homework">
+        <form method="POST" action="/homework" id="form">
             <div class="row"></div>
             <div class="container">
-                <div class="row">
+                <div class="row no-m">
                     <div class="input-field col s12 m6">
-                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" placeholder="Exercises in the book">
+                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" placeholder="Exercises in the book" maxlength="40">
                         <label class="active" for="homeworkTitle">Homework Title</label>
                     </div>
                     <div class="input-field col s12 m6">
@@ -15,24 +15,26 @@
                         <label class="active" for="homeworkDate">Deadline</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input name="homework[subject]" id="homeworkSubject" type="text" class="validate" placeholder="Maths">
+                        <input name="homework[subject]" id="homeworkSubject" type="text" class="validate" placeholder="Maths" maxlength="20">
                         <label class="active" for="homeworkSubject">Subject</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input name="homework[author]" id="homeworkAuthor" type="text" class="validate" placeholder="Marco">
+                        <input name="homework[author]" id="homeworkAuthor" type="text" class="validate" placeholder="Marco" maxlength="20">
                         <label class="active" for="homeworAuthor">Author</label>
                     </div>
                     <div class="input-field col s12">
-                        <input name="homework[description]" id="homeworkDescription" type="text" class="validate" placeholder="Do exercise 1 and 2 on p23 in the exercise-book">
+                        <input name="homework[description]" id="homeworkDescription" type="text" class="validate" placeholder="Do exercise 1 and 2 on p23 in the exercise-book" maxlength="300">
                         <label class="active" for="homeworkDescription">Description</label>
                     </div>
-                    <button class="btn waves-effect waves-light col s6 push-s3 m4 push-m4" type="submit" name="action">Submit
-                        <i class="material-icons right">send</i>
-                    </button>
                 </div>
-                <div class="row"></div>
             </div>
         </form>
+        <div class="row">
+            <button class="btn waves-effect waves-light col s6 push-s3 m4 push-m4" name="action" id="btn-submit" onclick="formConfig()">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+        <div class="row"></div>
     </div>
 </div>
 
