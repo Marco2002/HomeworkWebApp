@@ -12,15 +12,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body>
-        <nav>
-            <div class="nav-wrapper">
-                <div class="container">
-                    <div class="brand-logo center"><%=title%></div>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="/homework">Homework</a></li>
-                        <li><a href="/homework/new">Add Homework</a></li>
-                    </ul>
-                </div>
+        <div class="row" id="no-mp">
+            <div class="col s0 l1"></div>
+            <div class="col s12 l11" id="no-mp">
+                <nav>
+                    <div class="nav-wrapper">
+                        <div class="container">
+                            <div class="brand-logo center"><%=title%></div>
+                            
+                            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                            <ul id="slide-out" class="side-nav fixed">
+                                <li><div class="user-view">
+                                    <div class="background">
+                                        <img src="/res/slideNavBackground.jpg" height="120%">
+                                    </div>
+                                    <div class="row"></div>
+                                    <div class="row"></div>
+                                    <div class="row"></div>
+                                    <div class="row"></div>
+                                    <h5 class="black-text">Signed in as <%=currentUser.username%></h5>
+                                    <div class="row"></div>
+                                    <div class="row"></div>
+                                </div></li>
+                                <li><a href="/logout">Logout</a></li>
+                                <li><div class="divider"></div></li>
+                                <li><a href="/homework">Homework</a></li>
+                                <li><a>Exams</a></li>
+                                <li><div class="divider"></div></li>
+                                <li><a href="/homework/new">Add Homework</a></li>
+                                <li><a>Add Exam</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </nav>
-        <div class="row"></div>
+        </div>
+        <div class="row">
+            <div class="col s0 l1"></div>
+            <div class="col s12 l11">

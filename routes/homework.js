@@ -3,7 +3,8 @@
 //======================
 
 // Packages
-const express = require("express"),
+const express  = require("express"),
+    middleware = require("../middleware"),
 
 // Models
     Homework = require("../models/homework");
@@ -11,7 +12,7 @@ const express = require("express"),
 const router  = express.Router();
 
 // Index Route
-router.get("/", (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
     // Get all homework from DB
     Homework.find({}, (err, homework) => {
         if(err) {
@@ -25,14 +26,14 @@ router.get("/", (req, res) => {
 });
 
 // New Route
-router.get("/new", (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render("homework/new", {
         title: "Add Homework"
     });
 });
 
 // Create Route
-router.post("/", (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
     // Create new homework and save to DB
     Homework.create(req.body.homework, (err, newHomework) => {
         if(err) {
@@ -46,7 +47,7 @@ router.post("/", (req, res) => {
 });
 
 // Show Route
-router.get("/:id", (req, res) => {
+router.get("/:id", middleware.isLoggedIn, (req, res) => {
     Homework.findById(req.params.id, (err, homework) => {
       if(err) {
           res.redirect("/homework");
@@ -61,7 +62,7 @@ router.get("/:id", (req, res) => {
 });
 
 // Destroy Route
-router.delete("/:id", (req, res) => {
+router.delete("/:id", middleware.isLoggedIn, (req, res) => {
     Homework.findByIdAndRemove(req.params.id, (err) => {
         if(err) {
             console.log(err);
@@ -72,7 +73,7 @@ router.delete("/:id", (req, res) => {
 });
 
 // Edit Route
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     Homework.findById(req.params.id, (err, homework) => {
         if(err) {
             res.redirect("/homework");
@@ -86,7 +87,7 @@ router.get("/:id/edit", (req, res) => {
 });
 
 // Update Route
-router.put("/:id", (req, res) => {
+router.put("/:id", middleware.isLoggedIn, (req, res) => {
     Homework.findByIdAndUpdate(req.params.id, req.body.homework, (err, homework) => {
         if(err) {
             req.redirect("/homework");

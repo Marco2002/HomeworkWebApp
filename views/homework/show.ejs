@@ -47,13 +47,13 @@
                 <p class="col s4 m8">by <%=h.author%></p>
                 <div class="container col s4 m2">
                     <div class="row no-m">
-                        <a href="/homework/<%=h._id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit</a>
+                        <a href="/homework/<%=h._id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit<i class="material-icons left">create</i></a>
                     </div>
                 </div>
                 <div class="container col s4 m2">
                     <div class="row no-m">
                         <form action="/homework/<%=h._id%>?_method=DELETE" method="POST">
-                            <button class="waves-effect waves-light btn red accent-4 col s10 push-s1">Delete</button>
+                            <button class="waves-effect waves-light btn red accent-4 col s10 push-s1">Delete<i class="material-icons left">delete</i></button>
                         </form>
                     </div>
                 </div>

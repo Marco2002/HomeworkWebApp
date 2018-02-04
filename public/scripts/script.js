@@ -2,6 +2,10 @@
 // Materialize code
 // =====================
 
+// Initialize collapse button
+$(".button-collapse").sideNav();
+$('.collapsible').collapsible();
+
 // datepicker for homework/new form setup
 $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month

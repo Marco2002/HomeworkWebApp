@@ -1,6 +1,17 @@
 <% include ../partials/header %>
 <% let color%>
 
+<div iclass="row">
+    <div class="col s12">
+        <ul class="tabs" id="tabs">
+            <div class="col s2"></div>
+            <li class="tab col s4"><a class="active"href="/homework">Homework</a></li>
+            <li class="tab col s4"><a>Exams</a></li>
+            <div class="col s2"></div>
+        </ul>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <% homework.forEach(function(h) {%>
@@ -51,7 +62,7 @@
                         </div>
                         <div class="col s3">
                             <div class="row">
-                                <a href="/homework/<%=h._id%>" class="waves-effect waves-light btn col s12">More</a>
+                                <a href="/homework/<%=h._id%>" class="waves-effect waves-light btn col s12">More<i class="material-icons left">info_outline</i></a>
                             </div>
                             <div class="row no-m">
                                 <p>until <%= h.date %></p>
