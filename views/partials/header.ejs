@@ -30,16 +30,15 @@
                                     <div class="row"></div>
                                     <div class="row"></div>
                                     <div class="row"></div>
-                                    <h5 class="black-text">Signed in as <%=currentUser.username%></h5>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
+                                    <h5 class="black-text no-m">Signed in as <%=currentUser.username%></h5>
+                                    <p class="black-text no-m"><%=school.name%>  //  <%=clas.name%></p>
                                 </div></li>
                                 <li><a href="/logout">Logout</a></li>
                                 <li><div class="divider"></div></li>
-                                <li><a href="/homework">Homework</a></li>
+                                <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework">Homework</a></li>
                                 <li><a>Exams</a></li>
                                 <li><div class="divider"></div></li>
-                                <li><a href="/homework/new">Add Homework</a></li>
+                                <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/new">Add Homework</a></li>
                                 <li><a>Add Exam</a></li>
                             </ul>
                         </div>

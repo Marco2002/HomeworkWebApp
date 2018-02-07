@@ -7,93 +7,149 @@ const express  = require("express"),
     middleware = require("../middleware"),
 
 // Models
-    Homework = require("../models/homework");
+    Class  = require("../models/class"),
+    School = require("../models/school");
     
-const router  = express.Router();
+const router  = express.Router({mergeParams: true});
 
 // Index Route
 router.get("/", middleware.isLoggedIn, (req, res) => {
-    // Get all homework from DB
-    Homework.find({}, (err, homework) => {
+    Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            return res.redirect("/");
         }
-        res.render("homework/index", {
-            title: "Homework",
-            homework: homework,
+        School.findById(req.params.school_id, (err2, school) => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect("/");
+            }
+            res.render("homework/index", {
+                title: "Homework",
+                clas: clas,
+                school: school
+            });
         });
     });
 });
 
 // New Route
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-    res.render("homework/new", {
-        title: "Add Homework"
+    Class.findById(req.params.class_id, (err, clas) => {
+        if(err) {
+            console.log(err);
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+        }
+        School.findById(req.params.school_id, (err2, school) => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.render("homework/new", {
+                title: "Add Homework",
+                clas: clas,
+                school: school,
+            });
+        });
     });
 });
 
 // Create Route
 router.post("/", middleware.isLoggedIn, (req, res) => {
-    // Create new homework and save to DB
-    Homework.create(req.body.homework, (err, newHomework) => {
+    Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
-            res.redirect("/homework");
-            return console.log(err);
+            console.log(err);
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
-        console.log("Homework added:");
-        console.log(newHomework);
-        res.redirect("/homework");
+        clas.homework.push(req.body.homework);
+        clas.save(err2 => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+        });
     });
 });
 
 // Show Route
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
-    Homework.findById(req.params.id, (err, homework) => {
-      if(err) {
-          res.redirect("/homework");
-          return console.log(err);
-      }  
-      // render the template with the homework
-      res.render("homework/show", {
-          title: homework.title,
-          h: homework,
-      });
+    Class.findById(req.params.class_id, (err, clas) => {
+        if(err) {
+            console.log(err);
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+        }
+        School.findById(req.params.school_id, (err2, school) => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.render("homework/show", {
+                title: clas.homework.id(req.params.id).title,
+                clas: clas,
+                school: school,
+                h: clas.homework.id(req.params.id)
+            });
+        });
     });
 });
 
 // Destroy Route
 router.delete("/:id", middleware.isLoggedIn, (req, res) => {
-    Homework.findByIdAndRemove(req.params.id, (err) => {
+    Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
-            return res.redirect("/homework");
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
-        res.redirect("/homework");
+        clas.homework.id(req.params.id).remove();
+        clas.save(err2 => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+        });
     });
 });
 
 // Edit Route
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-    Homework.findById(req.params.id, (err, homework) => {
+    Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
-            res.redirect("/homework");
-            return console.log(err);
+            console.log(err);
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
-        res.render("homework/edit", {
-            title: "Edit Homework",
-            h: homework
+        School.findById(req.params.school_id, (err2, school) => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.render("homework/edit", {
+                title: "Edit Homework",
+                clas: clas,
+                school: school,
+                h: clas.homework.id(req.params.id)
+            });
         });
     });
 });
 
 // Update Route
 router.put("/:id", middleware.isLoggedIn, (req, res) => {
-    Homework.findByIdAndUpdate(req.params.id, req.body.homework, (err, homework) => {
+    Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
-            req.redirect("/homework");
-            return console.log(err);
+            console.log(err);
+            return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
-        res.redirect(`/homework/${req.params.id}`);
+        let homework = clas.homework.id(req.params.id);
+        homework = req.body.homework;
+        clas.save(err2 => {
+            if(err2) {
+                console.log(err2);
+                return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+            }
+            res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
+        });
     });
 });
 

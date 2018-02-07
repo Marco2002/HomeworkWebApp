@@ -12,6 +12,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body class="b-img">
+<% var selectedSchool; %>
+
 
         <div class="container">
             <div class="row">
@@ -19,20 +21,22 @@
                     <div class="card margin">
                         <div class="card-content">
                             <h4 class="center">Register</h4>
-                            <form action="/register" method="POST">
-                                <div class="input-field">
-                                    <input placeholder="Placeholder" id="username" name="username" type="text" class="validate">
-                                    <label for="username">username</label>
+                            <form action="/register2" method="POST">
+                                <div class="row no-m">
+                                    <div class="input-field col s12">
+                                        <input id="username" name="username" type="text" class="validate">
+                                        <label for="username">username</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input id="password" name="password" type="password" class="validate">
+                                        <label for="password">pasword</label>
+                                    </div>
                                 </div>
-                                <div class="input-field">
-                                    <input placeholder="Placeholder" id="password" name="password" type="password" class="validate">
-                                    <label for="password">pasword</label>
+                                <div class="row no-m">
+                                    <button class="col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Next</button>
+                                    <div class="row"></div>
+                                    <p class="center col s12">Have an account? <a href="/login">Log in</a></p>
                                 </div>
-                                <div class="row">
-                                    <button class="col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
-                                </div>
-                                <p class="center">Have an account? <a href="/login">Log in</a></p>
-                                
                             </form>
                         </div>
                     </div>

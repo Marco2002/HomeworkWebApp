@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Homework Web App</title>
+
+        <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </header>
+    <body class="b-img">
+<% var selectedSchool; %>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col s12 l8 push-l2">
+                    <div class="card margin">
+                        <div class="card-content">
+                            <h4 class="center">Select a Class</h4>
+                            <form action="/register" method="POST">
+                                <div class="row">
+                                    <div class="input-field col s8 l10">
+                                        <select name="clas" id="class">
+                                            <option value="" disabled selected>Choose a class</option>
+                                            <% school.clases.forEach(clas => { %>
+                                                <option value="<%=clas.name%>"><%=clas.name%></option>
+                                            <% }) %>
+                                        </select>
+                                        <label>Class</label>
+                                    </div>
+                                    <a href="/schools/<%=school._id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
+                                    <input class="hide" name="username" value="<%=username%>"></input>
+                                    <input class="hide" name="password" value="<%=password%>"></input>
+                                    <input class="hide" name="school" value="<%=school.name%>"></input>
+                                </div>
+                                
+                                <div class="row no-m">
+                                    <button class="col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
+                                    <div class="row"></div>
+                                    <p class="center col s12">Have an account? <a href="/login">Log in</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!-- Materialize -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <!-- script.js -->
+        <script src="/scripts/script.js"></script>
+        </body>
+</html>

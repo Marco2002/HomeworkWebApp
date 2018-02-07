@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="card">
-        <form method="POST" action="/homework/<%=h._id%>?_method=PUT" id="form">
+        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=clas._id%>?_method=PUT" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row">
@@ -14,7 +14,7 @@
                         <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" value="<%=h.date%>">
                         <label class="active" for="homeworkDate">Deadline</label>
                     </div>
-                    <div class="input-field col s12 m6">
+                    <div class="input-field col s12">
                         <select  name="homework[subject]" id="homeworkSubject" placeholder="Maths" value="<%=h.subject%>" maxlength="20">
                             <option disabled selected>Choose a subject</option>
                             <option value="Maths">Maths</option>
@@ -29,10 +29,6 @@
                             <option value="Other">Other</option>
                         </select>
                         <label>Subject</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input name="homework[author]" id="homeworkAuthor" type="text" class="validate" value="<%=h.author%>" maxlength="20">
-                        <label class="active" for="homeworAuthor">Author</label>
                     </div>
                     <div class="input-field col s12">
                         <input name="homework[description]" id="homeworkDescription" type="text" class="validate" value="<%=h.description%>" maxlength="300">

@@ -28,3 +28,11 @@
 .margin {
     margin-top: 15vh;
 }
+
+.margin-t {
+    margin-top: 2%;
+}
+
+.hide {
+    display: none;
+}

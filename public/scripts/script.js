@@ -26,7 +26,6 @@ $(document).ready(function() {
 function formConfig() {
     if(formConfigTitle() &&
     formConfigDate() &&
-    formConfigAuthor() &&
     formConfigDes() &&
     formConfigSubject() == true) {
         $("#form").submit();
@@ -48,17 +47,6 @@ function formConfigDate() {
     var x = $("#homeworkDate").val();
     if(x == "") { 
         Materialize.toast('Please enter a value for the Deadline!', 4000);
-    } else {
-        return true;
-    }
-}
-
-function formConfigAuthor() {
-    var x = $("#homeworkAuthor").val();
-    if (x == "") { 
-        Materialize.toast('Please enter a value for the Author!', 4000);
-    } else if( x.length > 20 ) {
-        Materialize.toast('The Authors Name cant be longer than 20 characters!', 4000);
     } else {
         return true;
     }

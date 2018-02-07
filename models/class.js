@@ -1,11 +1,16 @@
+// Packages
 const mongoose = require("mongoose");
 
 const homeworkSchema = new mongoose.Schema({
     title: String,
     subject: String,
     description: String,
-    author: String,
     date: String,
 });
+    
+const classSchema = new mongoose.Schema({
+    name: String,
+    homework: [homeworkSchema]
+});
 
-module.exports = mongoose.model("Homework", homeworkSchema);
+module.exports = mongoose.model("Class", classSchema);
