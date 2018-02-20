@@ -17,12 +17,12 @@ const express    = require("express"),
 const router = express.Router();
 
 // Register 1 Route GET
-router.get("/register", (req, res) => {
+router.get("/register", middleware.isNotLoggedIn, (req, res) => {
     res.render("auth/register1");
 });
 
 // Register 2 Route GET
-router.post("/register2", (req, res) => {
+router.post("/register2", middleware.isNotLoggedIn, (req, res) => {
     // Get all Schools
     School.find({}, (err, schools) => {
         if(err) {
@@ -38,7 +38,7 @@ router.post("/register2", (req, res) => {
 });
 
 // Register 3 Route GET
-router.post("/register3", (req, res) => {
+router.post("/register3", middleware.isNotLoggedIn, (req, res) => {
     School.findOne({name: req.body.school}).populate("clases").exec((err, school) => {
         if(passwordHash.verify(req.body.schoolPassword, school.password)) {
             res.render("auth/register3", {
@@ -64,7 +64,7 @@ router.post("/register3", (req, res) => {
 });
 
 // Register Route POST
-router.post("/register", (req, res) => {
+router.post("/register", middleware.isNotLoggedIn, (req, res) => {
     School.findOne({name: req.body.school}, (err2, school) => {
             if(err2) {
                 console.log(err2 + 2);
@@ -93,19 +93,19 @@ router.post("/register", (req, res) => {
 });
 
 // Login Route GET
-router.get("/login", (req, res) => {
+router.get("/login", middleware.isNotLoggedIn, (req, res) => {
     res.render("auth/login");
 });
 
 // Login Route POST
-router.post("/login", passport.authenticate("local", {
+router.post("/login", middleware.isNotLoggedIn, passport.authenticate("local", {
     failureRedirect: "/",
 }), (req, res) => {
     res.redirect(`/schools/${req.user.school}/classes/${req.user.clas}/homework`);
 });
 
 // Logout Route
-router.get("/logout", (req, res) => {
+router.get("/logout", middleware.isLoggedIn, (req, res) => {
     req.logout();
     res.redirect("/");
 });

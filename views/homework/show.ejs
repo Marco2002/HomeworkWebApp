@@ -1,43 +1,10 @@
 <% include ../partials/header %>
-<% let color%>
-<!-- Get the color -->
-<% switch(h.subject) { case "Maths": %>
-    <% color="yellow accent-1"; %>
-    <% break; %>
-<% case "Physics": %>
-    <% color="blue-grey lighten-1"; %>
-    <% break; %>
-<% case "English": %>
-    <% color="red accent-2"; %>
-    <% break; %>
-<% case "Physical Education": %>
-    <% color="green accent-3"; %>
-    <% break; %>
-<% case "Science": %>
-    <% color="grey lighten-1"; %>
-    <% break; %>
-<% case "Art": %>
-    <% color="pink accent-1"; %>
-    <% break; %>
-<% case "Music": %>
-    <% color="teal accent-4"; %>
-    <% break; %>
-<% case "Geography": %>
-    <% color="brown lighten-1"; %>
-    <% break; %>
-<% case "History": %>
-    <% color="blue lighten-2"; %>
-    <% break %>
-<% case "Other": %>
-    <% color="white"; %>
-    <% break; %>
-<% } %>
-        
+
 <div class="container">
-    <div class="card <%= color %>">
+    <div class="card">
         <div class="card-content">
             <div class="row">
-                <div class="card-title col"><%=h.subject%></div>
+                <div class="card-title col"><%=h.subjectName%></div>
                 <p id="show-date" class="col right">until <%=h.date%></p>
             </div>
             <h4><%= h.description %></h4>

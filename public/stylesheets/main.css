@@ -23,6 +23,22 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    margin:0;
+    padding:0;
+}
+
+#body-home {
+    padding:0;
+    margin: 70px 0 0 0;
+}
+
+#body {
+    padding:0;
+    margin: 2% 0 0 0;
+}
+
+#formHr {
+    margin-top: 23px;
 }
 
 .margin {
@@ -33,6 +49,36 @@
     margin-top: 2%;
 }
 
+.margin-t2 {
+    margin-top: 3%;
+}
+
 .hide {
     display: none;
+}
+
+.tabs .indicator{
+    background-color:#FFFFFF!important;
+}
+
+.tabs .tab a {
+    color: #efebe9!important;
+}
+
+.tab a.active {
+    color: #0068bf!important;
+    background-color: #42a5f5!important;
+}
+
+.tabs .indicator{
+    background-color:000000!important;
+}
+
+.carousel .carousel-item {
+    width: 100%;
+    display: table;
+}
+
+.background-color {
+    height: 95vh;
 }

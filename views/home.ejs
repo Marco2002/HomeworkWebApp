@@ -1,0 +1,191 @@
+<% include ./partials/header2 %>
+<% let color%>
+
+<div class="container">
+    <div class="row">
+        <div id="homework">
+            <% clas.homework.forEach(h => {%>
+            <!-- Get the color -->
+            <% switch(h.subject) { case "Maths": %>
+                <% color="blue"; %>
+                <% break; %>
+            <% case "Language Arts": %>
+                <% color="red"; %>
+                <% break; %>
+            <% case "Foreign Language 1": %>
+                <% color="yellow"; %>
+                <% break; %>
+            <% case "Foreign Language 2": %>
+                <% color="purple"; %>
+                <% break; %>
+            <% case "Foreign Language 3": %>
+                <% color="lime"; %>
+                <% break; %>
+            <% case "Music": %>
+                <% color="teal accent-4"; %>
+                <% break; %>
+            <% case "History": %>
+                <% color="indigo"; %>
+                <% break %>
+            <% case "Geography": %>
+                <% color="brown"; %>
+                <% break; %>
+            <% case "Biology": %>
+                <% color="green"; %>
+                <% break; %>
+            <% case "Physical Education": %>
+                <% color="green accent-4"; %>
+                <% break; %>
+            <% case "Politics": %>
+                <% color="grey"; %>
+                <% break; %>
+            <% case "Religion": %>
+                <% color="amber"; %>
+                <% break; %>
+            <% case "Philosophy": %>
+                <% color="cyan"; %>
+                <% break; %>
+            <% case "Ethics": %>
+                <% color="light-blue"; %>
+                <% break; %>
+            <% case "Physics": %>
+                <% color="deep-purple"; %>
+                <% break; %>
+            <% case "Science": %>
+                <% color="blue-grey"; %>
+                <% break; %>
+            <% case "Chemistry": %>
+                <% color="deep-orange"; %>
+                <% break; %>
+            <% case "Art": %>
+                <% color="pink"; %>
+                <% break; %>
+            <% case "Other": %>
+                <% color="white"; %>
+                <% break; %>
+            <% } %>
+        
+        
+            <div class="container col s12 l6">
+                <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=h._id%>">
+                    <div class="card <%=color%> black-text">
+                        <div class="card-content" >
+                            <div class="row no-m">
+                                <div class="col s9">
+                                    <div class="row no-m">
+                                        <div class="card-title"><%= h.subjectName %></div>
+                                    </div>
+                                </div>
+                                <div class="col s3">
+                                    <div class="row no-m">
+                                        <p>until <%= h.date %></p>
+                                    </div>
+                                </div>
+                                <div class="col s12">
+                                    <div class="row no-m">
+                                        <h4 class="no-m"><%= h.title %></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </a>
+            </div> 
+            <% })%>
+        </div>
+        <div id="exams">
+                <% clas.exams.forEach(e => {%>
+            <!-- Get the color -->
+            <% switch(e.subject) { case "Maths": %>
+                <% color="blue"; %>
+                <% break; %>
+            <% case "Language Arts": %>
+                <% color="red"; %>
+                <% break; %>
+            <% case "Foreign Language 1": %>
+                <% color="yellow"; %>
+                <% break; %>
+            <% case "Foreign Language 2": %>
+                <% color="purple"; %>
+                <% break; %>
+            <% case "Foreign Language 3": %>
+                <% color="lime"; %>
+                <% break; %>
+            <% case "Music": %>
+                <% color="teal accent-4"; %>
+                <% break; %>
+            <% case "History": %>
+                <% color="indigo"; %>
+                <% break %>
+            <% case "Geography": %>
+                <% color="brown"; %>
+                <% break; %>
+            <% case "Biology": %>
+                <% color="green"; %>
+                <% break; %>
+            <% case "Physical Education": %>
+                <% color="green accent-4"; %>
+                <% break; %>
+            <% case "Politics": %>
+                <% color="grey"; %>
+                <% break; %>
+            <% case "Religion": %>
+                <% color="amber"; %>
+                <% break; %>
+            <% case "Philosophy": %>
+                <% color="cyan"; %>
+                <% break; %>
+            <% case "Ethics": %>
+                <% color="light-blue"; %>
+                <% break; %>
+            <% case "Physics": %>
+                <% color="deep-purple"; %>
+                <% break; %>
+            <% case "Science": %>
+                <% color="blue-grey"; %>
+                <% break; %>
+            <% case "Chemistry": %>
+                <% color="deep-orange"; %>
+                <% break; %>
+            <% case "Art": %>
+                <% color="pink"; %>
+                <% break; %>
+            <% case "Other": %>
+                <% color="white"; %>
+                <% break; %>
+            <% } %>
+    
+    
+            <div class="container col s12 l6">
+                <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>">
+                    <div class="card <%=color%> black-text">
+                        <div class="card-content" >
+                            <div class="row no-m">
+                                <div class="col s9">
+                                    <div class="row no-m">
+                                        <div class="card-title"><%= e.subjectName %></div>
+                                    </div>
+                                </div>
+                                <div class="col s3">
+                                    <div class="row no-m">
+                                        <p>until <%= e.date %></p>
+                                    </div>
+                                </div>
+                                <div class="col s12">
+                                    <div class="row no-m">
+                                        <h4 class="no-m"><%= e.title %></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <% })%>
+        </div>
+    </div>
+</div>
+
+<% include ./partials/footer %>

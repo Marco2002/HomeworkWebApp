@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="card">
-        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=clas._id%>?_method=PUT" id="form">
+        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=h._id%>?_method=PUT" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row">
@@ -14,21 +14,34 @@
                         <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" value="<%=h.date%>">
                         <label class="active" for="homeworkDate">Deadline</label>
                     </div>
-                    <div class="input-field col s12">
-                        <select  name="homework[subject]" id="homeworkSubject" placeholder="Maths" value="<%=h.subject%>" maxlength="20">
-                            <option disabled selected>Choose a subject</option>
+                    <div class="input-field col s8">
+                        <select name="homework[subject]" id="homeworkSubject">
+                            <option value="" disabled selected>Choose a subject</option>
                             <option value="Maths">Maths</option>
+                            <option value="Language Arts">Language Arts</option>
+                            <option value="Foreign Language 1">Foreign Language 1</option>
+                            <option value="Foreign Language 2">Foreign Language 2</option>
+                            <option value="Foreign Language 3">Foreign Language 3</option>
                             <option value="Physics">Physics</option>
-                            <option value="English">English</option>
-                            <option value="Physical Education">Physical Education</option>
+                            <option value="Politics">Politics</option>
                             <option value="Science">Science</option>
                             <option value="Art">Art</option>
                             <option value="Music">Music</option>
                             <option value="Geography">Geography</option>
                             <option value="History">History</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Philosophy">Philosophy</option>
+                            <option value="Ethics">Ethics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Religion">Religion</option>
                             <option value="Other">Other</option>
                         </select>
                         <label>Subject</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input disabled value=" " name="homework[subjectName]" id="subjectName" type="text" class="validate">
+                        <label for="disabled">Subject Name</label>
                     </div>
                     <div class="input-field col s12">
                         <input name="homework[description]" id="homeworkDescription" type="text" class="validate" value="<%=h.description%>" maxlength="300">

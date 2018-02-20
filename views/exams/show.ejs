@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+        
+<div class="container">
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="card-title col"><%=e.subjectName%></div>
+                <p id="show-date" class="col right">until <%=e.date%></p>
+            </div>
+            <h3 class="center-align"><%=e.title%></h3>
+            
+            <div class="row no-m">
+                <h5 class="col s8">Topics</h5>
+                <h5 class="col s4 right-align">Where to learn</h5>
+            </div>
+            <hr>
+            <hr>
+            <% e.topics.forEach(t => {%>
+            <div class="row no-m">
+                <h6 class="col s8"><%=t.topic%></h6>
+                <p class="col s4 margin-t right-align"><%=t.learn%><p>
+            </div>
+            <hr>
+            <% }); %>
+            
+            <div class="row"></div>
+            <div class="row no-m">
+                <div class="container col s4 m2">
+                    <div class="row no-m">
+                        <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit<i class="material-icons left">create</i></a>
+                    </div>
+                </div>
+                <div class="container col s4 m2">
+                    <div class="row no-m">
+                        <form action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>?_method=DELETE" method="POST">
+                            <button class="waves-effect waves-light btn red accent-4 col s10 push-s1">Delete<i class="material-icons left">delete</i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

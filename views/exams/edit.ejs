@@ -2,20 +2,20 @@
 
 <div class="container">
     <div class="card">
-        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework" id="form">
+        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>?_method=PUT" id="form">
             <div class="row"></div>
             <div class="container">
-                <div class="row no-m">
+                <div class="row">
                     <div class="input-field col s12 m6">
-                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" maxlength="40">
+                        <input name="exam[title]" id="homeworkTitle" type="text" class="validate" value="<%=e.title%>" maxlength="40">
                         <label class="active" for="homeworkTitle">Homework Title</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input name="homework[date]" id="homeworkDate" type="text" class="datepicker">
+                        <input name="exam[date]" id="homeworkDate" type="text" class="datepicker" value="<%=e.date%>">
                         <label class="active" for="homeworkDate">Deadline</label>
                     </div>
                     <div class="input-field col s8">
-                        <select name="homework[subject]" id="homeworkSubject">
+                        <select name="exam[subject]" id="homeworkSubject">
                             <option value="" disabled selected>Choose a subject</option>
                             <option value="Maths">Maths</option>
                             <option value="Language Arts">Language Arts</option>
@@ -40,12 +40,38 @@
                         <label>Subject</label>
                     </div>
                     <div class="input-field col s4">
-                        <input disabled value=" " name="homework[subjectName]" id="subjectName" type="text" class="validate">
+                        <input disabled value=" " name="exam[subjectName]" id="subjectName" type="text" class="validate">
                         <label for="disabled">Subject Name</label>
                     </div>
-                    <div class="input-field col s12">
-                        <input name="homework[description]" id="homeworkDescription" type="text" class="validate" placeholder="Do exercise 1 and 2 on p23 in the exercise-book" maxlength="300">
-                        <label class="active" for="homeworkDescription">Description</label>
+                    
+                    
+                    <h5 class="col s3 l2">Topics</h5>
+                    <hr class="col s12 l6 margin-t2">
+                    
+                    <div class="col s6 l2 row no-m">
+                        <div class="container center-align col s12">
+                            <a onclick="addTopic()" class="center-align btn-floating btn-large waves-effect waves-light"><i class="material-icons">add</i></a>
+                        </div>
+                        <p class="col s12 center-align center">Add Topic</p>
+                    </div>
+                    <div class="col s6 l2 row no-m">
+                        <div class="container center-align col s12">
+                            <a onclick="removeTopic()" class="red center-align btn-floating btn-large waves-effect waves-light"><i class="material-icons">close</i></a>
+                        </div>
+                        <p class="col s12 center-align center">Remove Topic</p>
+                    </div>
+                    
+                    <div id="topicContainer">
+                        <% e.topics.forEach(t => { %>
+                        <div class="input-field col s7">
+                            <input name="topics[topic]" id="examTopic" type="text" class="validate" value="<%=t.topic%>" maxlength="30">
+                            <label class="active" for="examTopic">Topic</label>
+                        </div>
+                        <div class="input-field col s5">
+                            <input name="topics[learn]" id="examLearn" type="text" class="validate"value="<%=t.learn%>" maxlength="20">
+                            <label class="active" for="examLearn">Where to learn</label>
+                        </div>
+                        <% }) %>
                     </div>
                 </div>
             </div>

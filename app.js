@@ -21,6 +21,7 @@ const express               = require("express"),
 // Routes
     indexRoutes     = require("./routes/index"),
     homeworkRoutes  = require("./routes/homework"),
+    examRoutes      = require("./routes/exams"),
     authRoutes      = require("./routes/auth"),
     schoolRoutes    = require("./routes/schools"),
     classRoutes     = require("./routes/classes");
@@ -29,7 +30,7 @@ const express               = require("express"),
 const app = express();
 
 // mongoose setup
-mongoose.connect("mongodb://localhost/hmwk_v0_3");
+mongoose.connect("mongodb://localhost/homework_v0_4");
 
 // ejs setup
 app.set("view engine", "ejs");
@@ -73,6 +74,7 @@ app.use((req, res, next) => {
 app.use(indexRoutes);
 app.use(authRoutes);
 app.use("/schools/:school_id/classes/:class_id/homework", homeworkRoutes);
+app.use("/schools/:school_id/classes/:class_id/exams", examRoutes);
 app.use("/schools", schoolRoutes);
 app.use("/schools/:school_id/classes", classRoutes);
 
