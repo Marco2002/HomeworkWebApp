@@ -1,5 +1,5 @@
 //=============================
-// HMWK v0.3
+// HMWK v0.5
 //=============================
 
 // Packages
@@ -30,7 +30,7 @@ const express               = require("express"),
 const app = express();
 
 // mongoose setup
-mongoose.connect("mongodb://localhost/homework_v0_4");
+mongoose.connect("mongodb://localhost/homework_v0_5");
 
 // ejs setup
 app.set("view engine", "ejs");
