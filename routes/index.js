@@ -5,10 +5,8 @@ const express = require("express"),
 const router  = express.Router();
 
 // Index Route
-router.get("/", middleware.isNotLoggedIn, (req, res) => 
-    res.render("index", {
-        title: "HMWK, a homework organizor"
-    })
-);
+router.get("/", middleware.isNotLoggedIn, (req, res) => {
+    res.render("index");
+});
 
 module.exports = router;

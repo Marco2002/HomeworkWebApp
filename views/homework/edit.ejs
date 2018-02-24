@@ -1,6 +1,7 @@
 <% include ../partials/header %>
 
 <div class="container">
+    <% include ../partials/flash %>
     <div class="card">
         <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=h._id%>?_method=PUT" id="form">
             <div class="row"></div>

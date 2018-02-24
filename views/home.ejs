@@ -2,7 +2,8 @@
 <% let color%>
 
 <div class="container">
-    <div class="row">
+    <div class="row no-m">
+        <% include ./partials/flash %>
         <div id="homework">
             <% clas.homework.forEach(h => {%>
             <!-- Get the color -->
@@ -65,8 +66,7 @@
                 <% break; %>
             <% } %>
         
-        
-            <div class="container col s12 l6">
+            <div class="col s12 l6">
                 <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=h._id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >
@@ -157,7 +157,7 @@
             <% } %>
     
     
-            <div class="container col s12 l6">
+            <div class="col s12 l6">
                 <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >

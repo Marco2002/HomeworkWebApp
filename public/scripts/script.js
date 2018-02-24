@@ -124,9 +124,17 @@ function addTopic() {
     container.insertAdjacentHTML("beforeend", htmlCode);
 }
 
+// Remove Topic
 function removeTopic() {
     $('#topicContainer').children().last().remove();
     $('#topicContainer').children().last().remove(); 
 }
+
+// Close Alert
+$(".alert").on("click", "#alert-close", function() {
+    console.log('oeuoeu');
+    $(".alert").fadeOut("slow", function() {});
+});
+
 
 console.log("script.js");

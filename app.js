@@ -1,5 +1,5 @@
 //=============================
-// HMWK v0.5
+// HMWK v0.6
 //=============================
 
 // Packages
@@ -10,6 +10,7 @@ const express               = require("express"),
     passport                = require("passport"),
     passportLocalMongoose   = require("passport-local-mongoose"),
     expressSession          = require("express-session"),
+    flash                   = require("connect-flash"),
     
     LocalStrategy           = require("passport-local"),
     
@@ -30,7 +31,7 @@ const express               = require("express"),
 const app = express();
 
 // mongoose setup
-mongoose.connect("mongodb://localhost/homework_v0_5");
+mongoose.connect("mongodb://localhost/homework_v0_6");
 
 // ejs setup
 app.set("view engine", "ejs");
@@ -64,9 +65,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 // method-override setup
 app.use(methodOverride("_method"));
 
+// connect-flash setup
+app.use(flash());
+
 // ejs Paramenters
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

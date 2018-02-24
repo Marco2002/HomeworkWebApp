@@ -22,6 +22,7 @@ router.post("/", (req, res) => {
     School.create(req.body.school, (err, newSchool) => {
         if(err) {
             res.redirect("/");
+            req.flash("succes", "Error while adding your school");
             return console.log(err);
         }
         res.redirect("/");

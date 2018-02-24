@@ -1,6 +1,7 @@
 <% include ../partials/header %>
 
 <div class="container">
+    <% include ../partials/flash %>
     <div class="card">
         <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams" id="form">
             <div class="row"></div>
@@ -44,9 +45,14 @@
                         <label for="disabled">Subject Name</label>
                     </div>
                     <div class="row"></div>
-                    
-                    <h5 class="col s3 l2">Topics</h5>
-                    <hr class="col s12 l6 margin-t2">
+                    <div class="col s12 l8">
+                        <div class="row"></div>
+                        <h5 class="col s3 ">Topics</h5>
+                        <div class="col s9">
+                            <div class="row"></div>
+                            <hr>
+                        </div>
+                    </div>
                     
                     <div class="col s6 l2 row no-m">
                         <div class="container center-align col s12">
@@ -60,6 +66,7 @@
                         </div>
                         <p class="col s12 center-align center">Remove Topic</p>
                     </div>
+                    <div class="row"></div>
                     
                     <div id="topicContainer">
                         <div class="input-field col s7">

@@ -1,0 +1,25 @@
+<% if(error && error.length > 0) { %>
+
+<div class="alert card red lighten-3">
+    <div class="card-content row no-m">
+        <div class="col s2 l1"></div>
+        <div class="col s8 l10 alert-close center-align alert-error card-title no-m"><%=error%></div>
+        <div class="col s2 l1 valign-wrapper">
+            <i class="small material-icons" id="alert-close" aria-hidden="true">close</i>
+        </div>
+    </div>
+</div>
+
+<% } else if(success && success.length > 0) { %>
+
+<div class="alert card green lighten-3">
+    <div class="card-content row no-m">
+        <div class="col s2 l1"></div>
+        <div class="col s8 l10 alert-close center-align alert-success card-title no-m"><%=success%></div>
+        <div class="col s2 l1 valign-wrapper">
+            <i class="small material-icons" id="alert-close" aria-hidden="true">close</i>
+        </div>
+    </div>
+</div>
+
+<% } %>

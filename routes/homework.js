@@ -17,12 +17,14 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect("/");
         }
         
         School.findById(req.params.school_id, (err2, school) => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Couldn't find your school");
                 return res.redirect("/");
             }
             
@@ -42,11 +44,13 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         School.findById(req.params.school_id, (err2, school) => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Couldn't find your school");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
             res.render("homework/new", {
@@ -63,14 +67,17 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         clas.homework.push(req.body.homework);
         clas.save(err2 => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Error while updating your class");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
+            req.flash("success", "Added homework successfully");
             res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         });
     });
@@ -81,11 +88,13 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         School.findById(req.params.school_id, (err2, school) => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Couldn't find your school");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
             if (clas.homework.id(req.params.id)) {
@@ -97,6 +106,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
                 });
             } else {
                 console.log("no homework with the given ID existst");
+                req.flash("error", "Couldn't find your homework");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
         });
@@ -108,20 +118,24 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         if (clas.homework.id(req.params.id)) {
             clas.homework.id(req.params.id).remove();
         } else {
             console.log("no homework with the given ID existst");
+            req.flash("error", "Couldn't find your homework");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         
         clas.save(err2 => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Error while updating your class");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
+            req.flash("success", "Deleted homework successfully");
             res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         });
     });
@@ -132,11 +146,13 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         School.findById(req.params.school_id, (err2, school) => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Couldn't find your school");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
             if (clas.homework.id(req.params.id)) {
@@ -148,6 +164,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
                 });
             } else {
                 console.log("no homework with the given ID existst");
+                req.flash("error", "Couldn't find your homework");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
         });
@@ -159,6 +176,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     Class.findById(req.params.class_id, (err, clas) => {
         if(err) {
             console.log(err);
+            req.flash("error", "Couldn't find your class");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         if (clas.homework.id(req.params.id)) {
@@ -171,13 +189,16 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
             homework = req.body.homework;
         } else {
             console.log("no homework with the given ID existst");
+            req.flash("error", "Couldn't find your homework");
             return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         }
         clas.save(err2 => {
             if(err2) {
                 console.log(err2);
+                req.flash("error", "Error while updating your class");
                 return res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
             }
+            req.flash("success", "Updated homework successfully");
             res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}/homework`);
         });
     });
