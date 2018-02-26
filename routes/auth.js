@@ -129,7 +129,7 @@ router.post("/login", middleware.isNotLoggedIn, (req, res) => {
                 return res.redirect("/login");
             }
             // Redirect if it succeeds
-            req.flash("success", `Logged in successfully. Welcome back ${user.username}`);
+            req.flash("success", `Welcome back ${user.username}`);
             res.redirect(`/schools/${req.user.school}/classes/${req.user.clas}/homework`);
         });
     })(req, res);

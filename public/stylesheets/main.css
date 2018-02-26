@@ -98,3 +98,10 @@
     color: #008000;
     font-weight: 500!important;
 }
+
+.modal {
+    top: 20%!important;
+}
+.modal-button {
+    margin: 0 1%!important;
+}

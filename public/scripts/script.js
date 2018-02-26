@@ -136,5 +136,12 @@ $(".alert").on("click", "#alert-close", function() {
     $(".alert").fadeOut("slow", function() {});
 });
 
-
+// Warning before delete
+$(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+    });
+});
+  
 console.log("script.js");
