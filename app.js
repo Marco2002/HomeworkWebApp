@@ -1,5 +1,5 @@
 //=============================
-// HMWK v0.6
+// HMWK v0.7
 //=============================
 
 // Packages
@@ -30,6 +30,9 @@ const express               = require("express"),
 // express setup
 const app = express();
 
+// env variables setup
+require("dotenv/config");
+
 // mongoose setup
 mongoose.connect("mongodb://localhost/homework_v0_6");
 
@@ -38,7 +41,7 @@ app.set("view engine", "ejs");
 
 // passport and session setup
 app.use(expressSession({
-    secret: 'cookie_secret',
+    secret: process.env.COOKIE_SECRET,
     name: 'cookie_name',
     proxy: true,
     resave: true,
@@ -46,7 +49,7 @@ app.use(expressSession({
 }));
 app.use(passport.initialize());
 app.use(passport.session({
-    secret: 'cookie_secret',
+    secret: process.env.COOKIE_SECRET,
     name: 'cookie_name',
     proxy: true,
     resave: true,
@@ -84,6 +87,6 @@ app.use("/schools/:school_id/classes/:class_id/exams", examRoutes);
 app.use("/schools", schoolRoutes);
 app.use("/schools/:school_id/classes", classRoutes);
 
-app.listen("8080", "0.0.0.0", () =>
-    console.log("server online")
+app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () =>
+    console.log(`server online on HOST:${process.env.SERVER_HOST}, PORT:${process.env.SERVER_PORT}`)
 );
