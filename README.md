@@ -15,10 +15,10 @@ An online homework planner accessible for all classmates
 
 3. setup env variables
 
-    1. create .env file in the project folder 
+    1 create .env file in the project folder 
     ```touch .env```
     
-    2. set variables
+    2 set variables
         * SERVER_PORT
         * SERVER_HOST
         * COOKIE_SECRET
@@ -30,4 +30,4 @@ run the app.js file
 the console should log _"server online on HOST: <HOST> , PORT: <PORT> "_
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Marco2002/HmwkWebApp/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Marco2002/HmwkWebApp/blob/master/LICENSE) file for details
