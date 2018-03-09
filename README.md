@@ -18,10 +18,7 @@ An online homework planner accessible for all classmates
     1 create .env file in the project folder 
     ```touch .env```
     
-    2 set variables
-        * SERVER_PORT
-        * SERVER_HOST
-        * COOKIE_SECRET
+    2 set variables: SERVER_PORT, SERVER_HOST, COOKIE_SECRET, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DB
         
 ## Running the tests
 
