@@ -11,7 +11,7 @@ const express               = require("express"),
     flash                   = require("connect-flash"),
     expressValidator        = require("express-validator"),
     cookieParser            = require('cookie-parser'),
-    bcrypt                  = require("bcrypt"),
+    passwordHash            = require("password-hash"),
     LocalStrategy           = require("passport-local").Strategy,
     MySQLStore              = require("express-mysql-session"),
 
@@ -102,19 +102,13 @@ passport.use(new LocalStrategy((username, password, done) => {
             done(null, false);
         } else {
     
-            bcrypt.compare(password, results[0].password.toString(), (err, response) => {
+            if(passwordHash.verify(password, results[0].password)) {
                 
-                if(err) {
-                    done(err);
-                }
+                return done(null, results[0]);
                 
-                if(response === true) {
-                    return done(null, results[0]);
-                } else {
-                    done(null, false);
-                }
-            });
-            
+            } else {
+                done(null, false);
+            }
         }
     });
 }));

@@ -5,7 +5,7 @@
 // Packages
 const express        = require("express"),
     passport         = require("passport"),
-    bcrypt           = require("bcrypt"),
+    passwordHash     = require("password-hash"),
     fun              = require("../functions"),
     middleware       = require("../middleware");
 
@@ -57,20 +57,17 @@ router.post("/register3", middleware.isNotLoggedIn, (req, res) => {
         
         if(err) {return fun.error(req, res, err, "Couldn't find your school", "/register")}
         
-        bcrypt.compare(req.body.schoolPassword, results[0].password.toString(), (err, response) => {
+        if(passwordHash.verify(req.body.schoolPassword, results[0].password)) {
             
-            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+            res.render("auth/register3", {
+                classes: results,
+                username: req.body.username,
+                password: req.body.password
+            });
             
-            if(response === true) {
-                res.render("auth/register3", {
-                    classes: results,
-                    username: req.body.username,
-                    password: req.body.password
-                });
-            } else {
-                fun.error(req, res, "", "Wrong school password", "/register");
-            }
-        });
+        } else {
+            fun.error(req, res, "", "Wrong school password", "/register");
+        }
     });
 });
 
@@ -86,25 +83,22 @@ router.post("/register", middleware.isNotLoggedIn, (req, res) => {
     
     const db = require("../db");
     
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    const hash = passwordHash.generate(req.body.password);
         
-        if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+    db.query("INSERT INTO users (username, password, class_id, school_id) VALUES (?, ?, ?, ?)", [req.body.username, hash, req.body.clas, req.body.school], (err, results, fields) => {
         
-        db.query("INSERT INTO users (username, password, class_id, school_id) VALUES (?, ?, ?, ?)", [req.body.username, hash, req.body.clas, req.body.school], (err, results, fields) => {
+        if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
+        
+        db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
             
-            if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
+            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
             
-            db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
-                
+            req.login(results[0], (err) => {
                 if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
                 
-                req.login(results[0], (err) => {
-                    if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-                    
-                    req.flash("success", "Registered successfully");
-                    res.redirect("/");
-                    
-                });
+                req.flash("success", "Registered successfully");
+                res.redirect("/");
+                
             });
         });
     });

@@ -3,9 +3,9 @@
 // ======================
 
 // Packages
-const express   = require("express"),
-    bcrypt      = require('bcrypt'),
-    fun         = require("../functions");
+const express    = require("express"),
+    passwordHash = require('password-hash'),
+    fun          = require("../functions");
 
 const router = express.Router();
 
@@ -28,15 +28,14 @@ router.post("/", (req, res) => {
     
     const db = require("../db");
     
-    bcrypt.hash(req.body.school.password, 10, (err, password) => {
+    const password = passwordHash.generate(req.body.school.password);
+        
+    db.query("INSERT INTO schools (name, password) VALUES (?, ?)", [req.body.school.name, password], (err, results, fields) => {
+        
         if(err) { return fun.error(req, res, err, "Error while adding School", "/schools/new") }
         
-        db.query("INSERT INTO schools (name, password) VALUES (?, ?)", [req.body.school.name, password], (err, results, fields) => {
-            if(err) { return fun.error(req, res, err, "Error while adding School", "/schools/new") }
-            
-            req.flash("success", "Added School successfully");
-            res.redirect("/");
-        });
+        req.flash("success", "Added School successfully");
+        res.redirect("/");
     });
 });
 
