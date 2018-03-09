@@ -3,7 +3,7 @@
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
-        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/homework" id="form">
+        <form method="POST" action="/classes/<%=h.class_id%>/homework" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row no-m">
@@ -52,7 +52,7 @@
             </div>
         </form>
         <div class="row">
-            <button class="btn waves-effect waves-light col s6 push-s3 m4 push-m4" name="action" id="btn-submit" onclick="formConfig()">Submit
+            <button class="blue btn waves-effect waves-light col s4 push-s4 l2 push-l5" name="action" id="btn-submit" onclick="formConfig()">Submit
                 <i class="material-icons right">send</i>
             </button>
         </div>

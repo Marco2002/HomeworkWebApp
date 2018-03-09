@@ -105,3 +105,7 @@
 .modal-button {
     margin: 0 1%!important;
 }
+
+.picker__date-display, .picker__weekday-display{
+    background-color: #2196F3;
+}

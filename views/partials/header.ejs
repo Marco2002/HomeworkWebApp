@@ -1,5 +1,4 @@
 <% let color, s = ""%>
-<% console.log(s)%>
 
 <!-- Get the color -->
 <% if(locals.e) {%>
@@ -7,8 +6,6 @@
 <% } else if(locals.h) {%>
 <% s = h%>
 <% } %>
-
-<% console.log(s)%>
 
 <% if(s != "") {%>
     <% switch(s.subject) { case "Maths": %>
@@ -115,15 +112,15 @@
                 <div class="row"></div>
                 <div class="row"></div>
                 <h5 class="black-text no-m">Signed in as <%=currentUser.username%></h5>
-                <p class="black-text no-m"><%=school.name%>  //  <%=clas.name%></p>
+                <p class="black-text no-m"><%=s.school_name%>  //  <%=s.class_name%></p>
             </div></li>
             <li><a href="/logout">Logout</a></li>
             <li><div class="divider"></div></li>
-            <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework">Homework</a></li>
-            <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams">Exams</a></li>
+            <li><a href="/classes/<%=s.class_id%>/homework">Homework</a></li>
+            <li><a href="/classes/<%=s.class_id%>/exams">Exams</a></li>
             <li><div class="divider"></div></li>
-            <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/new">Add Homework</a></li>
-            <li><a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/new">Add Exam</a></li>
+            <li><a href="/classes/<%=s.class_id%>/homework/new">Add homework</a></li>
+            <li><a href="/classes/<%=s.class_id%>/exams/new">Add exam</a></li>
         </ul>
         
         <div class="row no-m background-color <%=color%>">

@@ -6,7 +6,7 @@
         <div class="card-content">
             <div class="row">
                 <div class="card-title col"><%=e.subjectName%></div>
-                <p id="show-date" class="col right">until <%=e.date%></p>
+                <p id="show-date" class="col right"><%=e.date%></p>
             </div>
             <h3 class="center-align"><%=e.title%></h3>
             
@@ -16,7 +16,7 @@
             </div>
             <hr>
             <hr>
-            <% e.topics.forEach(t => {%>
+            <% topics.forEach(t => {%>
             <div class="row no-m">
                 <h6 class="col s8"><%=t.topic%></h6>
                 <p class="col s4 margin-t right-align"><%=t.learn%><p>
@@ -28,7 +28,7 @@
             <div class="row no-m">
                 <div class="container col s4 m2">
                     <div class="row no-m">
-                        <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit<i class="material-icons left">create</i></a>
+                        <a href="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit<i class="material-icons left">create</i></a>
                     </div>
                 </div>
                 <div class="container col s4 m2">
@@ -42,7 +42,7 @@
                         <h5 class="s12 center">Are you sure you want to delete this exam?</h5>
                         <h6 class="s12 center">If you delete it you won't be able to restore it!</h6>
                     </div>
-                    <form action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>?_method=DELETE" method="POST">
+                    <form action="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>?_method=DELETE" method="POST">
                         <div class="modal-footer">
                             <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text">Cancel</a>
                             <button class="waves-effect waves-light btn red accent-4">Delete</button>

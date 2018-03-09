@@ -3,7 +3,7 @@
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
-        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams" id="form">
+        <form method="POST" action="/classes/<%=e.class_id%>/exams" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row no-m">
@@ -13,7 +13,7 @@
                     </div>
                     <div class="input-field col s12 m6">
                         <input name="exam[date]" id="homeworkDate" type="text" class="datepicker">
-                        <label class="active" for="homeworkDate">Deadline</label>
+                        <label class="active" for="homeworkDate">Date</label>
                     </div>
                     <div class="input-field col s8">
                         <select name="exam[subject]" id="homeworkSubject">
@@ -45,13 +45,10 @@
                         <label for="disabled">Subject Name</label>
                     </div>
                     <div class="row"></div>
+                    <hr>
                     <div class="col s12 l8">
-                        <div class="row"></div>
-                        <h5 class="col s3 ">Topics</h5>
-                        <div class="col s9">
-                            <div class="row"></div>
-                            <hr>
-                        </div>
+                        <h5 class="col s12 center">Topics</h5>
+                        <hr class="col s4 push-s4">
                     </div>
                     
                     <div class="col s6 l2 row no-m">
@@ -77,6 +74,10 @@
                             <input name="topics[learn]" id="examLearn" type="text" class="validate" maxlength="20">
                             <label class="active" for="examLearn">Where to learn</label>
                         </div>
+                        <input name="topics[topic]" type="hidden">
+                        <input name="topics[learn]" type="hidden">
+                        <input name="topics[topic]" type="hidden">
+                        <input name="topics[learn]" type="hidden">
                     </div>
                 </div>
                 

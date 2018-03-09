@@ -3,17 +3,17 @@
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
-        <form method="POST" action="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>?_method=PUT" id="form">
+        <form method="POST" action="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>?_method=PUT" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <input name="exam[title]" id="homeworkTitle" type="text" class="validate" value="<%=e.title%>" maxlength="40">
-                        <label class="active" for="homeworkTitle">Homework Title</label>
+                        <label class="active" for="homeworkTitle">Exam Title</label>
                     </div>
                     <div class="input-field col s12 m6">
                         <input name="exam[date]" id="homeworkDate" type="text" class="datepicker" value="<%=e.date%>">
-                        <label class="active" for="homeworkDate">Deadline</label>
+                        <label class="active" for="homeworkDate">Date</label>
                     </div>
                     <div class="input-field col s8">
                         <select name="exam[subject]" id="homeworkSubject">
@@ -46,8 +46,12 @@
                     </div>
                     
                     
-                    <h5 class="col s3 l2">Topics</h5>
-                    <hr class="col s12 l6 margin-t2">
+                    <div class="row"></div>
+                    <hr>
+                    <div class="col s12 l8">
+                        <h5 class="col s12 center">Topics</h5>
+                        <hr class="col s4 push-s4">
+                    </div>
                     
                     <div class="col s6 l2 row no-m">
                         <div class="container center-align col s12">
@@ -63,7 +67,7 @@
                     </div>
                     
                     <div id="topicContainer">
-                        <% e.topics.forEach(t => { %>
+                        <% topics.forEach(t => { %>
                         <div class="input-field col s7">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" value="<%=t.topic%>" maxlength="30">
                             <label class="active" for="examTopic">Topic</label>

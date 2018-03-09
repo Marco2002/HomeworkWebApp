@@ -24,16 +24,20 @@
                             <form action="/schools" method="POST">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="name" name="school[name]" type="text" class="validate">
+                                        <input id="name" name="school[name]" type="text" class="validate" maxlength="30">
                                         <label for="name">Name</label>
                                     </div>
                                     <div class="input-field col s12">
                                         <input id="password" name="school[password]" type="password" class="validate">
                                         <label for="password">Password</label>
                                     </div>
+                                    <div class="input-field col s12">
+                                        <input id="reenterPassword" name="reenterPassword" type="password" class="validate" maxlength="100">
+                                        <label for="reenterPassword">Re-Enter Pasword</label>
+                                    </div>
                                 </div>
                                 <div class="row">
-                                    <button class="col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
+                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
                                 </div>
                             </form>
                         </div>

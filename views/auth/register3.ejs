@@ -28,22 +28,21 @@
                                     <div class="input-field col s8 l10">
                                         <select name="clas" id="class">
                                             <option value="" disabled selected>Choose a class</option>
-                                            <% school.clases.forEach(clas => { %>
-                                                <option value="<%=clas.name%>"><%=clas.name%></option>
+                                            <% classes.forEach(clas => { %>
+                                                <option value="<%=clas.id%>"><%=clas.name%></option>
                                             <% }) %>
                                         </select>
                                         <label>Class</label>
                                     </div>
-                                    <a href="/schools/<%=school._id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
+                                    <a href="/schools/<%=classes[0].school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
                                     <input class="hide" name="username" value="<%=username%>"></input>
                                     <input class="hide" name="password" value="<%=password%>"></input>
-                                    <input class="hide" name="school" value="<%=school.name%>"></input>
+                                    <input class="hide" name="school" value="<%=classes[0].school_id%>"></input>
                                 </div>
                                 
                                 <div class="row no-m">
-                                    <button class="col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
+                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
                                     <div class="row"></div>
-                                    <p class="center col s12">Have an account? <a href="/login">Log in</a></p>
                                 </div>
                             </form>
                         </div>

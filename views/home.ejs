@@ -5,7 +5,8 @@
     <div class="row no-m">
         <% include ./partials/flash %>
         <div id="homework">
-            <% clas.homework.forEach(h => {%>
+            <% if(homework[0].title) { %>
+            <% homework.forEach(h => {%>
             <!-- Get the color -->
             <% switch(h.subject) { case "Maths": %>
                 <% color="blue"; %>
@@ -67,7 +68,7 @@
             <% } %>
         
             <div class="col s12 l6">
-                <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/homework/<%=h._id%>">
+                <a href="/classes/<%=h.class_id%>/homework/<%=h.id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >
                             <div class="row no-m">
@@ -93,9 +94,11 @@
                 </a>
             </div> 
             <% })%>
+            <% } %>
         </div>
         <div id="exams">
-                <% clas.exams.forEach(e => {%>
+            <% if(exams[0].title) { %>
+            <% exams.forEach(e => {%>
             <!-- Get the color -->
             <% switch(e.subject) { case "Maths": %>
                 <% color="blue"; %>
@@ -158,7 +161,7 @@
     
     
             <div class="col s12 l6">
-                <a href="/schools/<%=school._id%>/classes/<%=clas._id%>/exams/<%=e._id%>">
+                <a href="/classes/<%=e.class_id%>/exams/<%=e.id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >
                             <div class="row no-m">
@@ -169,7 +172,7 @@
                                 </div>
                                 <div class="col s3">
                                     <div class="row no-m">
-                                        <p>until <%= e.date %></p>
+                                        <p><%= e.date %></p>
                                     </div>
                                 </div>
                                 <div class="col s12">
@@ -184,6 +187,7 @@
                 </a>
             </div>
             <% })%>
+            <% } %>
         </div>
     </div>
 </div>

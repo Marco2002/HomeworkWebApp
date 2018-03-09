@@ -3,142 +3,147 @@
 // ========================
 
 // Packages
-const express    = require("express"),
-    passport     = require("passport"),
-    passwordHash = require('password-hash'),
-    
-    middleware = require("../middleware"),
-
-// Models
-    User    = require("../models/user"),
-    School  = require("../models/school"),
-    Class   = require("../models/class");
+const express        = require("express"),
+    passport         = require("passport"),
+    bcrypt           = require("bcrypt"),
+    fun              = require("../functions"),
+    middleware       = require("../middleware");
 
 const router = express.Router();
 
-// Register 1 Route GET
 router.get("/register", middleware.isNotLoggedIn, (req, res) => {
-    res.render("auth/register1");
+    res.render("auth/register");
 });
 
-// Register 2 Route GET
 router.post("/register2", middleware.isNotLoggedIn, (req, res) => {
-    // Get all Schools
-    School.find({}, (err, schools) => {
-        if(err) {
-            res.redirect("/");
-            req.flash("error", "Error while loading the schools");
-            return console.log(err);
-        }
+    
+    req.checkBody("username", "Username field cannot be empty").notEmpty();
+    req.checkBody("username", "Username must be between 4-15 characters long").len(4, 15);
+    req.checkBody("password", "Password field cannot be empty").notEmpty();
+    req.checkBody("password", "Password must be at least 8 characters long").len(8, 100);
+    req.checkBody("reenterPassword", "Passwords do not match, please try again").equals(req.body.password);
+    
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, "", errors[0].msg, "/register")}
+    
+    const db = require("../db");
+    
+        
+    db.query("SELECT name FROM schools", (err, results, fields) => {
+        
+        if(err) {return fun.error(req, res, err, "Error while loading schools")}
+        
         res.render("auth/register2", {
-            schools: schools,
+            schools: results,
             username: req.body.username,
             password: req.body.password,
         });
+    
     });
 });
 
-// Register 3 Route GET
 router.post("/register3", middleware.isNotLoggedIn, (req, res) => {
-    School.findOne({name: req.body.school}).populate("clases").exec((err, school) => {
-        if(err) {
-            res.redirect("/");
-            req.flash("error", "Couldn't find your school");
-            return console.log(err);
-        }
+    
+    req.checkBody("school", "School field cannot be empty").notEmpty();
+    req.checkBody("schoolPassword", "Password field cannot be empty").notEmpty();
+    req.checkBody("schoolPassword", "Password must be at least 8 characters long").len(8, 100);
+    
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, "", errors[0].msg, "/register")}
+    
+    const db = require("../db");
+    
+    db.query("SELECT *, schools.name AS schoolName, schools.id AS school_id FROM schools LEFT JOIN classes ON schools.id = classes.school_id WHERE schools.name = ?", [req.body.school], (err, results, fields) => {
         
-        if(passwordHash.verify(req.body.schoolPassword, school.password)) {
-            res.render("auth/register3", {
-                school: school,
-                username: req.body.username,
-                password: req.body.password
-            });
-        } else {
-            School.find({}, (err2, schools) => {
-                if(err2) {
-                    res.redirect("/");
-                    req.flash("error", "Error while loading the schools");
-                    return console.log(err2);
-                }
-                req.flash("error", "Wrong school or password");
-                res.render("auth/register2", {
-                    schools: schools,
+        if(err) {return fun.error(req, res, err, "Couldn't find your school", "/register")}
+        
+        bcrypt.compare(req.body.schoolPassword, results[0].password.toString(), (err, response) => {
+            
+            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+            
+            if(response === true) {
+                res.render("auth/register3", {
+                    classes: results,
                     username: req.body.username,
-                    password: req.body.password,
+                    password: req.body.password
                 });
-            });
-        }
+            } else {
+                fun.error(req, res, "", "Wrong school password", "/register");
+            }
+        });
     });
 });
 
-// Register Route POST
 router.post("/register", middleware.isNotLoggedIn, (req, res) => {
-    School.findOne({name: req.body.school}, (err2, school) => {
-        if(err2) {
-            console.log(err2);
-            req.flash("error", "Couldn't find your school");
-            return res.redirect("/");
-        }
-        Class.findOne({name: req.body.clas}, (err3, clas) => {
-            if(err3) {
-                console.log(err3);
-                req.flash("error", "Couldn't find your class");
-                return res.redirect("/");
-            }
-            User.register(new User({
-                username: req.body.username,
-                school: school._id,
-                clas: clas._id
-            }), req.body.password, (err, user) => {
-                if(err) {
-                    res.redirect("/register");
-                    req.flash("error", err.message);
-                    return console.log(err);
-                }
-                passport.authenticate("local")(req, res, () => {
-                    req.flash("success", `Registered successfully. Welcome ${user.username}`);
-                    res.redirect(`/schools/${school._id}/classes/${clas._id}/homework`);
+    
+    req.checkBody("school", "School field cannot be empty").notEmpty();
+    req.checkBody("password", "Password field cannot be empty").notEmpty();
+    req.checkBody("clas", "Clas field cannot be empty").notEmpty();
+    req.checkBody("username", "Username field cannot be empty").notEmpty();
+    
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, "", errors[0].msg, "/register")}
+    
+    const db = require("../db");
+    
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+        
+        if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+        
+        db.query("INSERT INTO users (username, password, class_id, school_id) VALUES (?, ?, ?, ?)", [req.body.username, hash, req.body.clas, req.body.school], (err, results, fields) => {
+            
+            if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
+            
+            db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
+                
+                if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                
+                req.login(results[0], (err) => {
+                    if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                    
+                    req.flash("success", "Registered successfully");
+                    res.redirect("/");
+                    
                 });
             });
         });
     });
 });
 
-// Login Route GET
 router.get("/login", middleware.isNotLoggedIn, (req, res) => {
     res.render("auth/login");
 });
 
-// Login Route POST
 router.post("/login", middleware.isNotLoggedIn, (req, res) => {
-    passport.authenticate("local", (err, user, info) => {
-        if (err) {
-            console.log(err);
-            req.flash("error", "Error while logging in");
-            return res.redirect("/login");
-        }
+    
+    req.checkBody("username", "Username field cannot be empty").notEmpty();
+    req.checkBody("password", "Password field cannot be empty").notEmpty();
+    
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, "", errors[0].msg, "/login")}
+    
+    passport.authenticate("local", (err, user) => {
+        
+        if (err) {return fun.error(req, res, err, "Error while logging in", "/login")}
+        
         // Redirect if it fails
-        if (!user) {
-            req.flash("error", "Wrong password or username");
-            return res.redirect('/login');
-        }
+        if (!user) {return fun.error(req, res, "", "Wrong password or username", "/login")}
+        
         req.logIn(user, function(err) {
-            if (err) { 
-                console.log(err);
-                req.flash("error", "Error while logging in");
-                return res.redirect("/login");
-            }
+            
+            if (err) {return fun.error(req, res, err, "Error while logging in", "/login")}
+            
             // Redirect if it succeeds
             req.flash("success", `Welcome back ${user.username}`);
-            res.redirect(`/schools/${req.user.school}/classes/${req.user.clas}/homework`);
+            res.redirect("/");
+            
         });
     })(req, res);
 });
 
-// Logout Route
 router.get("/logout", middleware.isLoggedIn, (req, res) => {
     req.logout();
-    req.flash("success", "Logged out successfully");
+    req.session.destroy();
     res.redirect("/");
 });
 
