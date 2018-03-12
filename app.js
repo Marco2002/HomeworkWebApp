@@ -93,19 +93,19 @@ app.use((req, res, next) => {
 passport.use(new LocalStrategy((username, password, done) => {
     const db = require("./db.js");
     db.query("SELECT * FROM users WHERE username = ?", [username], (err, results, fields) => {
-        
+
         if(err) {
             done(err);
         }
-        
+
         if(results.length === 0) {
             done(null, false);
         } else {
-    
+
             if(passwordHash.verify(password, results[0].password)) {
-                
+
                 return done(null, results[0]);
-                
+
             } else {
                 done(null, false);
             }

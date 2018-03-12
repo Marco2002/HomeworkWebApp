@@ -1,15 +1,14 @@
 <% include ../partials/header %>
-        
+
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
         <div class="card-content">
             <div class="row">
-                <div class="card-title col"><%=e.subjectName%></div>
+                <h3 class="col no-m"><%= e.title %></h3>
                 <p id="show-date" class="col right"><%=e.date%></p>
             </div>
-            <h3 class="center-align"><%=e.title%></h3>
-            
+
             <div class="row no-m">
                 <h5 class="col s8">Topics</h5>
                 <h5 class="col s4 right-align">Where to learn</h5>
@@ -23,7 +22,7 @@
             </div>
             <hr>
             <% }); %>
-            
+
             <div class="row"></div>
             <div class="row no-m">
                 <div class="container col s4 m2">
@@ -36,7 +35,7 @@
                         <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning">Delete<i class="material-icons left">delete</i></a>
                     </div>
                 </div>
-                
+
                 <div id="warning" class="modal">
                     <div class="modal-content">
                         <h5 class="s12 center">Are you sure you want to delete this exam?</h5>
@@ -49,7 +48,7 @@
                         </div>
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </div>
