@@ -9,9 +9,8 @@ router.get("/", middleware.isNotLoggedIn, (req, res) => {
 });
 
 router.get("/download", (req, res) => {
-    res.download("app/homework.apk");
-    req.flash("success", "Downloaded the app");
-    res.redirect("/");
+    res.download("app/Homework.apk");
+
 });
 
 module.exports = router;
