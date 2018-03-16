@@ -1,5 +1,5 @@
 <% include ./partials/header2 %>
-<% let color%>
+<% let color, prevDate, ePrevDate%>
 
 <div class="container">
     <div class="row no-m">
@@ -66,20 +66,23 @@
                 <% color="white"; %>
                 <% break; %>
             <% } %>
+            
+            <% if(prevDate != h.date) { %>
+                <div class="col s12">
+                    <p class="bold grey-text text-darken-2">until <%=h.date%></p>
+                    <hr>
+                </div>
+            <% } %>
+            <% prevDate = h.date%>
         
             <div class="col s12 l6">
                 <a href="/classes/<%=h.class_id%>/homework/<%=h.id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >
                             <div class="row no-m">
-                                <div class="col s9">
+                                <div class="col s12">
                                     <div class="row no-m">
                                         <div class="card-title"><%= h.subjectName %></div>
-                                    </div>
-                                </div>
-                                <div class="col s3">
-                                    <div class="row no-m">
-                                        <p>until <%= h.date %></p>
                                     </div>
                                 </div>
                                 <div class="col s12">
@@ -158,21 +161,23 @@
                 <% color="white"; %>
                 <% break; %>
             <% } %>
-    
+            
+            <% if(ePrevDate != e.date) { %>
+                <div class="col s12">
+                    <p class="bold grey-text text-darken-2"><%=e.date%></p>
+                    <hr>
+                </div>
+            <% } %>
+            <% ePrevDate = e.date%>
     
             <div class="col s12 l6">
                 <a href="/classes/<%=e.class_id%>/exams/<%=e.id%>">
                     <div class="card <%=color%> black-text">
                         <div class="card-content" >
                             <div class="row no-m">
-                                <div class="col s9">
+                                <div class="col s12">
                                     <div class="row no-m">
                                         <div class="card-title"><%= e.subjectName %></div>
-                                    </div>
-                                </div>
-                                <div class="col s3">
-                                    <div class="row no-m">
-                                        <p><%= e.date %></p>
                                     </div>
                                 </div>
                                 <div class="col s12">

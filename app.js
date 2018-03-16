@@ -10,8 +10,10 @@ const express               = require("express"),
     expressSession          = require("express-session"),
     flash                   = require("connect-flash"),
     expressValidator        = require("express-validator"),
+    moment                  = require("moment"),
     cookieParser            = require('cookie-parser'),
     passwordHash            = require("password-hash"),
+    schedule                = require("node-schedule"),
     LocalStrategy           = require("passport-local").Strategy,
     MySQLStore              = require("express-mysql-session"),
 
@@ -112,6 +114,31 @@ passport.use(new LocalStrategy((username, password, done) => {
         }
     });
 }));
+
+
+// trigger once a day to delete all homework
+schedule.scheduleJob("0 0 12 * * *", () => {
+    
+    const db = require("./db");
+    
+    db.query("DELETE FROM homework WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
+        
+        if(err) {
+            console.log(err);
+        }
+        
+        console.log("deleted homework");
+    });
+    
+    db.query("DELETE FROM exams WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
+        
+        if(err) {
+            console.log(err);
+        }
+        
+        console.log("deleted exams");
+    });
+});
 
 // Routes setup
 app.use(indexRoutes);

@@ -15,7 +15,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
     const db = require("../db");
 
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE classes.id = ?", [req.params.class_id], (err, homework, fields) => {
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE classes.id = ? ORDER BY date", [req.params.class_id], (err, homework, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/exams`)}
 
