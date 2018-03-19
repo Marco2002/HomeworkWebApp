@@ -6,15 +6,16 @@
         <div class="card-content">
             <div class="row">
                 <h3 class="col no-m"><%= e.title %></h3>
-                <p id="show-date" class="col right"><%=e.date%></p>
             </div>
 
+            <% if (topics[0].topic) {%>
             <div class="row no-m">
                 <h5 class="col s8">Topics</h5>
                 <h5 class="col s4 right-align">Where to learn</h5>
             </div>
             <hr>
             <hr>
+            <% } %>
             <% topics.forEach(t => {%>
             <div class="row no-m">
                 <h6 class="col s8"><%=t.topic%></h6>
@@ -35,6 +36,7 @@
                         <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning">Delete<i class="material-icons left">delete</i></a>
                     </div>
                 </div>
+                <p class="col right s4 l8 right-align"><%=e.date%></p>
 
                 <div id="warning" class="modal">
                     <div class="modal-content">

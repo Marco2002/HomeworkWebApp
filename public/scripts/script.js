@@ -32,6 +32,7 @@ $('.datepicker').pickadate({
     close: 'Ok',
     closeOnSelect: false, // Close upon selecting a date,
     format: 'dd.mm.yyyy',
+    min: new Date(),
 });
 
 // subject selection setup

@@ -5,23 +5,24 @@
     <div class="card">
         <div class="card-content">
             <div class="row">
-                <h3 class="col no-m"><%= h.title %></h3>
-                <p id="show-date" class="col right">until <%=h.date%></p>
+                <p class="card-title no-m col"><%= h.title %></p>
+                
             </div>
-            <p class="card-title"><%= h.description %></p>
+            <h5 class="no-m"><%= h.description %></h5>
             <hr>
             <div class="row"></div>
             <div class="row no-m">
-                <div class="container col s4 m2">
+                <div class="container col s4 l2">
                     <div class="row no-m">
                         <a href="/classes/<%=h.class_id%>/homework/<%=h.id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1">Edit<i class="material-icons left">create</i></a>
                     </div>
                 </div>
-                <div class="container col s4 m2">
+                <div class="container col s4 l2">
                     <div class="row no-m">
                         <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning">Delete<i class="material-icons left">delete</i></a>
                     </div>
                 </div>
+                <p class="col right s4 l8 right-align">until <%=h.date%></p>
 
                 <div id="warning" class="modal">
                     <div class="modal-content">

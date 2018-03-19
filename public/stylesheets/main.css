@@ -3,15 +3,6 @@
     margin-top: 0!important;
 }
 
-#tabs {
-    margin-top: 0.5vh;
-}
-
-#show-date {
-    text-align: right;
-    padding-top: 5px;
-}
-
 #no-mp {
     margin:0;
     padding:0;
@@ -112,4 +103,9 @@
 
 .bold {
     font-weight: 600;
+    font-size: 1.1em;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0!important;
 }

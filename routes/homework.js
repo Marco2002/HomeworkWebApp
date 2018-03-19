@@ -19,7 +19,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
         if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
 
-        db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN exams ON exams.class_id = classes.id WHERE classes.id = ?", [req.params.class_id], (err, exams, fields) => {
+        db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN exams ON exams.class_id = classes.id WHERE classes.id = ? ORDER BY date", [req.params.class_id], (err, exams, fields) => {
 
             if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
 
@@ -98,7 +98,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
         homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
 
         res.render("homework/show", {
-            title: homework[0].subject,
+            title: homework[0].subjectName,
             h: homework[0],
         });
     });
