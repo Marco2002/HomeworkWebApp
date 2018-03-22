@@ -29,7 +29,7 @@ router.post("/register2", middleware.isNotLoggedIn, (req, res) => {
     const db = require("../db");
 
 
-    db.query("SELECT name FROM schools", (err, results, fields) => {
+    db.query("SELECT name FROM schools ORDER BY name", (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while loading schools")}
 
@@ -53,7 +53,7 @@ router.post("/register3", middleware.isNotLoggedIn, (req, res) => {
 
     const db = require("../db");
 
-    db.query("SELECT *, schools.name AS schoolName, schools.id AS school_id FROM schools LEFT JOIN classes ON schools.id = classes.school_id WHERE schools.name = ?", [req.body.school], (err, results, fields) => {
+    db.query("SELECT *, schools.name AS schoolName, schools.id AS school_id FROM schools LEFT JOIN classes ON schools.id = classes.school_id WHERE schools.name = ? ORDER BY classes.name", [req.body.school], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Couldn't find your school", "/register")}
 
@@ -84,24 +84,40 @@ router.post("/register", middleware.isNotLoggedIn, (req, res) => {
     const db = require("../db");
 
     const hash = passwordHash.generate(req.body.password);
+    
+    db.query("SELECT 1 FROM schools WHERE EXISTS(SELECT schools.id FROM schools WHERE id = ?)", [req.body.school], (err, results, fields) => {
+        
+        if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+        
+        if(!(results != null && results.length > 0)) {return fun.error(req, res, err, "School does not exist", "/register")} else {
 
-    db.query("INSERT INTO users (username, password, class_id, school_id) VALUES (?, ?, ?, ?)", [req.body.username, hash, req.body.clas, req.body.school], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
-
-        db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-
-            req.login(results[0], (err) => {
+            db.query("SELECT 1 FROM classes EXISTS(SELECT classes.id FROM classes WHERE id = ?)", [req.body.clas], (err, results, fields) => {
+                
                 if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-
-                req.flash("success", "Registered successfully");
-                res.redirect("/");
-
+                
+                if(!(results != null && results.length > 0)) {return fun.error(req, res, err, "Class does not exist", "/register")} else {
+                
+                    db.query("INSERT INTO users (username, password, class_id, school_id) VALUES (?, ?, ?, ?)", [req.body.username, hash, req.body.clas, req.body.school], (err, results, fields) => {
+        
+                        if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
+                
+                        db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
+                
+                            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                
+                            req.login(results[0], (err) => {
+                                if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                
+                                req.flash("success", `Registered successfully, Welcome ${req.body.username}`);
+                                res.redirect(`/classes/${req.body.clas}/homework`);
+                
+                            });
+                        });
+                    });
+                }
             });
-        });
-    });        
+        }
+    });
 });
 
 router.get("/login", middleware.isNotLoggedIn, (req, res) => {

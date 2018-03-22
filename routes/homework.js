@@ -11,7 +11,7 @@ const express  = require("express"),
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get("/", middleware.isLoggedIn, (req, res) => {
+router.get("/", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     const db = require("../db");
 
@@ -41,7 +41,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 });
 
 // New Route
-router.get("/new", middleware.isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     const db = require("../db");
 
@@ -57,7 +57,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 });
 
 // Create Route
-router.post("/", middleware.isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty();
     req.checkBody("homework[title]", "Title cannot be longer than 40 characters").len(1, 40);
@@ -87,7 +87,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 });
 
 // Show Route
-router.get("/:id", middleware.isLoggedIn, (req, res) => {
+router.get("/:id", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     const db = require("../db");
 
@@ -105,7 +105,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 });
 
 // Destroy Route
-router.delete("/:id", middleware.isLoggedIn, (req, res) => {
+router.delete("/:id", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     const db = require("../db");
 
@@ -119,7 +119,7 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
 });
 
 // Edit Route
-router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
+router.get("/:id/edit", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     const db = require("../db");
 
@@ -137,7 +137,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
 });
 
 // Update Route
-router.put("/:id", middleware.isLoggedIn, (req, res) => {
+router.put("/:id", middleware.isLoggedIn, middleware.classExists, (req, res) => {
 
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty();
     req.checkBody("homework[title]", "Title cannot be longer than 40 characters").len(1, 40);
