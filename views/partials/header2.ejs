@@ -54,16 +54,29 @@
                 <div class="row"></div>
                 <div class="row"></div>
                 <div class="row"></div>
-                <h5 class="black-text no-m">Signed in as <%=currentUser.username%></h5>
+                <h5 class="black-text no-m"><%=currentUser.username%></h5>
                 <p class="black-text no-m"><%=s.school_name%>  //  <%=s.class_name%></p>
             </div></li>
-            <li><a href="/logout">Logout</a></li>
+            <li>
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="material-icons">settings</i>Account settings</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="/selectSchool"><i class="material-icons">swap_horiz</i>Switch school</a></li>
+                                <li><a href="/selectClass"><i class="material-icons">swap_horiz</i>Switch class</a></li>
+                                <li><a href="/logout"><i class="material-icons icon-red">exit_to_app</i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
             <li><div class="divider"></div></li>
-            <li><a href="/classes/<%=s.class_id%>/homework">Homework</a></li>
-            <li><a href="/classes/<%=s.class_id%>/exams">Exams</a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i>Homework</a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i>Exams</a></li>
             <li><div class="divider"></div></li>
-            <li><a href="/classes/<%=s.class_id%>/homework/new">Add homework</a></li>
-            <li><a href="/classes/<%=s.class_id%>/exams/new">Add exam</a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i>Add homework</a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i>Add exam</a></li>
         </ul>
         
         <div class="row no-m">

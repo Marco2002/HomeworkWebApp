@@ -3,27 +3,27 @@
 //=============================
 
 // Packages
-const express               = require("express"),
-    bodyParser              = require("body-parser"),
-    methodOverride          = require("method-override"),
-    passport                = require("passport"),
-    expressSession          = require("express-session"),
-    flash                   = require("connect-flash"),
-    expressValidator        = require("express-validator"),
-    moment                  = require("moment"),
-    cookieParser            = require('cookie-parser'),
-    passwordHash            = require("password-hash"),
-    schedule                = require("node-schedule"),
-    LocalStrategy           = require("passport-local").Strategy,
-    MySQLStore              = require("express-mysql-session"),
+const express           = require("express");
+const bodyParser        = require("body-parser");
+const methodOverride    = require("method-override");
+const passport          = require("passport");
+const expressSession    = require("express-session");
+const flash             = require("connect-flash");
+const expressValidator  = require("express-validator");
+const moment            = require("moment");
+const cookieParser      = require('cookie-parser');
+const passwordHash      = require("password-hash");
+const schedule          = require("node-schedule");
+const LocalStrategy     = require("passport-local").Strategy;
+const MySQLStore        = require("express-mysql-session");
 
 // Routes
-    indexRoutes     = require("./routes/index"),
-    schoolRoutes    = require("./routes/schools"),
-    homeworkRoutes  = require("./routes/homework"),
-    examRoutes      = require("./routes/exams"),
-    authRoutes      = require("./routes/auth"),
-    classRoutes     = require("./routes/classes");
+const indexRoutes     = require("./routes/index");
+const schoolRoutes    = require("./routes/schools");
+const homeworkRoutes  = require("./routes/homework");
+const examRoutes      = require("./routes/exams");
+const authRoutes      = require("./routes/auth");
+const classRoutes     = require("./routes/classes");
 
 // express setup
 const app = express();
@@ -59,10 +59,13 @@ const sessionStore = new MySQLStore(options);
 
 app.use(expressSession({
     secret: process.env.COOKIE_SECRET,
-    name: 'hmwkSession',
+    name: 'hmwk',
     resave: false,
     saveUninitialized: false,
-    store: sessionStore
+    store: sessionStore,
+    cookie: {
+        maxAge: 60 * 24 * 60 * 60 * 1000,
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

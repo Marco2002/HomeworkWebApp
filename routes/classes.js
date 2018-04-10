@@ -3,14 +3,14 @@
 // ======================
 
 // Packages
-const express  = require("express"),
-    fun        = require("../functions"),
-    middleware = require("../middleware");
+const express  = require("express");
+const fun        = require("../functions");
+const middleware = require("../middleware");
     
 const router = express.Router({mergeParams: true});
 
 // New Route
-router.get("/new", middleware.schoolExists, (req, res) => {
+router.get("/new", middleware.isLoggedIn, middleware.isPartOfSchool, (req, res) => {
     
     res.render("classes/new", {
         school_id: req.params.school_id
@@ -18,7 +18,7 @@ router.get("/new", middleware.schoolExists, (req, res) => {
     
 });
 
-router.post("/", middleware.schoolExists, (req, res) => {
+router.post("/", middleware.isLoggedIn, middleware.isPartOfSchool, (req, res) => {
     
     req.checkBody("class[name]", "Class-name field cannot be empty").notEmpty();
     req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").len(0, 10);

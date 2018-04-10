@@ -20,7 +20,7 @@
 
 #body-home {
     padding:0;
-    margin: 70px 0 0 0;
+    margin: 62px 0 0 0;
 }
 
 #body {
@@ -108,4 +108,8 @@
 
 .no-margin-bottom {
     margin-bottom: 0!important;
+}
+
+.icon-red {
+    color: red!important;
 }

@@ -3,9 +3,9 @@
 // ======================
 
 // Packages
-const express    = require("express"),
-    passwordHash = require('password-hash'),
-    fun          = require("../functions");
+const express      = require("express");
+const passwordHash = require('password-hash');
+const fun          = require("../functions");
 
 const router = express.Router();
 

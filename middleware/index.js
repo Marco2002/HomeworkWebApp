@@ -8,10 +8,12 @@ middlewareObj.isLoggedIn = (req, res, next) => {
         
         return next();
     }
+    
     fun.error(req, res, "", "You must be logged in order to do that", "/");
 };
 
 middlewareObj.isNotLoggedIn = (req, res, next) => {
+    
     if(!req.isAuthenticated()) {
         return next();
     }
@@ -19,51 +21,58 @@ middlewareObj.isNotLoggedIn = (req, res, next) => {
     res.redirect(`/classes/${req.user.class_id}/homework`);
 };
 
-middlewareObj.classExists = (req, res, next) => {
+middlewareObj.isPartOfSchool = (req, res, next) => {
     
     const db = require("../db");
     
-    db.query("SELECT 1 FROM classes WHERE EXISTS(SELECT classes.id FROM classes WHERE id = ?)", [req.params.class_id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Class does not exist", "/")}
+    if(req.isAuthenticated()) {
+        
+        db.query("SELECT users.id FROM users WHERE id = ? AND school_id = ?", [req.user.id, req.params.school_id], (err, results, fields) => {
             
-        if(results != null && results.length > 0) {
-            
-            next();
-            
-        } else {
-            
-            if(req.isAuthenticated()) {
-                fun.error(req, res, "", "Class does not exist", `/classes/${req.user.class_id}/homework`);
+            if(err) {return fun.error(req, res, err, "School does not exist", "/")}
+    
+            if(results != null && results.length > 0) {
+                
+                return next();
+                
             } else {
-                fun.error(req, res, "", "Class does not exist", "/");
+                
+                fun.error(req, res, "", "You are not part of that school", `/classes/${req.user.class_id}/homework`);
             }
-            
-        }
-    });
+        });
+    }
 };
 
-middlewareObj.schoolExists = (req, res, next) => {
+middlewareObj.isPartOfClass = (req, res, next) => {
     
     const db = require("../db");
     
-    db.query("SELECT 1 FROM schools WHERE EXISTS(SELECT schools.id FROM schools WHERE id = ?)", [req.params.school_id], (err, results, fields) => {
+    if(req.params.class_id != 0) {
         
-        if(err) {return fun.error(req, res, err, "School does not exist", "/")}
-
-        if(results != null && results.length > 0) {
+        db.query("SELECT users.id FROM users WHERE id = ? AND class_id = ?", [req.user.id, req.params.class_id], (err, results, fields) => {
             
-            next();
+            if(err) {return fun.error(req, res, err, "You are not part of that class", `/classes/${req.user.class_id}/homework`)}
             
+            if(results != null && results.length > 0) {
+                next();
+            } else {
+                fun.error(req, res, "", "You are not part of that class", `/classes/${req.user.class_id}/homework`);
+            }
+        });
+    } else {
+        
+        if(req.user.school_id == 0) {
+            
+            res.redirect("/selectSchool");
+            
+        } else if(req.user.class_id == 0) {
+            
+            res.redirect("/selectClass");
         } else {
             
-            if(req.isAuthenticated()) {
-                fun.error(req, res, "", "School does not exist", `/classes/${req.user.class_id}/homework`);
-            } else {
-                fun.error(req, res, "", "School does not exist", "/");
-            }
+            res.redirect("/");
         }
-    });
+    }
 };
 
 module.exports = middlewareObj;

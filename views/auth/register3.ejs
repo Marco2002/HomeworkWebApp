@@ -12,9 +12,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body class="b-img">
-<% var selectedSchool; %>
-
-
         <div class="container">
             <div class="row no-m">
                 <div class="col s12 l8 push-l2">
@@ -23,7 +20,7 @@
                     <div class="card">
                         <div class="card-content">
                             <h4 class="center">Select a Class</h4>
-                            <form action="/register" method="POST">
+                            <form action="/selectClass" method="POST">
                                 <div class="row">
                                     <div class="input-field col s8 l10">
                                         <select name="clas" id="class">
@@ -34,10 +31,7 @@
                                         </select>
                                         <label>Class</label>
                                     </div>
-                                    <a href="/schools/<%=classes[0].school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
-                                    <input class="hide" name="username" value="<%=username%>"></input>
-                                    <input class="hide" name="password" value="<%=password%>"></input>
-                                    <input class="hide" name="school" value="<%=classes[0].school_id%>"></input>
+                                    <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
                                 </div>
                                 
                                 <div class="row no-m">
