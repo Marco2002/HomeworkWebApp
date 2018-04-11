@@ -103,7 +103,6 @@
 
 .bold {
     font-weight: 600;
-    font-size: 1.1em;
 }
 
 .no-margin-bottom {
@@ -112,4 +111,17 @@
 
 .icon-red {
     color: red!important;
+}
+
+.background {
+    height: 100%;
+    width: 100%;
+}
+
+.slidenav-background {
+    height: 100%;
+    background-image: url(/res/slideNavBackground.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }

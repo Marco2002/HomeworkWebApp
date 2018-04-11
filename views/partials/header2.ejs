@@ -46,17 +46,18 @@
         </div>
         
         <ul id="slide-out" class="side-nav fixed">
-            <li><div class="user-view">
-                <div class="background">
-                    <img src="/res/slideNavBackground.jpg" height="120%">
+            <li>
+                <div class="user-view">
+                    <div class="background">
+                        <div class="slidenav-background">
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row"></div>
+                    <h5 class="no-m bold"><%=currentUser.username%></h5>
+                    <p class="no-m bold"><%=s.school_name%> - <%=s.class_name%></p>
                 </div>
-                <div class="row"></div>
-                <div class="row"></div>
-                <div class="row"></div>
-                <div class="row"></div>
-                <h5 class="black-text no-m"><%=currentUser.username%></h5>
-                <p class="black-text no-m"><%=s.school_name%>  //  <%=s.class_name%></p>
-            </div></li>
+            </li>
             <li>
                 <ul class="collapsible collapsible-accordion">
                     <li>
