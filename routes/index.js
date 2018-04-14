@@ -1,10 +1,10 @@
 const express = require("express");
-const middleware = require("../middleware");
+const mid = require("../middleware");
 
 const router  = express.Router();
 
 // Index Route
-router.get("/", middleware.isNotLoggedIn, (req, res) => {
+router.get("/", mid.isNotLoggedIn, (req, res) => {
     res.render("index");
 });
 

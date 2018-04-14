@@ -125,3 +125,14 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+tr.row {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: grey;
+}
+
+.card-margin {
+    margin-top: 0;
+    margin-bottom: 8px;
+}

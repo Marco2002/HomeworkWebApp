@@ -27,19 +27,25 @@ middlewareObj.isPartOfSchool = (req, res, next) => {
     
     if(req.isAuthenticated()) {
         
-        db.query("SELECT users.id FROM users WHERE id = ? AND school_id = ?", [req.user.id, req.params.school_id], (err, results, fields) => {
+        if(req.user.school_id != 0) {
             
-            if(err) {return fun.error(req, res, err, "School does not exist", "/")}
-    
-            if(results != null && results.length > 0) {
+            db.query("SELECT users.id FROM users WHERE id = ? AND school_id = ?", [req.user.id, req.params.school_id], (err, results, fields) => {
                 
-                return next();
-                
-            } else {
-                
-                fun.error(req, res, "", "You are not part of that school", `/classes/${req.user.class_id}/homework`);
-            }
-        });
+                if(err) {return fun.error(req, res, err, "School does not exist", "/")}
+        
+                if(results != null && results.length > 0) {
+                    
+                    return next();
+                    
+                } else {
+                    
+                    fun.error(req, res, "", "You are not part of that school", `/classes/${req.user.class_id}/homework`);
+                }
+            });
+        } else {
+            
+            res.redirect("/selectSchool");
+        }
     }
 };
 
@@ -47,7 +53,7 @@ middlewareObj.isPartOfClass = (req, res, next) => {
     
     const db = require("../db");
     
-    if(req.params.class_id != 0) {
+    if(req.user.class_id != 0 && req.user.school_id != 0) {
         
         db.query("SELECT users.id FROM users WHERE id = ? AND class_id = ?", [req.user.id, req.params.class_id], (err, results, fields) => {
             
@@ -70,8 +76,17 @@ middlewareObj.isPartOfClass = (req, res, next) => {
             res.redirect("/selectClass");
         } else {
             
-            res.redirect("/");
+            res.redirect("/selectClass");
         }
+    }
+};
+
+middlewareObj.isAdmin = (req, res, next) => {
+    
+    if(req.user.is_admin) {
+        next();
+    } else {
+        fun.error(req, res, "", "You need to be class admin to do that", `/classes/${req.user.class_id}/homework`);
     }
 };
 

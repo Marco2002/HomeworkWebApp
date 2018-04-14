@@ -1,0 +1,51 @@
+<% include ../partials/header2 %>
+
+<diw class="card">
+    <div class="container row no-m">
+        <% include ../partials/flash %>
+        <h4 class="col s6">Name: <%= s.class_name %></h4>
+        <div class="col s6 right-align">
+            <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/edit" class="btn blue waves-light margin-t2">Change name</a>
+        </div>
+        
+    </div>
+        <hr class="row">
+    <div class="container">
+        <table>
+            <tr class="row">
+                <th class="col s12"><h5 class="bold">Users</h5></th>
+            </tr>
+            
+            <% members.forEach((m) => { %>
+                <tr class="row no-m">
+                    
+                    <td class="col s7 l10">
+                        <% if(m.username == user.username) {%>
+                            <h5 class="blue-text">YOU</h5>
+                        <% } else { %>
+                            <h5><%= m.username %></h5>
+                        <% } %></h5>
+                        
+                        <% if(m.is_admin) { %>
+                            <h5 class="green-text">Admin</h5>
+                        <% } else { %>
+                            <h5 class="yellow-text text-darken-3">Classmate</h5>
+                        <% } %>
+                    </td>
+                    
+                    <td class="col s5 l2 center-align">
+                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/kick" class="btn red waves-light margin-t2">kick</a>
+                        
+                        <% if(!m.is_admin) { %>
+                            <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/admin" class="btn green waves-light margin-t col s12">make admin</a>
+                        <% } else { %>
+                            <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/deadmin" class="btn yellow black-text waves-light margin-t col s12">remove admin</a>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
+</diw>
+
+<% include ../partials/footer %>

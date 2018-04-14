@@ -79,6 +79,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <!-- main.css -->
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        <!-- FontAwesome icons -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
@@ -111,7 +113,7 @@
                     </div>
                     <div class="row"></div>
                     <div class="row"></div>
-                    <h5 class="no-m bold"><%=currentUser.username%></h5>
+                    <h5 class="no-m bold"><%=user.username%></h5>
                     <p class="no-m bold"><%=s.school_name%> - <%=s.class_name%></p>
                 </div>
             </li>
@@ -129,12 +131,24 @@
                     </li>
                 </ul>
             </li>
+            
+            <% if(user.is_admin) { %>
+                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i>Class settings</a></li>
+            <% } %>
+            
             <li><div class="divider"></div></li>
             <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i>Homework</a></li>
             <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i>Exams</a></li>
             <li><div class="divider"></div></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i>Add homework</a></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i>Add exam</a></li>
+            
+            <% if(user.is_admin) { %>
+            
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i>Add homework</a></li>
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i>Add exam</a></li>
+                <li><div class="divider"></div></li>
+            <% } %>
+            
+            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i>About</a></li>
         </ul>
         
         <div class="row no-m background-color <%=color%>">

@@ -63,18 +63,15 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
-    cookie: {
-        maxAge: 60 * 24 * 60 * 60 * 1000,
-    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((id, done) => {
-    done(null, id);
+passport.serializeUser((user, done) => {
+    done(null, user);
 });
-passport.deserializeUser((id, done) => {
-	done(null, id);
+passport.deserializeUser((user, done) => {
+	done(null, user);
 });
 
 // express-validator setup
@@ -88,7 +85,7 @@ app.use(flash());
 
 // ejs Paramenters
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
+    res.locals.user = req.user;
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
     next();

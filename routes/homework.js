@@ -5,13 +5,13 @@
 // Packages
 const express    = require("express");
 const moment     = require("moment");
-const middleware = require("../middleware");
+const mid        = require("../middleware");
 const fun        = require("../functions");
 
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get("/", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.get("/", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 
@@ -41,7 +41,7 @@ router.get("/", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
 });
 
 // New Route
-router.get("/new", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
 
@@ -57,7 +57,7 @@ router.get("/new", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) =
 });
 
 // Create Route
-router.post("/", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty();
     req.checkBody("homework[title]", "Title cannot be longer than 40 characters").len(1, 40);
@@ -76,8 +76,9 @@ router.post("/", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => 
     const h = req.body.homework;
 
     const date = moment(h.date, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const description = String(h.description).replace(/\r/gi, "<br>");
 
-    db.query("INSERT INTO homework (class_id, title, subject, subjectName, date, description) VALUES (?, ?, ?, ?, ?, ?)", [req.params.class_id, h.title, h.subject, h.subjectName, date, h.description], (err, results, fields) => {
+    db.query("INSERT INTO homework (class_id, title, subject, subjectName, date, description) VALUES (?, ?, ?, ?, ?, ?)", [req.params.class_id, h.title, h.subject, h.subjectName, date, description], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while adding your homework", `/classes/${req.params.class_id}/homework`)}
 
@@ -87,13 +88,13 @@ router.post("/", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => 
 });
 
 // Show Route
-router.get("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 
     db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, homework, fields) => {
 
-        if(err) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
+        if(err || homework.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
 
         homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
 
@@ -105,7 +106,7 @@ router.get("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) =
 });
 
 // Destroy Route
-router.delete("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.delete("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
 
@@ -119,13 +120,13 @@ router.delete("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res
 });
 
 // Edit Route
-router.get("/:id/edit", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
 
     db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, homework, fields) => {
 
-        if(err) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
+        if(err || homework.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
 
         homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
 
@@ -137,7 +138,7 @@ router.get("/:id/edit", middleware.isLoggedIn, middleware.isPartOfClass, (req, r
 });
 
 // Update Route
-router.put("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) => {
+router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty();
     req.checkBody("homework[title]", "Title cannot be longer than 40 characters").len(1, 40);
@@ -156,8 +157,9 @@ router.put("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) =
     const h = req.body.homework;
 
     const date = moment(h.date, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const description = String(h.description).replace(/\r/gi, "<br>");
 
-    db.query("UPDATE homework SET title = ?, subject = ?, subjectName = ?, date = ?, description = ? WHERE homework.id = ?", [h.title, h.subject, h.subjectName, date, h.description, req.params.id], (err, results, fields) => {
+    db.query("UPDATE homework SET title = ?, subject = ?, subjectName = ?, date = ?, description = ? WHERE homework.id = ?", [h.title, h.subject, h.subjectName, date, description, req.params.id], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while updating your homework", `/classes/${req.params.class_id}/homework`)}
 
@@ -165,5 +167,7 @@ router.put("/:id", middleware.isLoggedIn, middleware.isPartOfClass, (req, res) =
         res.redirect(`/classes/${req.params.class_id}/homework`);
     });
 });
+
+
 
 module.exports = router;
