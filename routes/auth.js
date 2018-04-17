@@ -17,10 +17,8 @@ router.get("/register", mid.isNotLoggedIn, (req, res) => {
 
 router.post("/register", mid.isNotLoggedIn, (req, res) => {
 
-    req.checkBody("username", "Username field cannot be empty").notEmpty();
-    req.checkBody("username", "Username must be between 4-15 characters long").len(4, 15);
-    req.checkBody("password", "Password field cannot be empty").notEmpty();
-    req.checkBody("password", "Password must be at least 8 characters long").len(8, 100);
+    req.checkBody("username", "Password must be at least 4 characters long").notEmpty().len(4, 15);
+    req.checkBody("password", "Password must be at least 8 characters long").notEmpty().len(8, 100);
     req.checkBody("reenterPassword", "Passwords do not match, please try again").equals(req.body.password);
 
     const errors = req.validationErrors();
@@ -67,8 +65,7 @@ router.post("/selectSchool", mid.isLoggedIn, (req, res) => {
     if(req.user.is_admin == 0) {
         
         req.checkBody("school", "School field cannot be empty").notEmpty();
-        req.checkBody("schoolPassword", "Password field cannot be empty").notEmpty();
-        req.checkBody("schoolPassword", "Password must be at least 8 characters long").len(8, 100);
+        req.checkBody("schoolPassword", "Password must be at least 8 characters long").notEmpty().len(8, 100);
     
         const errors = req.validationErrors();
         if(errors) {return fun.error(req, res, "", errors[0].msg, "/selectSchool")}

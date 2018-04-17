@@ -59,13 +59,10 @@ router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
 // Create Route
 router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
-    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty();
-    req.checkBody("exam[title]", "Title cannot be longer than 40 characters").len(1, 40);
+    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("exam[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Subject cannot be longer than 20 characters").len(1, 20);
-    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty();
-    req.checkBody("exam[subjectName]", "Subject name cannot be longer than 20 characters").len(1, 20);
+    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
+    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
 
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/homework/new`)}
@@ -157,13 +154,10 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 // Update Route
 router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
-    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty();
-    req.checkBody("exam[title]", "Title cannot be longer than 40 characters").len(1, 40);
+    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("exam[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Subject cannot be longer than 20 characters").len(1, 20);
-    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty();
-    req.checkBody("exam[subjectName]", "Subject name cannot be longer than 20 characters").len(1, 20);
+    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
+    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
 
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/exams/${req.params.id}/edit`)}

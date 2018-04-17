@@ -37,8 +37,7 @@ router.get("/new", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 // Create Route
 router.post("/", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
     
-    req.checkBody("class[name]", "Class-name field cannot be empty").notEmpty();
-    req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").len(0, 10);
+    req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").notEmpty().len(0, 10);
     
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, "", errors[0].msg, `/schools/${req.params.school_id}/classes/new`)}
@@ -87,8 +86,7 @@ router.get("/:class_id/edit", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfCl
 // Update Route
 router.put("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
-    req.checkBody("class[name]", "Class-name field cannot be empty").notEmpty();
-    req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").len(0, 10);
+    req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").notEmpty().len(0, 10);
     
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, "", errors[0].msg, `/schools/${req.params.school_id}/classes/${req.params.class_id}/edit`)}

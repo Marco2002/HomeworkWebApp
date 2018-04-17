@@ -17,10 +17,8 @@ router.get("/new", (req, res) => {
 // Create Route
 router.post("/", (req, res) => {
     
-    req.checkBody("school[name]", "School-name field cannot be empty").notEmpty();
-    req.checkBody("school[name]", "School-name must be between 4-30 characters long").len(4, 30);
-    req.checkBody("school[password]", "Password field cannot be empty").notEmpty();
-    req.checkBody("school[password]", "Password must be at least 8 characters long").len(8, 100);
+    req.checkBody("school[name]", "School-name must be between 4-30 characters long").notEmpty().len(4, 30);
+    req.checkBody("school[password]", "Password must be at least 8 characters long").notEmpty().len(8, 100);
     req.checkBody("reenterPassword", "Passwords do not match, please try again").equals(req.body.school.password);
     
     const errors = req.validationErrors();
