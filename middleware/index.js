@@ -96,4 +96,27 @@ middlewareObj.isUser = (req, res, next) => {
     }
 };
 
+middlewareObj.updateUser = (req, res, next) => {
+    
+    const db = require("../db");
+    
+    db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
+        
+        if(err) {return fun.error(req, res, err, "Error while updating session", `/classes/${req.user.class_id}/homework`)}
+        
+        if(req.user == results[0]) {
+            
+            next();
+        } else {
+            
+            req.login(results[0], (err) => {
+
+                if(err) {return fun.error(req, res, err, "Error while updating session", `/classes/${req.user.class_id}/homework`)}
+
+                next();
+            });
+        }
+    });
+};
+
 module.exports = middlewareObj;

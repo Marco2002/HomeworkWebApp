@@ -12,7 +12,7 @@ const fun        = require("../functions");
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get("/", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
+router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 

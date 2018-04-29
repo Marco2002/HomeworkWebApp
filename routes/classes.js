@@ -57,7 +57,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 });
 
 // Show Route
-router.get("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     
@@ -73,7 +73,7 @@ router.get("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, 
 });
 
 // Edit Route
-router.get("/:class_id/edit", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:class_id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     
@@ -89,7 +89,7 @@ router.get("/:class_id/edit", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfCl
 
 
 // Update Route
-router.put("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.put("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").notEmpty().len(0, 10);
     
@@ -108,7 +108,7 @@ router.put("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, 
 });
 
 // Kick Route
-router.get("/:class_id/users/:id/kick", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:class_id/users/:id/kick", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     
@@ -142,7 +142,7 @@ router.get("/:class_id/users/:id/kick", mid.isLoggedIn, mid.isPartOfSchool, mid.
 });
 
 // Make Admin Route
-router.get("/:class_id/users/:id/admin", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:class_id/users/:id/admin", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     
@@ -156,7 +156,7 @@ router.get("/:class_id/users/:id/admin", mid.isLoggedIn, mid.isPartOfSchool, mid
 });
 
 // Romove Admin Route
-router.get("/:class_id/users/:id/deadmin", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:class_id/users/:id/deadmin", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     

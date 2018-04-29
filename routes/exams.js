@@ -11,7 +11,7 @@ const fun        = require("../functions");
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get("/", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
+router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 
@@ -98,7 +98,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 });
 
 // Show Route
-router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
+router.get("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 
@@ -117,7 +117,7 @@ router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 });
 
 // Destroy Route
-router.delete("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.delete("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
 
@@ -136,7 +136,7 @@ router.delete("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res)
 });
 
 // Edit Route
-router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get("/:id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
 
@@ -155,7 +155,7 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 });
 
 // Update Route
-router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     req.checkBody("exam[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("exam[date]", "Date field cannot be empty").notEmpty();
