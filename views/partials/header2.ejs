@@ -29,17 +29,17 @@
                         <div class="col s12 l11 right" id="no-mp">
                             <div class="nav-wrapper blue darken-1">
                             
-                                <div class="brand-logo center"><%=title%></div>
+                                <div class="brand-logo center"><%= texts[title] %></div>
                                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
                                 
                             </div>
                             <div class="nav content">
                                 
                                 <ul id="tabs-swipe-demo" class="tabs blue">
-                                    <div class="col s2"></div>
-                                    <li class="tab col s4"><a class="active" href="#homework">Homework</a></li>
-                                    <li class="tab col s4"><a class="" href="#exams">Exams</a></li>
-                                    <div class="col s2"></div>
+                                    <div class="col l2"></div>
+                                    <li class="tab col s6 l4"><a class="active" href="#homework"><%= texts.util.HOMEWORK_TEXT %></a></li>
+                                    <li class="tab col s6 l4"><a class="" href="#exams"><%= texts.util.EXAMS_TEXT %></a></li>
+                                    <div class="col l2"></div>
                                 </ul>
                                 
                             </div>
@@ -58,41 +58,29 @@
                     </div>
                     <div class="row"></div>
                     <div class="row"></div>
-                    <h5 class="no-m bold"><%=user.username%></h5>
+                    <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
                     <p class="no-m bold"><%=s.school_name%> - <%=s.class_name%></p>
                 </div>
             </li>
-            <li>
-                <ul class="collapsible collapsible-accordion">
-                    <li>
-                        <a class="collapsible-header"><i class="material-icons">settings</i>Account settings</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li><a href="/selectSchool"><i class="material-icons">swap_horiz</i>Switch school</a></li>
-                                <li><a href="/selectClass"><i class="material-icons">swap_horiz</i>Switch class</a></li>
-                                <li><a href="/logout"><i class="material-icons icon-red">exit_to_app</i>Logout</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </li>
+            
+            <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.util.ACCOUNT_SETTINGS_TEXT %></a></li>
             
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i>Class settings</a></li>
+                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i><%= texts.util.CLASS_SETTINGS_TEXT %></a></li>
             <% } %>
             
             <li><div class="divider"></div></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i>Homework</a></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i>Exams</a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.util.HOMEWORK_TEXT %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.util.EXAMS_TEXT %></a></li>
             <li><div class="divider"></div></li>
             
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i>Add homework</a></li>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i>Add exam</a></li>
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.util.ADD_HOMEWORK_TEXT %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.util.ADD_EXAM_TEXT %></a></li>
                 <li><div class="divider"></div></li>
             <% } %>
             
-            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i>About</a></li>
+            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.util.ABOUT_TEXT %></a></li>
         </ul>
         
         <div class="row no-m">

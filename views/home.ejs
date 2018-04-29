@@ -21,7 +21,7 @@
                 <% color="purple"; %>
                 <% break; %>
             <% case "Foreign Language 3": %>
-                <% color="lime"; %>
+                <% color="pink accent-2"; %>
                 <% break; %>
             <% case "Music": %>
                 <% color="teal accent-4"; %>
@@ -69,7 +69,7 @@
             
             <% if(prevDate != h.date) { %>
                 <div class="col s12">
-                    <p class="no-margin-bottom bold grey-text text-darken-2">until <%=h.date%></p>
+                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.util.UNTIL %> <%=h.date%></p>
                     <hr>
                 </div>
             <% } %>
@@ -82,7 +82,13 @@
                             <div class="row no-m">
                                 <div class="col s12">
                                     <div class="row no-m">
-                                        <div class="card-title"><%= h.subjectName %></div>
+                                        <div class="card-title">
+                                        <% if(h.subjectName != h.subject) { %>
+                                            <%= h.subjectName %>
+                                        <% } else { %>
+                                            <%= texts[h.subject] %>
+                                        <% } %>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col s12">
@@ -116,7 +122,7 @@
                 <% color="purple"; %>
                 <% break; %>
             <% case "Foreign Language 3": %>
-                <% color="lime"; %>
+                <% color="pink accent-2"; %>
                 <% break; %>
             <% case "Music": %>
                 <% color="teal accent-4"; %>
@@ -177,7 +183,13 @@
                             <div class="row no-m">
                                 <div class="col s12">
                                     <div class="row no-m">
-                                        <div class="card-title"><%= e.subjectName %></div>
+                                        <div class="card-title">
+                                            <% if(e.subjectName != e.subject) { %>
+                                                <%= e.subjectName %>
+                                            <% } else { %>
+                                                <%= texts[e.subject] %>
+                                            <% } %>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col s12">

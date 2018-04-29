@@ -19,24 +19,23 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center">Select a Class</h4>
+                            <h4 class="center"><%= texts.auth.SELECT_CLASS_TEXT %></h4>
                             <form action="/selectClass" method="POST">
                                 <div class="row">
-                                    <div class="input-field col s8 l10">
+                                    <div class="input-field col s6 l9">
                                         <select name="clas" id="class">
-                                            <option value="" disabled selected>Choose a class</option>
+                                            <option value="" disabled selected><%= texts.auth.SELECT_CLASS_TEXT %></option>
                                             <% classes.forEach(clas => { %>
                                                 <option value="<%=clas.id%>"><%=clas.name%></option>
                                             <% }) %>
                                         </select>
-                                        <label>Class</label>
+                                        <label><%= texts.auth.CLASS_TEXT %></label>
                                     </div>
-                                    <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add Class</a>
+                                    <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.auth.ADD_CLASS_TEXT %></a>
                                 </div>
                                 
-                                <div class="row no-m">
-                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
-                                    <div class="row"></div>
+                                <div class="row no-m center">
+                                    <button class="blue waves-effect waves-light btn"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button>
                                 </div>
                             </form>
                         </div>

@@ -14,7 +14,8 @@ const moment            = require("moment");
 const cookieParser      = require('cookie-parser');
 const passwordHash      = require("password-hash");
 const schedule          = require("node-schedule");
-
+const path              = require('path');
+const i18n              = require("i18n-express");
 const LocalStrategy     = require("passport-local").Strategy;
 const MySQLStore        = require("express-mysql-session");
 
@@ -84,6 +85,12 @@ app.use(methodOverride("_method"));
 // connect-flash setup
 app.use(flash());
 
+// i18n setup
+app.use(i18n({
+    translationsPath: path.join(__dirname, 'i18n'),
+    siteLangs: ["en", "de"]
+}));
+
 // ejs Paramenters
 app.use((req, res, next) => {
     res.locals.user = req.user;
@@ -131,14 +138,28 @@ schedule.scheduleJob("0 0 12 * * *", () => {
         console.log("deleted homework");
     });
     
-    db.query("DELETE FROM exams WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
+    db.query("SELECT id FROM exams WHERE date < ?",  [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
         
         if(err) {
             console.log(err);
         }
         
-        console.log("deleted exams");
-    });
+        db.query("DELETE FROM topics WHERE exam_id = ?", [results[0].id], (err, results, fields) => {
+            
+            if(err) {
+                console.log(err);
+            }
+            
+            db.query("DELETE FROM exams WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
+        
+                if(err) {
+                    console.log(err);
+                }
+                    
+                console.log("deleted exams");
+            });
+        });
+    });    
 });
 
 // Routes setup

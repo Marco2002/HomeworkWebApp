@@ -22,28 +22,26 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center">Select a School</h4>
+                            <h4 class="center"><%= texts.auth.SELECT_SCHOOL_TEXT %></h4>
                             <form action="/selectSchool" method="POST">
-                                <div class="row">
-                                    <div class="input-field col s8 l10">
-                                        <select name="school" id="school">
-                                            <option value="" disabled selected>Choose a school</option>
-                                            <% schools.forEach(school => { %>
-                                                <option value="<%=school.name%>"><%=school.name%></option>
-                                            <% }) %>
-                                        </select>
-                                        <label>School</label>
-                                    </div>
-                                    <a href="/schools/new" target="_blank" class="waves-effect waves-light btn col s4 l2 margin-t">Add School</a>
-                                    <div class="input-field col s12">
-                                        <input id="schoolPassword" name="schoolPassword" type="password" class="validate">
-                                        <label for="schoolPassword">School Password</label>
-                                    </div>
+                                
+                                <div class="input-field">
+                                    <select name="school" id="school">
+                                        <option value="" disabled selected><%= texts.auth.SELECT_SCHOOL_TEXT %></option>
+                                        <% schools.forEach(school => { %>
+                                            <option value="<%=school.name%>"><%=school.name%></option>
+                                        <% }) %>
+                                    </select>
+                                    <label><%= texts.auth.SCHOOL_TEXT %></label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="schoolPassword" name="schoolPassword" type="password" class="validate">
+                                    <label for="schoolPassword"><%= texts.auth.SCHOOL_PASSWORD_TEXT %></label>
                                 </div>
                                 
-                                <div class="row no-m">
-                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Next</button>
-                                    <div class="row"></div>
+                                
+                                <div class="row no-m center">
+                                    <button class="blue waves-effect waves-light btn"><%= texts.auth.NEXT_TEXT %><i class="material-icons right">navigate_next</i></button>
                                 </div>
                             </form>
                         </div>

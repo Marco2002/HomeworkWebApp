@@ -32,7 +32,7 @@ router.get("/", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
             }
 
             res.render("home", {
-                title: "Homework",
+                title: "TITLE_HOMEWORK",
                 homework: homework,
                 exams: exams
             });
@@ -50,7 +50,7 @@ router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
         if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/exams`)}
 
         res.render("exams/new", {
-            title: "Add Exam",
+            title: "TITLE_ADD_EXAM",
             e: exams[0],
         });
     });
@@ -77,15 +77,18 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     db.query("INSERT INTO exams (class_id, title, subject, subjectName, date) VALUES (?, ?, ?, ?, ?)", [req.params.class_id, e.title, e.subject, e.subjectName, date], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while adding your exam", `/classes/${req.params.class_id}/exams`)}
-
-        for(let i = 0; i < topics.topic.length; i++) {
-
-            if(topics.topic[i] != null && topics.topic[i] != "") {
-
-                db.query("INSERT INTO topics (exam_id, topic, learn) VALUES (?, ?, ?)", [results.insertId, topics.topic[i], topics.learn[i]], (err, results, fields) => {
-
-                    if(err) {return fun.error(req, res, err, "Error while adding a topic", `/classes/${req.params.class_id}/exams`)}
-                });
+        
+        if(topics) {
+            
+            for(let i = 0; i < topics.topic.length; i++) {
+    
+                if(topics.topic[i] != null && topics.topic[i] != "") {
+    
+                    db.query("INSERT INTO topics (exam_id, topic, learn) VALUES (?, ?, ?)", [results.insertId, topics.topic[i], topics.learn[i]], (err, results, fields) => {
+    
+                        if(err) {return fun.error(req, res, err, "Error while adding a topic", `/classes/${req.params.class_id}/exams`)}
+                    });
+                }
             }
         }
 
@@ -144,7 +147,7 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
         exams[0].date = moment(exams[0].date).format("DD.MM.YYYY");
 
         res.render("exams/edit", {
-            title: "Edit Exam",
+            title: "TITLE_EDIT_EXAM",
             e: exams[0],
             topics: exams
         });
@@ -175,17 +178,22 @@ router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
         db.query("DELETE FROM topics WHERE exam_id = ?", [req.params.id], (err, results, fields) => {
 
             if(err) {return fun.error(req, res, err, "Error while updating your exam", `/classes/${req.params.class_id}/exams`)}
-
-            for(let i = 0; i < topics.topic.length; i++) {
-
-                if(topics.topic[i] != null && topics.topic[i] != "") {
-
-                    db.query("INSERT INTO topics (exam_id, topic, learn) VALUES (?, ?, ?)", [req.params.id, topics.topic[i], topics.learn[i]], (err, results, fields) => {
-
-                        if(err) {return fun.error(req, res, err, "Error while adding a topic", `/classes/${req.params.class_id}/exams`)}
-                    });
+    
+            if(topics) {
+                
+                for(let i = 0; i < topics.topic.length; i++) {
+    
+                    if(topics.topic[i] != null && topics.topic[i] != "") {
+    
+                        db.query("INSERT INTO topics (exam_id, topic, learn) VALUES (?, ?, ?)", [req.params.id, topics.topic[i], topics.learn[i]], (err, results, fields) => {
+    
+                            if(err) {return fun.error(req, res, err, "Error while adding a topic", `/classes/${req.params.class_id}/exams`)}
+                        });
+                    }
                 }
+            
             }
+            
             req.flash("success", "Updated exam successfully");
             res.redirect(`/classes/${req.params.class_id}/homework`);
         });

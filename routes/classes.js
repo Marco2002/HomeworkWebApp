@@ -9,22 +9,6 @@ const mid        = require("../middleware");
     
 const router = express.Router({mergeParams: true});
 
-// Show Route
-router.get("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-    
-    const db = require("../db");
-    
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN users ON classes.id = users.class_id WHERE classes.id = ? ORDER BY username", [req.params.class_id], (err, results, fields) => {
-        
-        if(err) {return fun.error(req, res, err, "Error while loading class", `/classes/${req.user.class_id}/homework`)}
-        
-        res.render("classes/show", {
-            title: `Class ${results[0].class_name}`,
-            members: results
-        });
-    });
-});
-
 // New Route
 router.get("/new", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
     
@@ -37,32 +21,53 @@ router.get("/new", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 // Create Route
 router.post("/", mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
     
-    req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").notEmpty().len(0, 10);
+    if(req.user.is_admin == 0) {
+        
+        req.checkBody("class[name]", "Class-name cannot be langer than 10 characters").notEmpty().len(0, 10);
+        
+        const errors = req.validationErrors();
+        if(errors) {return fun.error(req, res, "", errors[0].msg, `/schools/${req.params.school_id}/classes/new`)}
+        
+        const db = require("../db");
+        
+        db.query("INSERT INTO classes (name, school_id) VALUES (?, ?)", [req.body.class.name, req.params.school_id], (err, results, fields) => {
+            
+            if(err) {return fun.error(req, res, err, "Error while adding your class", "/selectClass")}
+            
+            db.query("UPDATE users SET is_admin = 1, class_id = ? WHERE id = ?", [results.insertId, req.user.id], (err, results2, fields) => {
+            
+                if(err) {return fun.error(req, res, err, "Error while making you class admin", "/selectClass")}
+                
+                db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
     
-    const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, `/schools/${req.params.school_id}/classes/new`)}
+                    if(err) {return fun.error(req, res, err, "Error while making you class admin", "/selectClass")}
+                    
+                    req.login(results[0], (err) => {
+                    
+                        if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+            
+                        res.redirect(`/classes/${results[0].class_id}/homework`);
+                    });
+                });
+            });
+        });
+    } else {
+        return fun.error(req, res, "", "You cannot create a class as an admin of another class", `/classes/${req.user.class_id}/homework`);
+    }
+});
+
+// Show Route
+router.get("/:class_id", mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     const db = require("../db");
     
-    db.query("INSERT INTO classes (name, school_id) VALUES (?, ?)", [req.body.class.name, req.params.school_id], (err, results, fields) => {
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN users ON classes.id = users.class_id WHERE classes.id = ? ORDER BY username", [req.params.class_id], (err, results, fields) => {
         
-        if(err) {return fun.error(req, res, err, "Error while adding your class", "/selectClass")}
+        if(err) {return fun.error(req, res, err, "Error while loading class", `/classes/${req.user.class_id}/homework`)}
         
-        db.query("UPDATE users SET is_admin = 1, class_id = ? WHERE id = ?", [results.insertId, req.user.id], (err, results2, fields) => {
-        
-            if(err) {return fun.error(req, res, err, "Error while making you class admin", "/selectClass")}
-            
-            db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
-
-                if(err) {return fun.error(req, res, err, "Error while making you class admin", "/selectClass")}
-                
-                req.login(results[0], (err) => {
-                
-                    if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-        
-                    res.redirect(`/classes/${results[0].class_id}/homework`);
-                });
-            });
+        res.render("classes/show", {
+            title: "TITLE_CLASS_SETTINGS",
+            members: results
         });
     });
 });

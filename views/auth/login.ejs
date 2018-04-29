@@ -19,20 +19,20 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center">Login</h4>
+                            <h4 class="center"><%= texts.auth.LOGIN_TEXT %></h4>
                             <form action="/login" method="POST">
                                 <div class="input-field">
                                     <input id="username" name="username" type="text" class="validate" maxlength="15">
-                                    <label for="username">Username</label>
+                                    <label for="username"> <%= texts.auth.USERNAME_TEXT %> </label>
                                 </div>
                                 <div class="input-field">
                                     <input id="password" name="password" type="password" class="validate">
-                                    <label for="password">Pasword</label>
+                                    <label for="password"> <%= texts.auth.PASSWORD_TEXT %> </label>
                                 </div>
-                                <div class="row">
-                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn">Submit</button>
+                                <div class="row center">
+                                    <button class="blue waves-effect waves-light btn"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button>
                                 </div>
-                                <p class="center">Don't have an account? <a href="/register">Sign up</a></p>
+                                <p class="center"><%= texts.auth.DONT_HAVE_ACC_MSG %> <a href="/register"><%= texts.auth.SIGNUP_TEXT %></a></p>
                             </form>
                         </div>
                     </div>

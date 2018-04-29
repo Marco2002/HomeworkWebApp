@@ -9,52 +9,50 @@
                 <div class="row no-m">
                     <div class="input-field col s12 m6">
                         <input name="homework[title]" id="homeworkTitle" type="text" class="validate" maxlength="40">
-                        <label class="active" for="homeworkTitle">Homework Title</label>
+                        <label class="active" for="homeworkTitle"><%= texts.util.TITLE %></label>
                     </div>
                     <div class="input-field col s12 m6">
                         <input name="homework[date]" id="homeworkDate" type="text" class="datepicker">
-                        <label class="active" for="homeworkDate">Deadline</label>
+                        <label class="active" for="homeworkDate"><%= texts.util.DEADLINE %></label>
                     </div>
                     <div class="input-field col s8">
                         <select name="homework[subject]" id="homeworkSubject">
-                            <option value="" disabled selected>Choose a subject</option>
-                            <option value="Maths">Maths</option>
-                            <option value="Language Arts">Language Arts</option>
-                            <option value="Foreign Language 1">Foreign Language 1</option>
-                            <option value="Foreign Language 2">Foreign Language 2</option>
-                            <option value="Foreign Language 3">Foreign Language 3</option>
-                            <option value="Physics">Physics</option>
-                            <option value="Politics">Politics</option>
-                            <option value="Science">Science</option>
-                            <option value="Art">Art</option>
-                            <option value="Music">Music</option>
-                            <option value="Geography">Geography</option>
-                            <option value="History">History</option>
-                            <option value="Biology">Biology</option>
-                            <option value="Physical Education">Physical Education</option>
-                            <option value="Philosophy">Philosophy</option>
-                            <option value="Ethics">Ethics</option>
-                            <option value="Chemistry">Chemistry</option>
-                            <option value="Religion">Religion</option>
-                            <option value="Other">Other</option>
+                            <option value="" disabled selected><%= texts.util.CHOOSE_SUBJECT %></option>
+                            <option value="Maths"><%= texts.Maths %></option>
+                            <option value="Language Arts"><%= texts["Language Arts"] %></option>
+                            <option value="Foreign Language 1"><%= texts["Foreign Language 1"] %></option>
+                            <option value="Foreign Language 2"><%= texts["Foreign Language 2"] %></option>
+                            <option value="Foreign Language 3"><%= texts["Foreign Language 3"] %></option>
+                            <option value="Physics"><%= texts.Physics %></option>
+                            <option value="Politics"><%= texts.Politics %></option>
+                            <option value="Science"><%= texts.Science %></option>
+                            <option value="Art"><%= texts.Art %></option>
+                            <option value="Music"><%= texts.Music %></option>
+                            <option value="Geography"><%= texts.Geography %></option>
+                            <option value="History"><%= texts.History %></option>
+                            <option value="Biology"><%= texts.Biology %></option>
+                            <option value="Physical Education"><%= texts["Physical Education"] %></option>
+                            <option value="Philosophy"><%= texts.Philosophy %></option>
+                            <option value="Ethics"><%= texts.Ethics %></option>
+                            <option value="Chemistry"><%= texts.Chemistry %></option>
+                            <option value="Religion"><%= texts.Religion %></option>
+                            <option value="Other"><%= texts.Other %></option>
                         </select>
-                        <label>Subject</label>
+                        <label><%= texts.util.SUBJECT %></label>
                     </div>
                     <div class="input-field col s4">
                         <input disabled value=" " name="homework[subjectName]" id="subjectName" type="text" class="validate">
-                        <label for="disabled">Subject Name</label>
+                        <label for="disabled"><%= texts.util.SUBJECT_NAME %></label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="300"></textarea>
-                        <label class="active" for="homeworkDescription">Task</label>
+                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="500"></textarea>
+                        <label class="active" for="homeworkDescription"><%= texts.util.TASK %></label>
                     </div>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <button class="blue btn waves-effect waves-light col s4 push-s4 l2 push-l5" name="action" id="btn-submit" onclick="formConfig()">Submit
-                <i class="material-icons right">send</i>
-            </button>
+        <div class="row center">
+            <button class="blue btn waves-effect waves-light" name="action" id="btn-submit" onclick="formConfig()"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button>
         </div>
         <div class="row"></div>
     </div>

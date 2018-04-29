@@ -33,7 +33,7 @@ router.get("/", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
             }
 
             res.render("home", {
-                title: "Homework",
+                title: "TITLE_HOMEWORK",
                 homework: homework,
                 exams: exams
             });
@@ -51,7 +51,7 @@ router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
         if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
 
         res.render("homework/new", {
-            title: "Add Homework",
+            title: "TITLE_ADD_HOMEWORK",
             h: homework[0],
         });
     });
@@ -62,7 +62,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("homework[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 300);
+    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 600);
     req.checkBody("homework[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
     req.checkBody("homework[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
 
@@ -130,7 +130,7 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
         homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
 
         res.render("homework/edit", {
-            title: "Edit Homework",
+            title: "TITLE_EDIT_HOMEWORK",
             h: homework[0],
         });
     });
@@ -141,7 +141,7 @@ router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
 
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("homework[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 300);
+    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 600);
     req.checkBody("homework[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
     req.checkBody("homework[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
 

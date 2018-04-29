@@ -1,0 +1,51 @@
+<% include ../partials/header %>
+
+<div class="container row no-m">
+    
+    <h4 class="header"><%= user.username%></h4>
+    
+    <p class="divider"></p>
+    
+    <table class="striped">
+        <tbody>
+            <tr>
+                <td class="bold"><%= texts.auth.SCHOOL_TEXT %>:</td>
+                <td class="center"><%= members[0].school_name %></td>
+                <td class="center"><a class="btn blue" href="/selectSchool"><%= texts.util.EDIT %><i class="material-icons right">edit</i></a></td>
+            </tr>
+            <tr>
+                <td class="bold"><%= texts.auth.CLASS_TEXT %>:</td>
+                <td class="center"><%= members[0].class_name %></td>
+                <td class="center"><a class="btn blue" href="/selectClass"><%= texts.util.EDIT %><i class="material-icons right">edit</i></a></td>
+            </tr>
+            <tr>
+                <td class="bold row"><%= texts.LANGUAGE %>:</td>
+                <td><form action="#">
+                    <p class="center-align">
+                        <input <%=(lang=="en"?"checked":"")%> name="lang" type="radio" id="en" />
+                        <label for="en"><%= texts.ENGLISH %></label>
+                    </p>
+                    <p class="center-align">
+                        <input <%=(lang=="de"?"checked":"")%> name="lang" type="radio" id="de" />
+                        <label for="de"><%= texts.GERMAN %></label>
+                    </p>
+                </form></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <td></td>
+            <td class="center"><button id="lang_submit" class="btn blue waves-effect waves-light"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button></td>
+            <td class="center"><a class="btn red waves-effect waves-light" href="/logout"><%= texts.auth.LOGOUT %><i class="material-icons right">exit_to_app</i></a></td>
+        </tfooter>
+        
+    </table>
+    
+</div>
+
+<% include ../partials/footer %>

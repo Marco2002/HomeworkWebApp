@@ -1,3 +1,7 @@
+p, h1, h2, h3, h4, h5 {
+    word-wrap: break-word;
+}
+
 .no-m {
     margin-bottom: 0!important;
     margin-top: 0!important;
@@ -24,8 +28,7 @@
 }
 
 #body {
-    padding:0;
-    margin: 2% 0 0 0;
+    margin: .5% 0 0 0;
 }
 
 #formHr {
@@ -135,4 +138,12 @@ tr.row {
 .card-margin {
     margin-top: 0;
     margin-bottom: 8px;
+}
+
+.table-placeholder {
+    width: 4.5em;
+}
+
+.brand-logo {
+    width: 90%!important;
 }
