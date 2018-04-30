@@ -22,26 +22,26 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center"><%= texts.auth.SIGNUP_TEXT %></h4>
+                            <h4 class="center"><%= texts.SIGNUP %></h4>
                             <form action="/register" method="POST">
                                 <div class="row no-m">
                                     <div class="input-field col s12">
                                         <input id="username" name="username" type="text" class="validate" maxlength="15">
-                                        <label for="username"><%= texts.auth.USERNAME_TEXT %></label>
+                                        <label for="username"><%= texts.USERNAME %></label>
                                     </div>
                                     <div class="input-field col s12">
                                         <input id="password" name="password" type="password" class="validate" maxlength="100">
-                                        <label for="password"><%= texts.auth.PASSWORD_TEXT %></label>
+                                        <label for="password"><%= texts.PASSWORD %></label>
                                     </div>
                                     <div class="input-field col s12">
                                         <input id="reenterPassword" name="reenterPassword" type="password" class="validate" maxlength="100">
-                                        <label for="reenterPassword"><%= texts.auth.REENTER_PASSWORD_TEXT %></label>
+                                        <label for="reenterPassword"><%= texts.REENTER_PASSWORD %></label>
                                     </div>
                                 </div>
                                 <div class="row no-m center">
-                                    <button class="blue waves-effect waves-light btn"><%= texts.auth.NEXT_TEXT %><i class="material-icons right">navigate_next</i></button>
+                                    <button class="blue waves-effect waves-light btn"><%= texts.NEXT %><i class="material-icons right">navigate_next</i></button>
                                     <div class="row"></div>
-                                    <p class="center col s12"><%= texts.auth.HAVE_ACC_MSG %> <a href="/login"><%= texts.auth.LOGIN_TEXT %></a></p>
+                                    <p class="center col s12"><%= texts.HAVE_ACC %> <a href="/login"><%= texts.LOGIN %></a></p>
                                 </div>
                             </form>
                         </div>

@@ -9,15 +9,15 @@
                 <div class="row no-m">
                     <div class="input-field col s12 m6">
                         <input name="homework[title]" id="homeworkTitle" type="text" class="validate" value="<%=h.title%>" maxlength="40">
-                        <label class="active" for="homeworkTitle"><%= texts.util.TITLE %></label>
+                        <label class="active" for="homeworkTitle"><%= texts.TITLE %></label>
                     </div>
                     <div class="input-field col s12 m6">
                         <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" value="<%=h.date%>">
-                        <label class="active" for="homeworkDate"><%= texts.util.DEADLINE %></label>
+                        <label class="active" for="homeworkDate"><%= texts.DEADLINE %></label>
                     </div>
                     <div class="input-field col s8">
                         <select name="homework[subject]" id="homeworkSubject">
-                            <option value="" disabled selected><%= texts.util.CHOOSE_SUBJECT %></option>
+                            <option value="" disabled selected><%= texts.CHOOSE_SUBJECT %></option>
                             <option value="Maths"><%= texts.Maths %></option>
                             <option value="Language Arts"><%= texts["Language Arts"] %></option>
                             <option value="Foreign Language 1"><%= texts["Foreign Language 1"] %></option>
@@ -38,21 +38,21 @@
                             <option value="Religion"><%= texts.Religion %></option>
                             <option value="Other"><%= texts.Other %></option>
                         </select>
-                        <label><%= texts.util.SUBJECT %></label>
+                        <label><%= texts.SUBJECT %></label>
                     </div>
                     <div class="input-field col s4">
                         <input disabled value=" " name="homework[subjectName]" id="subjectName" type="text" class="validate">
-                        <label for="disabled"><%= texts.util.SUBJECT_NAME %></label>
+                        <label for="disabled"><%= texts.SUBJECT_NAME %></label>
                     </div>
                     <div class="input-field col s12">
                         <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" value="<%=h.description%>" maxlength="500"></textarea>
-                        <label class="active" for="homeworkDescription"><%= texts.util.TASK %></label>
+                        <label class="active" for="homeworkDescription"><%= texts.TASK %></label>
                     </div>
                 </div>
             </div>
         </form>
         <div class="row center">
-            <button class="blue btn waves-effect waves-light" name="action" id="btn-submit" onclick="formConfig()"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button>
+            <button class="blue btn waves-effect waves-light" name="action" id="btn-submit" onclick="formConfig()"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
         </div>
         <div class="row"></div>
     </div>

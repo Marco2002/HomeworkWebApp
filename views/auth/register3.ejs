@@ -19,23 +19,23 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center"><%= texts.auth.SELECT_CLASS_TEXT %></h4>
+                            <h4 class="center"><%= texts.SELECT_CLASS %></h4>
                             <form action="/selectClass" method="POST">
                                 <div class="row">
                                     <div class="input-field col s6 l9">
                                         <select name="clas" id="class">
-                                            <option value="" disabled selected><%= texts.auth.SELECT_CLASS_TEXT %></option>
+                                            <option value="" disabled selected><%= texts.SELECT_CLASS %></option>
                                             <% classes.forEach(clas => { %>
                                                 <option value="<%=clas.id%>"><%=clas.name%></option>
                                             <% }) %>
                                         </select>
-                                        <label><%= texts.auth.CLASS_TEXT %></label>
+                                        <label><%= texts.CLASS %></label>
                                     </div>
-                                    <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.auth.ADD_CLASS_TEXT %></a>
+                                    <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.ADD_CLASS %></a>
                                 </div>
                                 
                                 <div class="row no-m center">
-                                    <button class="blue waves-effect waves-light btn"><%= texts.util.SUBMIT_TEXT %><i class="material-icons right">send</i></button>
+                                    <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
                                 </div>
                             </form>
                         </div>

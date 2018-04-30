@@ -20,16 +20,16 @@
                     <% include ../partials/flash %>
                     <div class="card">
                         <div class="card-content">
-                            <h4 class="center"><%= texts.auth.ADD_CLASS_TEXT %></h4>
+                            <h4 class="center"><%= texts.ADD_CLASS %></h4>
                             <form action="/schools/<%=school_id%>/classes" method="POST">
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="name" name="class[name]" type="text" class="validate">
-                                        <label for="name"><%= texts.auth.NAME_TEXT %></label>
+                                        <label for="name"><%= texts.NAME %></label>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn"><%= texts.util.SUBMIT_TEXT %></button>
+                                    <button class="blue col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn"><%= texts.SUBMIT %></button>
                                 </div>
                             </form>
                         </div>

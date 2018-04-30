@@ -10,8 +10,8 @@
 
             <% if (topics[0].topic) {%>
             <div class="row no-m">
-                <h5 class="col s8"><%= texts.util.TOPICS %></h5>
-                <h5 class="col s4 right-align"><%= texts.util.LEARN %></h5>
+                <h5 class="col s8"><%= texts.TOPICS %></h5>
+                <h5 class="col s4 right-align"><%= texts.LEARN %></h5>
             </div>
             <hr>
             <% } %>
@@ -29,12 +29,12 @@
                 
                     <div class="container col s4 m2">
                         <div class="row no-m">
-                            <a href="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.util.EDIT %><i class="material-icons left">create</i></a>
+                            <a href="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
                         </div>
                     </div>
                     <div class="container col s4 m2">
                         <div class="row no-m">
-                            <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning"><%= texts.util.DELETE %><i class="material-icons left">delete</i></a>
+                            <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning"><%= texts.DELETE %><i class="material-icons left">delete</i></a>
                         </div>
                     </div>
                     
@@ -42,13 +42,13 @@
                     
                     <div id="warning" class="modal">
                         <div class="modal-content">
-                            <h5 class="s12 center"><%= texts.util.DELETE_WARNING_EXAM %></h5>
-                            <h6 class="s12 center"><%= texts.util.DELETE_WARNING %></h6>
+                            <h5 class="s12 center"><%= texts.DELETE_WARNING_EXAM %></h5>
+                            <h6 class="s12 center"><%= texts.DELETE_WARNING %></h6>
                         </div>
                         <form action="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>?_method=DELETE" method="POST">
                             <div class="modal-footer">
-                                <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text"><%= texts.util.CANCEL %></a>
-                                <button class="waves-effect waves-light btn red accent-4"><%= texts.util.DELETE %></button>
+                                <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text"><%= texts.CANCEL %></a>
+                                <button class="waves-effect waves-light btn red accent-4"><%= texts.DELETE %></button>
                             </div>
                         </form>
                     </div>

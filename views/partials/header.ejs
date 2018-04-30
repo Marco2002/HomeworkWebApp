@@ -120,25 +120,25 @@
                 </div>
             </li>
             
-            <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.util.ACCOUNT_SETTINGS_TEXT %></a></li>
+            <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
             
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i><%= texts.util.CLASS_SETTINGS_TEXT %></a></li>
+                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
             <% } %>
             
             <li><div class="divider"></div></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.util.HOMEWORK_TEXT %></a></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.util.EXAMS_TEXT %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
             <li><div class="divider"></div></li>
             
             <% if(user.is_admin) { %>
             
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.util.ADD_HOMEWORK_TEXT %></a></li>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.util.ADD_EXAM_TEXT %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
                 <li><div class="divider"></div></li>
             <% } %>
             
-            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.util.ABOUT_TEXT %></a></li>
+            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
         </ul>
         
         <div class="row no-m background-color <%=color%>">
