@@ -45,7 +45,8 @@
                         <label for="disabled"><%= texts.SUBJECT_NAME %></label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" value="<%=h.description%>" maxlength="500"></textarea>
+                        <%console.log(h.description)%>
+                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="500"><%=h.description%></textarea>
                         <label class="active" for="homeworkDescription"><%= texts.TASK %></label>
                     </div>
                 </div>

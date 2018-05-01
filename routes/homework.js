@@ -129,6 +129,8 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 
         homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
 
+        console.log(homework[0]);
+        
         res.render("homework/edit", {
             title: "TITLE_EDIT_HOMEWORK",
             h: homework[0],

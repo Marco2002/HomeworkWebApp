@@ -9,7 +9,7 @@
 <% s = members[0]%>
 <% } %>
 
-<% if(s != "") {%>
+<% if(s != "" && s != undefined) {%>
     <% switch(s.subject) { case "Maths": %>
             <% color="blue"; %>
             <% break; %>
@@ -68,7 +68,7 @@
             <% color="white"; %>
             <% break; %>
     <% } %>
-<% } %>
+
 
 
 <!DOCTYPE html>
@@ -144,3 +144,4 @@
         <div class="row no-m background-color <%=color%>">
             <div class="col s0 l1"></div>
             <div class="col s12 l11" id="body">
+<% } %>

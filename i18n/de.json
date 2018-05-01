@@ -16,7 +16,7 @@
     "CLASS": "Klasse",
     "DATE": "Datum",
     "DEADLINE": "erledigen bis",
-    "DELETE": "löschen",
+    "DELETE": "delete",
     "DELETE_WARNING": "Sobald sie gelöschst ist, kann sie nicht wiederhergestellt werden!",
     "DELETE_WARNING_EXAM": "Bist du dir sicher, dass du die Arbeit löschen willst?",
     "DELETE_WARNING_HOMEWORK": "Bist du dir sicher, dass du die Hausaufgabe löschen willst?",

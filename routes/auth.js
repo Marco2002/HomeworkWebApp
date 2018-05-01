@@ -192,11 +192,11 @@ router.get("/logout", mid.isLoggedIn, (req, res) => {
     res.redirect("/");
 });
 
-router.get("/:id", mid.isLoggedIn, mid.isUser, (req, res) => {
+router.get("/:user_id", mid.isLoggedIn, mid.isUser, (req, res) => {
 
     const db = require("../db");
 
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM users JOIN classes ON classes.id = users.class_id JOIN schools ON schools.id = users.school_id WHERE users.id = ?", [req.params.id], (err, results, fields) => {
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM users JOIN classes ON classes.id = users.class_id JOIN schools ON schools.id = users.school_id WHERE users.id = ?", [req.params.user_id], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while loading user", `/classes/${req.user.class_id}/homework`)}
         

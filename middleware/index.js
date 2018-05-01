@@ -9,7 +9,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
         return next();
     }
     
-    fun.error(req, res, "", "You must be logged in order to do that", "/");
+    fun.error(req, res, "", "You must be logged in in order to do that", "/");
 };
 
 middlewareObj.isNotLoggedIn = (req, res, next) => {
@@ -89,10 +89,10 @@ middlewareObj.isAdmin = (req, res, next) => {
 
 middlewareObj.isUser = (req, res, next) => {
     
-    if(req.params.id == req.user.id) {
+    if(req.params.user_id == req.user.id) {
         next();
     } else {
-        fun.error(req, res, "", "You aren't logged in as that user", `/classes/${req.user.class_id}/homework`);
+        fun.error(req, res, "", "You aren't logged in as that user", `/${req.user.id}`);
     }
 };
 

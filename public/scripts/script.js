@@ -145,7 +145,7 @@ $(function() {
     $("#lang_submit").click(function() {
         var lang = $("input[name='lang']:checked").attr("id");
         
-        window.location.replace("/?clang=" + lang);
+        window.location.replace("?clang=" + lang);
     });
     
     console.log("script.js file active");

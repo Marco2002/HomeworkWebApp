@@ -63,8 +63,12 @@ app.use(expressSession({
     secret: process.env.COOKIE_SECRET,
     name: 'hmwk',
     resave: false,
+    rolling: true,
     saveUninitialized: false,
     store: sessionStore,
+    cookie: {
+        maxAge: 30 * 24 * 60 * 60 * 1000
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
