@@ -67,7 +67,8 @@ router.get("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
 
         res.render("classes/show", {
             title: "TITLE_CLASS_SETTINGS",
-            results: results
+            results: results,
+            r: results[0]
         });
     });
 });
@@ -82,7 +83,7 @@ router.get("/:class_id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool
         if(err) {return fun.error(req, res, err, "Couldn't find you class", `/classes/${req.params.class_id}/homework`)}
 
         res.render("classes/edit", {
-            results: results
+            r: results[0]
         });
     });
 });

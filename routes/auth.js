@@ -114,8 +114,7 @@ router.get("/selectClass", mid.isLoggedIn, (req, res) => {
             if(err) {return fun.error(req, res, err, "Error while loading classes", "/")}
 
             res.render("auth/selectClass", {
-                results: results,
-                school_id: req.user.school_id
+                results: results
             });
         });
     } else {
@@ -202,7 +201,8 @@ router.get("/:user_id", mid.isLoggedIn, mid.isUser, (req, res) => {
 
         res.render("auth/show", {
             title: "TITLE_ACCOUNT_SETTINGS",
-            results: results
+            results: results,
+            r: results[0]
         });
     });
 

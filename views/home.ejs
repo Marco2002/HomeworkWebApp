@@ -1,4 +1,4 @@
-<% include ./partials/header2 %>
+<% include ./partials/header %>
 <% let color, prevDate, ePrevDate %>
 
 <div class="container">
@@ -107,7 +107,7 @@
         </div>
         <div id="exams">
             <% if(exams[0].title) { %>
-            <% exams.forEach(e => {%>
+            <% exams.forEach(e => { %>
             <!-- Get the color -->
             <% switch(e.subject) { case "Maths": %>
                 <% color="blue"; %>

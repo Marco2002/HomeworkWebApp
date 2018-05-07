@@ -1,5 +1,4 @@
 <% include ../partials/header %>
-<% const r = results[0] %>
 
 <div class="container">
     <% include ../partials/flash %>
@@ -9,7 +8,7 @@
                 <h3 class="col no-m"><%= r.title %></h3>
             </div>
 
-            <% if (results[0].topic) {%>
+            <% if (r.topic) {%>
             <div class="row no-m">
                 <h5 class="col s8"><%= texts.TOPICS %></h5>
                 <h5 class="col s4 right-align"><%= texts.LEARN %></h5>

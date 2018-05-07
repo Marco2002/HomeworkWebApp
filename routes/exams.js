@@ -43,10 +43,18 @@ router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
 
 // New Route
 router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    
+    const db = require("../db");
+    
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id WHERE classes.id = ?", [req.params.class_id], (err, results, fields) => {
+    
+        if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/exams`)}
 
-    res.render("exams/new", {
-        title: "TITLE_ADD_EXAM"
-    });
+        res.render("exams/new", {
+            title: "TITLE_ADD_EXAM",
+            r: results[0],
+        }
+    )});
 });
 
 // Create Route
@@ -103,7 +111,8 @@ router.get("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res)
 
         res.render("exams/show", {
             title: results[0].subjectName,
-            results: results
+            results: results,
+            r: results[0]
         });
     });
 });
@@ -132,15 +141,16 @@ router.get("/:id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.i
 
     const db = require("../db");
 
-    db.query("SELECT *, exams.id AS exam_id, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN exams ON exams.class_id = classes.id LEFT JOIN topics ON topics.exam_id = exams.id WHERE exams.id = ?", [req.params.id], (err, exams, fields) => {
+    db.query("SELECT *, exams.id AS exam_id, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN exams ON exams.class_id = classes.id LEFT JOIN topics ON topics.exam_id = exams.id WHERE exams.id = ?", [req.params.id], (err, results, fields) => {
 
         if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your exam", `/classes/${req.params.class_id}/exams`)}
 
-        result[0].date = moment(results[0].date).format("DD.MM.YYYY");
+        results[0].date = moment(results[0].date).format("DD.MM.YYYY");
 
         res.render("exams/edit", {
             title: "TITLE_EDIT_EXAM",
-            results: results
+            results: results,
+            r: results[0]
         });
     });
 });

@@ -45,9 +45,17 @@ router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
 // New Route
 router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
-    res.render("homework/new", {
-        title: "TITLE_ADD_HOMEWORK"
-    });
+    const db = require("../db");
+    
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id WHERE classes.id = ?", [req.params.class_id], (err, results, fields) => {
+    
+        if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/exams`)}
+
+        res.render("homework/new", {
+            title: "TITLE_ADD_HOMEWORK",
+            r: results[0]
+        }
+    )});
 });
 
 // Create Route
@@ -92,7 +100,7 @@ router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 
         res.render("homework/show", {
             title: results[0].subjectName,
-            results: results,
+            r: results[0]
         });
     });
 });
@@ -124,7 +132,7 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 
         res.render("homework/edit", {
             title: "TITLE_EDIT_HOMEWORK",
-            results: results,
+            r: results[0]
         });
     });
 });

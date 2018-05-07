@@ -23,12 +23,11 @@ p, h1, h2, h3, h4, h5 {
 }
 
 #body-home {
-    padding:0;
-    margin: 62px 0 0 0;
+    margin-top: 50px;
 }
 
 #body {
-    margin: .5% 0 0 0;
+    margin-top: .5%;
 }
 
 #formHr {
