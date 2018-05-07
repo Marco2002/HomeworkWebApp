@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <!-- main.css -->
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body class="b-img">
@@ -25,7 +25,7 @@
                                     <div class="input-field col s6 l9">
                                         <select name="clas" id="class">
                                             <option value="" disabled selected><%= texts.SELECT_CLASS %></option>
-                                            <% classes.forEach(clas => { %>
+                                            <% results.forEach(clas => { %>
                                                 <option value="<%=clas.id%>"><%=clas.name%></option>
                                             <% }) %>
                                         </select>
@@ -33,7 +33,7 @@
                                     </div>
                                     <a href="/schools/<%=school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.ADD_CLASS %></a>
                                 </div>
-                                
+
                                 <div class="row no-m center">
                                     <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
                                 </div>

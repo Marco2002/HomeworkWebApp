@@ -1,35 +1,36 @@
-<% include ../partials/header %>
+<% include ../partials/header %>\
+<% const r = results[0] %>
 
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
         <div class="card-content">
             <div class="row">
-                <h5 class="bold no-m center-align"><%= h.title %></h5>
+                <h5 class="bold no-m center-align"><%= r.title %></h5>
             </div>
-            <p class="no-m flow-text"><%- h.description %></p>
+            <p class="no-m flow-text"><%- r.description %></p>
             <hr>
             <div class="row"></div>
             <div class="row no-m">
                 <% if(user.is_admin) { %>
-                
+
                     <div class="container col s4 l2">
                         <div class="row no-m">
-                            <a href="/classes/<%=h.class_id%>/homework/<%=h.id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
+                            <a href="/classes/<%=r.class_id%>/homework/<%=r.id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
                         </div>
                     </div>
                     <div class="container col s4 l2">
                         <div class="row no-m">
-                            <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning"><%= texts.DELETE %><i class="material-icons left">delete</i></a>
+                            <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning"><i class="material-icons left">delete</i><%= texts.DELETE %></a>
                         </div>
                     </div>
-                    
+
                     <div id="warning" class="modal">
                         <div class="modal-content">
                             <h5 class="s12 center"><%= texts.DELETE_WARNING_HOMEWORK %></h5>
                             <h6 class="s12 center"><%= texts.DELETE_WARNING %></h6>
                         </div>
-                        <form action="/classes/<%=h.class_id%>/homework/<%=h.id%>?_method=DELETE" method="POST">
+                        <form action="/classes/<%=r.class_id%>/homework/<%=r.id%>?_method=DELETE" method="POST">
                             <div class="modal-footer">
                                 <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text"><%= texts.CANCEL %></a>
                                 <button class="waves-effect waves-light btn red accent-4"><%= texts.DELETE %></button>
@@ -37,8 +38,8 @@
                         </form>
                     </div>
                 <% } %>
-                
-                <p class="col right s4 l8 right-align"><%= texts.UNTIL %> <%=h.date%></p>
+
+                <p class="col right s4 l8 right-align"><%= texts.UNTIL %> <%=r.date%></p>
 
             </div>
         </div>

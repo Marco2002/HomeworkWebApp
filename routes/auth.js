@@ -54,8 +54,8 @@ router.get("/selectSchool", mid.isLoggedIn, (req, res) => {
 
         if(err) {return fun.error(req, res, err, "Error while loading schools")}
 
-        res.render("auth/register2", {
-            schools: results,
+        res.render("auth/selectSchool", {
+            results: results,
         });
     });
 });
@@ -84,11 +84,11 @@ router.post("/selectSchool", mid.isLoggedIn, (req, res) => {
 
                     db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
 
-                        if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                        if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
 
                         req.login(results[0], (err) => {
 
-                            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                            if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
 
                             res.redirect("/selectClass");
                         });
@@ -113,8 +113,8 @@ router.get("/selectClass", mid.isLoggedIn, (req, res) => {
 
             if(err) {return fun.error(req, res, err, "Error while loading classes", "/")}
 
-            res.render("auth/register3", {
-                classes: results,
+            res.render("auth/selectClass", {
+                results: results,
                 school_id: req.user.school_id
             });
         });
@@ -140,11 +140,11 @@ router.post("/selectClass", mid.isLoggedIn, (req, res) => {
 
             db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
 
-                if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
 
                 req.login(results[0], (err) => {
 
-                    if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
+                    if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
 
                     res.redirect(`/classes/${results[0].class_id}/homework`);
                 });
@@ -199,10 +199,10 @@ router.get("/:user_id", mid.isLoggedIn, mid.isUser, (req, res) => {
     db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM users JOIN classes ON classes.id = users.class_id JOIN schools ON schools.id = users.school_id WHERE users.id = ?", [req.params.user_id], (err, results, fields) => {
 
         if(err) {return fun.error(req, res, err, "Error while loading user", `/classes/${req.user.class_id}/homework`)}
-        
+
         res.render("auth/show", {
             title: "TITLE_ACCOUNT_SETTINGS",
-            members: results
+            results: results
         });
     });
 

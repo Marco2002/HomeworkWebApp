@@ -3,11 +3,11 @@
 //======================
 
 // Packages
-const express    = require("express");
-const moment     = require("moment");
+const express      = require("express");
+const moment       = require("moment");
 const sanitizeHtml = require('sanitize-html');
-const mid        = require("../middleware");
-const fun        = require("../functions");
+const mid          = require("../middleware");
+const fun          = require("../functions");
 
 const router  = express.Router({mergeParams: true});
 
@@ -35,7 +35,8 @@ router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
             res.render("home", {
                 title: "TITLE_HOMEWORK",
                 homework: homework,
-                exams: exams
+                exams: exams,
+                r: homework[0]
             });
         });
     });
@@ -44,22 +45,14 @@ router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
 // New Route
 router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
-    const db = require("../db");
-
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id WHERE classes.id = ?", [req.params.class_id], (err, homework, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
-
-        res.render("homework/new", {
-            title: "TITLE_ADD_HOMEWORK",
-            h: homework[0],
-        });
+    res.render("homework/new", {
+        title: "TITLE_ADD_HOMEWORK"
     });
 });
 
 // Create Route
 router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-    
+
     req.checkBody("homework[title]", "Title field cannot be empty").notEmpty().len(1, 40);
     req.checkBody("homework[date]", "Date field cannot be empty").notEmpty();
     req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 600);
@@ -71,7 +64,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
     const db = require("../db");
     const h = req.body.homework;
-    
+
     const date = moment(h.date, "DD.MM.YYYY").format("YYYY-MM-DD");
     const description = sanitizeHtml(String(h.description).replace(/\r/gi, "<br>"), {
         allowedTags: ["br"]
@@ -91,15 +84,15 @@ router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 
     const db = require("../db");
 
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, homework, fields) => {
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, results, fields) => {
 
-        if(err || homework.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
+        if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
 
-        homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
+        results[0].date = moment(results[0].date).format("DD.MM.YYYY");
 
         res.render("homework/show", {
-            title: homework[0].subjectName,
-            h: homework[0],
+            title: results[0].subjectName,
+            results: results,
         });
     });
 });
@@ -123,17 +116,15 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 
     const db = require("../db");
 
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, homework, fields) => {
+    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, results, fields) => {
 
-        if(err || homework.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
+        if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
 
-        homework[0].date = moment(homework[0].date).format("DD.MM.YYYY");
+        results[0].date = moment(results[0].date).format("DD.MM.YYYY");
 
-        console.log(homework[0]);
-        
         res.render("homework/edit", {
             title: "TITLE_EDIT_HOMEWORK",
-            h: homework[0],
+            results: results,
         });
     });
 });

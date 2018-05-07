@@ -1,75 +1,63 @@
-<% let color, s = ""%>
+<% let color, r = results[0]%>
 
 <!-- Get the color -->
-<% if(locals.e) {%>
-<% s = e%>
-<% } else if(locals.h) {%>
-<% s = h%>
-<% } else if(locals.members) {%>
-<% s = members[0]%>
+<% switch(r.subject) { case "Maths": %>
+        <% color="blue"; %>
+        <% break; %>
+    <% case "Language Arts": %>
+        <% color="red"; %>
+        <% break; %>
+    <% case "Foreign Language 1": %>
+        <% color="yellow"; %>
+        <% break; %>
+    <% case "Foreign Language 2": %>
+        <% color="purple"; %>
+        <% break; %>
+    <% case "Foreign Language 3": %>
+        <% color="pink accent-2"; %>
+        <% break; %>
+    <% case "Music": %>
+        <% color="teal accent-4"; %>
+        <% break; %>
+    <% case "History": %>
+        <% color="indigo"; %>
+        <% break %>
+    <% case "Geography": %>
+        <% color="brown"; %>
+        <% break; %>
+    <% case "Biology": %>
+        <% color="green"; %>
+        <% break; %>
+    <% case "Physical Education": %>
+        <% color="green accent-4"; %> <% break; %>
+    <% case "Politics": %>
+        <% color="grey"; %>
+        <% break; %>
+    <% case "Religion": %>
+        <% color="amber"; %>
+        <% break; %>
+    <% case "Philosophy": %>
+        <% color="cyan"; %>
+        <% break; %>
+    <% case "Ethics": %>
+        <% color="light-blue"; %>
+        <% break; %>
+    <% case "Physics": %>
+        <% color="deep-purple"; %>
+        <% break; %>
+    <% case "Science": %>
+        <% color="blue-grey"; %>
+        <% break; %>
+    <% case "Chemistry": %>
+        <% color="deep-orange"; %>
+        <% break; %>
+    <% case "Art": %>
+        <% color="pink"; %>
+        <% break; %>
+    <% case "Other": %>
+        <% color="white"; %>
+        <% break; %>
 <% } %>
-
-<% if(s != "" && s != undefined) {%>
-    <% switch(s.subject) { case "Maths": %>
-            <% color="blue"; %>
-            <% break; %>
-        <% case "Language Arts": %>
-            <% color="red"; %>
-            <% break; %>
-        <% case "Foreign Language 1": %>
-            <% color="yellow"; %>
-            <% break; %>
-        <% case "Foreign Language 2": %>
-            <% color="purple"; %>
-            <% break; %>
-        <% case "Foreign Language 3": %>
-            <% color="pink accent-2"; %>
-            <% break; %>
-        <% case "Music": %>
-            <% color="teal accent-4"; %>
-            <% break; %>
-        <% case "History": %>
-            <% color="indigo"; %>
-            <% break %>
-        <% case "Geography": %>
-            <% color="brown"; %>
-            <% break; %>
-        <% case "Biology": %>
-            <% color="green"; %>
-            <% break; %>
-        <% case "Physical Education": %>
-            <% color="green accent-4"; %>
-            <% break; %>
-        <% case "Politics": %>
-            <% color="grey"; %>
-            <% break; %>
-        <% case "Religion": %>
-            <% color="amber"; %>
-            <% break; %>
-        <% case "Philosophy": %>
-            <% color="cyan"; %>
-            <% break; %>
-        <% case "Ethics": %>
-            <% color="light-blue"; %>
-            <% break; %>
-        <% case "Physics": %>
-            <% color="deep-purple"; %>
-            <% break; %>
-        <% case "Science": %>
-            <% color="blue-grey"; %>
-            <% break; %>
-        <% case "Chemistry": %>
-            <% color="deep-orange"; %>
-            <% break; %>
-        <% case "Art": %>
-            <% color="pink"; %>
-            <% break; %>
-        <% case "Other": %>
-            <% color="white"; %>
-            <% break; %>
-    <% } %>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -83,29 +71,37 @@
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
         <!-- FontAwesome icons -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body id="no-mp">
         <div class="row" id="no-mp">
             <div class="col s0 l1"></div>
-    
+
                 <div class="navbar-fixed">
                     <nav class="nav-extended">
                         <div class="col s12 l11 right" id="no-mp">
                             <div class="nav-wrapper blue darken-1">
-                            
-                                <div class="brand-logo center"><%= texts[title] %></div>
-                                
+                                <div class="brand-logo center">
+                                    <% if(texts[title]) { %>
+
+                                        <%= texts[title] %>
+
+                                    <% } else { %>
+
+                                        <%= title %>
+
+                                    <% } %></div>
+
                                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-                                
+
                             </div>
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
-        
+
         <ul id="slide-out" class="side-nav fixed">
             <li>
                 <div class="user-view">
@@ -116,32 +112,31 @@
                     <div class="row"></div>
                     <div class="row"></div>
                     <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                    <p class="no-m bold"><%=s.school_name%> - <%=s.class_name%></p>
+                    <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
                 </div>
             </li>
-            
+
             <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
-            
+
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
+                <li><a class="collapsible-header" href="/schools/<%=r.school_id%>/classes/<%=r.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
             <% } %>
-            
+
             <li><div class="divider"></div></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
             <li><div class="divider"></div></li>
-            
+
             <% if(user.is_admin) { %>
-            
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
+
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
                 <li><div class="divider"></div></li>
             <% } %>
-            
+
             <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
         </ul>
-        
+
         <div class="row no-m background-color <%=color%>">
             <div class="col s0 l1"></div>
             <div class="col s12 l11" id="body">
-<% } %>

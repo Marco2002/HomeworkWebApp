@@ -1,21 +1,22 @@
 <% include ../partials/header %>
+<% const r =  results[0] %>
 
 <div class="container row no-m">
-    
+
     <h4 class="header"><%= user.username%></h4>
-    
+
     <p class="divider"></p>
-    
+
     <table class="striped">
         <tbody>
             <tr>
                 <td class="bold"><%= texts.SCHOOL %>:</td>
-                <td class="center"><%= members[0].school_name %></td>
+                <td class="center"><%= r.school_name %></td>
                 <td class="center"><a class="btn blue" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></td>
             </tr>
             <tr>
                 <td class="bold"><%= texts.CLASS %>:</td>
-                <td class="center"><%= members[0].class_name %></td>
+                <td class="center"><%= r.class_name %></td>
                 <td class="center"><a class="btn blue" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></td>
             </tr>
             <tr>
@@ -43,9 +44,9 @@
             <td class="center"><button id="lang_submit" class="btn blue waves-effect waves-light"><%= texts.SUBMIT %><i class="material-icons right">send</i></button></td>
             <td class="center"><a class="btn red waves-effect waves-light" href="/logout"><%= texts.LOGOUT %><i class="material-icons right">exit_to_app</i></a></td>
         </tfooter>
-        
+
     </table>
-    
+
 </div>
 
 <% include ../partials/footer %>

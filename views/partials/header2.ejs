@@ -1,10 +1,4 @@
-<% if(locals.homework) {%>
-<% s = homework[0]%>
-<% } else if(locals.exams){%>
-<% s = exams[0]%>
-<% } else if(locals.members){%>
-<% s = members[0]%>
-<% } %>
+<% if(locals.results) {r = results[0]} %>
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +12,7 @@
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
         <!-- FontAwesome icons -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body id="no-mp">
@@ -28,27 +22,39 @@
                     <nav class="nav-extended">
                         <div class="col s12 l11 right" id="no-mp">
                             <div class="nav-wrapper blue darken-1">
-                            
-                                <div class="brand-logo center"><%= texts[title] %></div>
+
+                                <div class="brand-logo center valign-wrapper">
+
+                                    <% if(title == "TITLE_HOMEWORK") {%>
+
+                                        <img class="logo" src="/res/homework_text.png">
+
+                                    <% } else { %>
+
+                                        <%= texts[title] %>
+
+                                    <% } %>
+
+                                </div>
                                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-                                
+
                             </div>
                             <div class="nav content">
-                                
+
                                 <ul id="tabs-swipe-demo" class="tabs blue">
                                     <div class="col l2"></div>
                                     <li class="tab col s6 l4"><a class="active" href="#homework"><%= texts.HOMEWORK %></a></li>
                                     <li class="tab col s6 l4"><a class="" href="#exams"><%= texts.EXAMS %></a></li>
                                     <div class="col l2"></div>
                                 </ul>
-                                
+
                             </div>
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
-        
+
         <ul id="slide-out" class="side-nav fixed">
             <li>
                 <div class="user-view">
@@ -59,30 +65,30 @@
                     <div class="row"></div>
                     <div class="row"></div>
                     <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                    <p class="no-m bold"><%=s.school_name%> - <%=s.class_name%></p>
+                    <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
                 </div>
             </li>
-            
+
             <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
-            
+
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/schools/<%=s.school_id%>/classes/<%=s.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
+                <li><a class="collapsible-header" href="/schools/<%=r.school_id%>/classes/<%=r.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
             <% } %>
-            
+
             <li><div class="divider"></div></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
-            <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
             <li><div class="divider"></div></li>
-            
+
             <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
-                <li><a class="collapsible-header" href="/classes/<%=s.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
                 <li><div class="divider"></div></li>
             <% } %>
-            
+
             <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
         </ul>
-        
+
         <div class="row no-m">
             <div class="col s0 l1"></div>
             <div class="col s12 l11" id="body-home">

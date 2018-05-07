@@ -8,7 +8,6 @@
     "ADD_TOPIC": "add topic",
     "APP_DESCRIPTION": "An online homework planner accessible for all classmates",
     "CANCEL": "cancel",
-    "CHANGE_NAME": "change name",
     "CHOOSE_SUBJECT": "choose a subject",
     "CLASS": "class",
     "CLASSMATE": "classmate",
@@ -67,7 +66,7 @@
     "UNTIL": "until",
     "USERNAME": "username",
     "YOU": "YOU",
-    
+
     "Art": "Art",
     "Biology": "Biology",
     "Chemistry": "Chemistry",

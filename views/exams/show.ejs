@@ -1,21 +1,22 @@
 <% include ../partials/header %>
+<% const r = results[0] %>
 
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
         <div class="card-content">
             <div class="row">
-                <h3 class="col no-m"><%= e.title %></h3>
+                <h3 class="col no-m"><%= r.title %></h3>
             </div>
 
-            <% if (topics[0].topic) {%>
+            <% if (results[0].topic) {%>
             <div class="row no-m">
                 <h5 class="col s8"><%= texts.TOPICS %></h5>
                 <h5 class="col s4 right-align"><%= texts.LEARN %></h5>
             </div>
             <hr>
             <% } %>
-            <% topics.forEach(t => {%>
+            <% results.forEach(t => {%>
             <div class="row no-m">
                 <h6 class="col s8"><%=t.topic%></h6>
                 <p class="col s4 margin-t right-align"><%=t.learn%><p>
@@ -29,7 +30,7 @@
                 
                     <div class="container col s4 m2">
                         <div class="row no-m">
-                            <a href="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
+                            <a href="/classes/<%=r.class_id%>/exams/<%=r.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
                         </div>
                     </div>
                     <div class="container col s4 m2">
@@ -38,14 +39,14 @@
                         </div>
                     </div>
                     
-                    <p class="col right s4 l8 right-align"><%=e.date%></p>
+                    <p class="col right s4 l8 right-align"><%=r.date%></p>
                     
                     <div id="warning" class="modal">
                         <div class="modal-content">
                             <h5 class="s12 center"><%= texts.DELETE_WARNING_EXAM %></h5>
                             <h6 class="s12 center"><%= texts.DELETE_WARNING %></h6>
                         </div>
-                        <form action="/classes/<%=e.class_id%>/exams/<%=e.exam_id%>?_method=DELETE" method="POST">
+                        <form action="/classes/<%=r.class_id%>/exams/<%=r.exam_id%>?_method=DELETE" method="POST">
                             <div class="modal-footer">
                                 <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text"><%= texts.CANCEL %></a>
                                 <button class="waves-effect waves-light btn red accent-4"><%= texts.DELETE %></button>

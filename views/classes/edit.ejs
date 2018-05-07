@@ -1,3 +1,5 @@
+<% const r = results[0] %>
+
 <!DOCTYPE html>
 <html>
     <header>
@@ -21,10 +23,10 @@
                     <div class="card">
                         <div class="card-content">
                             <h4 class="center"><%= texts.EDIT_CLASS %></h4>
-                            <form action="/schools/<%=clas.school_id%>/classes/<%=clas.id%>?_method=PUT" method="POST">
+                            <form action="/schools/<%=r.school_id%>/classes/<%=r.id%>?_method=PUT" method="POST">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input id="name" name="class[name]" type="text" class="validate" value="<%=clas.name%>">
+                                        <input id="name" name="class[name]" type="text" class="validate" value="<%=r.name%>">
                                         <label for="name"><%= texts.NAME %></label>
                                     </div>
                                 </div>

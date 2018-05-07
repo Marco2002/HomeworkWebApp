@@ -8,7 +8,6 @@
     "ADD_TOPIC": "Thema hinzufügen",
     "APP_DESCRIPTION": "Ein Schulplaner, der von der ganzen Klasse geführt wird.",
     "CANCEL": "abbrechen",
-    "CHANGE_NAME": "Namen ändern",
     "CHOOSE_SUBJECT": "Fach auswählen",
     "CLASSMATE": "Klassenmitglied",
     "CLASS_NAME": "Name",
@@ -67,7 +66,7 @@
     "UNTIL": "bis zum",
     "USERNAME": "Benutzername",
     "YOU": "DU",
-    
+
     "Art": "Kunst",
     "Biology": "Biologie",
     "Chemistry": "Chemie",
