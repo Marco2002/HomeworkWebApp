@@ -2,7 +2,10 @@
 <html>
     <header>
         <title>Homework Web App</title>
-
+        
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/res/logo.png">
+        
         <!-- Materialize -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
@@ -10,7 +13,7 @@
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
         <!-- FontAwesome icons -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </header>
     <body id="no-mp">
@@ -23,7 +26,11 @@
                             <div class="nav-wrapper blue darken-1">
                                 <div class="brand-logo center">
                                     
-                                    <% if(texts[title]) { %>
+                                    <% if(title == "TITLE_HOMEWORK") {%>
+                                    
+                                        <img class="logo" src="/res/homework_text.png">
+                                        
+                                    <% } else if(texts[title]) { %>
 
                                         <%= texts[title] %>
 

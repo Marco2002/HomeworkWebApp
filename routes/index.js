@@ -10,7 +10,6 @@ router.get("/", mid.isNotLoggedIn, (req, res) => {
 
 // Download Route
 router.get("/download", (req, res) => {
-    req.flash("success", "Downloaded the app");
     res.download("app/Homework.apk");
 });
 

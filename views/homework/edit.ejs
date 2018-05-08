@@ -3,16 +3,16 @@
 <div class="container">
     <% include ../partials/flash %>
     <div class="card">
-        <form method="POST" action="/classes/<%=h.class_id%>/homework/<%=h.id%>?_method=PUT" id="form">
+        <form method="POST" action="/classes/<%=r.class_id%>/homework/<%=r.id%>?_method=PUT" id="form">
             <div class="row"></div>
             <div class="container">
                 <div class="row no-m">
                     <div class="input-field col s12 m6">
-                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" value="<%=h.title%>" maxlength="40">
+                        <input name="homework[title]" id="homeworkTitle" type="text" class="validate" value="<%=r.title%>" maxlength="40">
                         <label class="active" for="homeworkTitle"><%= texts.TITLE %></label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" value="<%=h.date%>">
+                        <input name="homework[date]" id="homeworkDate" type="text" class="datepicker" value="<%=r.date%>">
                         <label class="active" for="homeworkDate"><%= texts.DEADLINE %></label>
                     </div>
                     <div class="input-field col s8">
@@ -45,8 +45,8 @@
                         <label for="disabled"><%= texts.SUBJECT_NAME %></label>
                     </div>
                     <div class="input-field col s12">
-                        <%console.log(h.description)%>
-                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="500"><%=h.description%></textarea>
+                        <%console.log(r.description)%>
+                        <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="500"><%=r.description%></textarea>
                         <label class="active" for="homeworkDescription"><%= texts.TASK %></label>
                     </div>
                 </div>

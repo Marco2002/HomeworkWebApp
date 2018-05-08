@@ -129,7 +129,8 @@ router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
         if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
 
         results[0].date = moment(results[0].date).format("DD.MM.YYYY");
-
+        results[0].description = String(results[0].description).replace(/<br\ \/>/g, "");
+        
         res.render("homework/edit", {
             title: "TITLE_EDIT_HOMEWORK",
             r: results[0]
