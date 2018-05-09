@@ -191,6 +191,14 @@ router.get("/logout", mid.isLoggedIn, (req, res) => {
     res.redirect("/");
 });
 
+// Google OAuth
+router.get("/auth/google/callback", passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/"
+}));
+
+router.get("/auth/google", passport.authenticate("google", {scope: ["profile"]}));
+
 router.get("/:user_id", mid.isLoggedIn, mid.isUser, (req, res) => {
 
     const db = require("../db");

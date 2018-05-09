@@ -1,5 +1,5 @@
 //=============================
-// HMWK v0.7
+// Homework Web App
 //=============================
 
 // Packages
@@ -17,6 +17,7 @@ const schedule          = require("node-schedule");
 const path              = require('path');
 const i18n              = require("i18n-express");
 const LocalStrategy     = require("passport-local").Strategy;
+const GoogleStrategy    = require("passport-google-oauth").OAuth2Strategy;
 const MySQLStore        = require("express-mysql-session");
 
 // Routes
@@ -103,17 +104,19 @@ app.use((req, res, next) => {
     next();
 });
 
-// passport-lacal setup
+// Passport-Local setup
 passport.use(new LocalStrategy((username, password, done) => {
+    
     const db = require("./db.js");
+    
     db.query("SELECT * FROM users WHERE username = ?", [username], (err, results, fields) => {
 
-        if(err) {
-            done(err);
-        }
+        if(err) { return done(err) }
 
         if(results.length === 0) {
+            
             done(null, false);
+            
         } else {
 
             if(passwordHash.verify(password, results[0].password)) {
@@ -121,12 +124,51 @@ passport.use(new LocalStrategy((username, password, done) => {
                 return done(null, results[0]);
 
             } else {
+                
                 done(null, false);
             }
         }
     });
 }));
 
+// Google OAuth setup
+passport.use(new GoogleStrategy({
+    
+    clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_AUTH_CLIENT_CALLBACK,
+        
+}, (accessToken, refreshToken, profile, done) => {
+        
+    process.nextTick(() => {
+        
+        const db = require("./db.js");
+    
+        db.query("SELECT * FROM users WHERE google_id = ?", [profile.id], (err, results, fields) => {
+    
+            if(err) { return done(err) }
+    
+            if(results.length === 0) {
+                
+                db.query("INSERT INTO users (username, google_id, google_token) VALUES (?, ?, ?)", [profile.displayName, profile.id, accessToken], (err, results, fields) => {
+                    
+                    if(err) { return done(err, false) }
+                    
+                    db.query("SELECT * FROM users WHERE google_id = ?", [profile.id], (err, results, fields) => {
+                        
+                        if(err) { return done(err, false) }
+                        
+                        return done(null, results[0]);
+                    });
+                });
+                
+            } else {
+    
+                return done(null, results[0]);
+            }
+        });
+    });
+}));
 
 // trigger once a day to delete all homework
 schedule.scheduleJob("0 0 12 * * *", () => {
