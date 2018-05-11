@@ -147,7 +147,9 @@ passport.use(new GoogleStrategy({
         db.query("SELECT * FROM users WHERE google_id = ?", [profile.id], (err, results, fields) => {
     
             if(err) { return done(err) }
-    
+            
+            console.log(profile);
+            
             if(results.length === 0) {
                 
                 db.query("INSERT INTO users (username, google_id, google_token, google_image) VALUES (?, ?, ?, ?)", [profile.displayName, profile.id, accessToken, profile.image.url], (err, results, fields) => {

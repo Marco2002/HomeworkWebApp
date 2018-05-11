@@ -27,6 +27,7 @@ An online homework planner accessible for all classmates
         - MYSQL_USERNAME,
         - MYSQL_PASSWORD,
         - MYSQL_DB,
+        - VERSION
         
 ## Running the tests
 
