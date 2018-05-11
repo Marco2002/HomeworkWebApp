@@ -150,7 +150,7 @@ passport.use(new GoogleStrategy({
     
             if(results.length === 0) {
                 
-                db.query("INSERT INTO users (username, google_id, google_token) VALUES (?, ?, ?)", [profile.displayName, profile.id, accessToken], (err, results, fields) => {
+                db.query("INSERT INTO users (username, google_id, google_token, google_image) VALUES (?, ?, ?, ?)", [profile.displayName, profile.id, accessToken, profile.image.url], (err, results, fields) => {
                     
                     if(err) { return done(err, false) }
                     

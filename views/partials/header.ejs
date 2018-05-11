@@ -28,7 +28,7 @@
                                     
                                     <% if(title == "TITLE_HOMEWORK") {%>
                                     
-                                        <img class="logo" src="/res/homework_text.png">
+                                        <img class="margin-logo logo" src="/res/homework_text.png">
                                         
                                     <% } else if(texts[title]) { %>
 
@@ -72,8 +72,24 @@
                     </div>
                     <div class="row"></div>
                     <div class="row"></div>
-                    <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                    <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                    <div class="row no-m">
+                        <% if(user.google_image) {%>
+                        
+                            <div class="col s4">
+                                <img class="no-p responsive" src="<%= user.google_image%>">
+                            </div>
+                            <div class="col s8">
+                                <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
+                                <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                            </div>
+                            
+                        <% } else {%>
+                        
+                            <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
+                            <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                            
+                        <% } %>
+                    </div>
                 </div>
             </li>
 
@@ -95,7 +111,7 @@
                 <li><div class="divider"></div></li>
             <% } %>
 
-            <li><a class="collapsible-header" href="#"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
+            <li><a class="collapsible-header" href="/about"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
         </ul>
 
         <div class="row no-m">

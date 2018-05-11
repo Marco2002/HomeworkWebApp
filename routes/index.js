@@ -5,7 +5,14 @@ const router  = express.Router();
 
 // Index Route
 router.get("/", mid.isNotLoggedIn, (req, res) => {
-    res.render("index");
+    res.render("landing");
+});
+
+// About Route
+router.get("/about", (req, res) => {
+    res.render("about", {
+        version: process.env.VERSION
+    });
 });
 
 // Download Route

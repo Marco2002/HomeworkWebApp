@@ -7,19 +7,38 @@ p, h1, h2, h3, h4, h5 {
     margin-top: 0!important;
 }
 
+.no-p {
+    padding: 0!important;
+}
 #no-mp {
     margin:0;
     padding:0;
 }
 
+div.brand-logo {
+    width: 210px!important;
+}
+
+.margin-to-nav {
+    margin-top: 30px;
+}
+
+.margin-logo {
+    margin-top: 10px;
+}
+
 .b-img {
-    height: 100vh;
-    background-image: url(/res/slideNavBackground.jpg);
-    background-repeat: no-repeat;
+    background-image: url("/res/landing_background.png");
     background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
     margin:0;
     padding:0;
+}
+
+.responsive {
+    width: 100%;
+    height: auto;
 }
 
 #body-home {
@@ -35,7 +54,7 @@ p, h1, h2, h3, h4, h5 {
 }
 
 .margin {
-    margin-top: 15vh;
+    margin-top: 10vh;
 }
 
 .margin-t {
@@ -149,4 +168,9 @@ tr.row {
 
 .brand-logo {
     width: 90%!important;
+}
+
+.google_logo {
+    top: 6px;
+    right: 9px;
 }

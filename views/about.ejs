@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework Web App</title>
+        
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/res/logo.png">
+        
+        <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper blue">
+                <div class="container">
+                    <ul><li><script>document.write('<a href="' + document.referrer + '"><i class="material-icons">arrow_back</i></a>')</script></li></ul>
+                    <ul><li><div class="brand-logo center"><img class="margin-logo logo" src="/res/homework_text.png"></div></li></ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            
+            <h4 class="header blue-text margin-to-nav"><%= texts.ABOUT %></h4>
+            <div class="section">
+                <h5><%= texts.VERSION %></h5>
+                <p><%= version %></p>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5><%= texts.DEVELOPER %></h5>
+                <p>Marco Rodriguez</p>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5><%= texts.WEBSITE %></h5>
+                <p>hmwk.me</p>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5 href="#impressum"><%= texts.IMPRESSUM %></h5>
+                <a class="modal-trigger" href="#impressum"><%= texts.SHOW %></a>
+                <!-- Modal Structure -->
+                <div id="impressum" class="modal">
+                    <div class="modal-content">
+                        <h4>Impressum</h4>
+                        <p>This application is a project by:</br>
+                        </br>
+                        Marco Rodriguez de Paz</br>
+                        E-Mail: hmwkme@googlemail.com
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Close</a>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 class="blue-text header margin-t2"><%= texts.LICENSE_OPEN_SOURCE %></h4>
+            <div class="section">
+                <h5><%= texts.LICENSE %></h5>
+                <a class="modal-trigger" href="#license"><%= texts.SHOW %></a>
+                <!-- Modal Structure -->
+                <div id="license" class="modal">
+                    <div class="modal-content">
+                        <h4>MIT License</h4>
+                        Copyright (c) 2018 Marco Rodriguez de Paz</br>
+                        </br>
+                        Permission is hereby granted, free of charge, to any person obtaining a copy
+                        of this software and associated documentation files (the "Software"), to deal
+                        in the Software without restriction, including without limitation the rights
+                        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                        copies of the Software, and to permit persons to whom the Software is
+                        furnished to do so, subject to the following conditions:</br>
+                        </br>
+                        The above copyright notice and this permission notice shall be included in all
+                        copies or substantial portions of the Software.</br>
+                        </br>
+                        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                        SOFTWARE.</br>
+                        </br>
+                        <div class="divider"></div>
+                        </br>
+                        Part of this app was inspired by <span class="bold"> Vertretungsplan.app </span></br>
+                        </br>
+                        <span class="bold"> Materialize.css </span></br>
+                        Copyright (c) 2014-2017 Materialize</br>
+                        </br>
+                        <span class="bold"> Illustrations </span></br>
+                        messenger-app-for-mobile-in-flat-style:<a href='https://www.freepik.com/free-vector/messenger-app-for-mobile-in-flat-style_2022139.htm'>Designed by Freepik</a></br>
+                        laptop-mock-up-design: <a href='https://www.freepik.com/free-psd/laptop-mock-up-design_1041411.htm'>Designed by Freepik</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Close</a>
+                    </div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5>Open Source</h5>
+                <p>https://github.com/Marco2002/HomeworkWebApp</p>
+            </div>
+            
+        </div>
+       
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!-- Materialize -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <!-- script.js -->
+        <script src="/scripts/script.js"></script>
+    </body>
+</html>

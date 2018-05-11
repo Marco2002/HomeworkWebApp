@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework Web App</title>
+        
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/res/logo.png">
+        
+        <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div class="b-img">
+            <nav>
+                <div class="nav-wrapper blue">
+                    <div class="container">
+                        <ul class="left">
+                            <li><a href="/about"><i class="medium material-icons left">info</i><%= texts.ABOUT %></a></li>
+                            <li><a href="/download"><i class="medium material-icons left">file_download</i><%= texts.DOWNLOAD %></a></li>
+                        </ul>
+                        <ul class="right hide-on-med-and-down">
+                            <li><a href="/login"><%= texts.LOGIN %></a><li>
+                            <li><a href="/register"><%= texts.SIGNUP %></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col s12 l6 margin">
+                        <img class="responsive" src="/res/homework_title.png">
+                        <h3 class="header white-text"><%= texts.APP_DESCRIPTION %></h3>
+                    </div>
+                    
+                    <div class="col s12 l6 margin-t">
+                        <img class="responsive" src="/res/homework_preview.png">
+                    </div>
+                </div>
+                
+                <div class="row no-m">
+                    <div class="card col s8 push-s2 l4 push-l4 center">
+                        <h4><%= texts.GET_STARTED %></h4>
+                        <div class="row">
+                            <a href="/login" class="blue btn waves-effect waves-light "><%= texts.LOGIN %></a>
+                            <a href="/register" class="blue btn waves-effect waves-light"><%= texts.SIGNUP %></a>
+                        </div>
+                        <div class="row">
+                            <a href="/auth/google" class="blue btn waves-effect waves-light"><img class="google_logo" src="/res/google_logo.png" width="22" height="22"><%= texts.GOOGLE_SIGNIN %></a>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card no-m">
+            
+            <div class="container row no-m">
+                <div class="row"></div>
+                
+                <div class="margin-t col s12 l4">
+                    <div class="icon-block center">
+                        <i class="medium material-icons">group</i>
+                        <h4 class="header"><%= texts.FOR_WHOLE_CLASS %></h4>
+                        <div class="col">
+                            <p class="flow-text"><%= texts.DES_1 %></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="margin-t col s12 l4">
+                    <div class="icon-block center">
+                        <i class="medium material-icons">edit</i>
+                        <h4 class="header">Easy to use</h4>
+                        <div class="col">
+                            <p class="flow-text"><%= texts.DES_2 %></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="margin-t col s12 l4">
+                    <div class="icon-block center">
+                        <i class="medium material-icons">attach_money</i>
+                        <h4 class="header">Free</h4>
+                        <div class="col">
+                            <p class="flow-text"><%= texts.DES_3 %></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row"></div>
+                <p class="divider"></p>
+                <div class="row"></div>
+                
+                <div class="center">
+                    <h4 class="header"><%= texts.DOWNLOAD %></h4>
+                    <p class="flow-text"><%= texts.DOWNLOAD_TEXT %><a href="/download"><%= texts.DOWNLOAD_HERE %></a></p>
+                </div>
+                
+                <div class="row"></div>
+                <p class="divider"></p>
+                <div class="row"></div>
+                
+                <div class="center">
+                    <a href="/about" class="blue btn waves-effect waves-light"><%= texts.ABOUT %><i class="medium material-icons right">info</i></a>
+                </div>
+                <div class="row"></div>
+            </div>
+        </div>
+    
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!-- Materialize -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <!-- script.js -->
+        <script src="/scripts/script.js"></script>
+    </body>
+</html>
