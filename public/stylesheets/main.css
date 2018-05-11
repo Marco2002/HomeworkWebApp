@@ -10,6 +10,12 @@ p, h1, h2, h3, h4, h5 {
 .no-p {
     padding: 0!important;
 }
+
+.blue-background {
+    background-color: #2196f3;
+    height: 100vh;
+}
+
 #no-mp {
     margin:0;
     padding:0;
@@ -73,21 +79,17 @@ div.brand-logo {
     display: none;
 }
 
-.tabs .indicator{
-    background-color:#FFFFFF!important;
-}
-
 .tabs .tab a {
     color: #efebe9!important;
 }
 
 .tab a.active {
-    color: #0068bf!important;
-    background-color: #42a5f5!important;
+    color: #FFFFFF!important;
 }
 
-.tabs .indicator{
-    background-color:000000!important;
+.tabs .indicator {
+    height: 3px!important;
+    background-color: #FFFFFF!important;
 }
 
 .carousel .carousel-item {

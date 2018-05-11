@@ -23,7 +23,7 @@
                 <div class="navbar-fixed">
                     <nav class="nav-extended">
                         <div class="col s12 l11 right" id="no-mp">
-                            <div class="nav-wrapper blue darken-1">
+                            <div class="nav-wrapper blue">
                                 <div class="brand-logo center">
                                     
                                     <% if(title == "TITLE_HOMEWORK") {%>
@@ -70,26 +70,25 @@
                         <div class="slidenav-background">
                         </div>
                     </div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row no-m">
+                    
+                    
                         <% if(user.google_image) {%>
                         
-                            <div class="col s4">
-                                <img class="no-p responsive" src="<%= user.google_image%>">
-                            </div>
-                            <div class="col s8">
-                                <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                                <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                            <div class="row no-m">
+                                <div class="col s5 no-p">
+                                    <img class="no-p responsive" src="<%= user.google_image%>">
+                                </div>
                             </div>
                             
                         <% } else {%>
-                        
-                            <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                            <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
                             
+                            <div class="row"></div>
+                            <div class="row"></div>
+                    
                         <% } %>
-                    </div>
+                        <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
+                        <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                    
                 </div>
             </li>
 
