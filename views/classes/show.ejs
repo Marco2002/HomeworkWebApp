@@ -2,47 +2,71 @@
 
 <div class="container row no-m">
     <% include ../partials/flash %>
-    <h4 class="col s6 header"><%= r.class_name %></h4>
-    <div class="col s6 right-align">
-        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/edit" class="btn blue waves-light margin-t2"><%= texts.EDIT %></a>
-    </div>
-
 </div>
-    <hr class="row">
+
+<div class="container row no-m valign-wrapper">
+    <h4 class="col s6 l4"><%= r.class_name %></h4>
+    <div class="col s6 l8">
+        <a href="#change-name" class="btn blue waves-light right modal-trigger"><%= texts.CHANGE_NAME %><i class="material-icons right">edit</i></a>
+        
+        
+        <div id="change-name" class="modal">
+            <form action="/schools/<%=user.school_id%>/classes/<%=user.class_id%>?_method=PUT" method="POST">
+                <div class="modal-content no-p-bot">
+                    <h4><%= texts.CHANGE_NAME %></h4>
+                    <div class="row"></div>
+                    <div class="input-field">
+                        <input id="name" name="class[name]" type="text" class="validate" value="<%=r.class_name%>" maxlength="10">
+                        <label for="name"><%= texts.NAME %></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn white black-text">Cancel</a>
+                    <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    
 <div class="container">
-    <table>
-        <tr class="row">
-            <th class="col s12"><h5 class="bold"><%= texts.MEMBERS %></h5></th>
-        </tr>
-
+    <p class="divider"></p>
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th><h6 class="bold no-m"><%= texts.MEMBERS %></h6></th>
+            </tr>
+        </thead>
+        
+        <tbody>
         <% results.forEach((m) => { %>
-            <tr class="row no-m">
+            <tr>
 
-                <td class="col s7 l10">
+                <td>
                     <% if(m.username == user.username) {%>
-                        <h5 class="blue-text"><%= texts.YOU %></h5>
+                        <h6 class="blue-text"><%= texts.YOU %></divh6>
                     <% } else { %>
-                        <h5><%= m.username %></h5>
-                    <% } %></h5>
-
+                        <h6><%= m.username %></h6>
+                    <% } %>
+                </td>
+                <td class="center">
                     <% if(m.is_admin) { %>
-                        <h5 class="green-text">Admin</h5>
+                        <h6 class="green-text">Admin</h6>
                     <% } else { %>
-                        <h5 class="yellow-text text-darken-3"><%= texts.CLASSMATE %></h5>
+                        <h6 class="yellow-text text-darken-3"><%= texts.CLASSMATE %></h6>
                     <% } %>
                 </td>
 
-                <td class="col s5 l2 center-align">
-                    <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/kick" class="btn red waves-light margin-t2"><%= texts.KICK %></a>
-
+                <td>
                     <% if(!m.is_admin) { %>
-                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/admin" class="btn green waves-light margin-t col s12"><%= texts.MAKE_ADMIN %></a>
+                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/admin" class="btn green waves-light right"><%= texts.MAKE_ADMIN %></a>
                     <% } else { %>
-                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/deadmin" class="btn yellow black-text waves-light margin-t col s12"><%= texts.REMOVE_ADMIN %></a>
+                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/deadmin" class="btn yellow black-text waves-light right"><%= texts.REMOVE_ADMIN %></a>
                     <% } %>
                 </td>
             </tr>
         <% }); %>
+        </tbody>
     </table>
 </div>
 

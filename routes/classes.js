@@ -73,21 +73,6 @@ router.get("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
     });
 });
 
-// Edit Route
-router.get("/:class_id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT * FROM classes WHERE id = ?", [req.params.class_id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Couldn't find you class", `/classes/${req.params.class_id}/homework`)}
-
-        res.render("classes/edit", {
-            r: results[0]
-        });
-    });
-});
-
 // Update Route
 router.put("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
@@ -104,40 +89,6 @@ router.put("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
 
         req.flash("success", "Updated class successfully");
         res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-    });
-});
-
-// Kick Route
-router.get("/:class_id/users/:id/kick", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT id FROM users WHERE is_admin = 1 AND class_id = ?", [req.params.class_id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while removing user from admins", `/schools/${req.params.school_id}/classes/${req.params.class_id}`)}
-
-        if(results.length == 1 && req.params.id == results[0].id) {
-            fun.error(req, res, err, "You cannot remove the last admin", `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-        } else {
-
-            db.query("UPDATE users SET class_id = 0, is_admin = 0 WHERE id = ?", [req.params.id], (err, results, fields) => {
-
-                if(err) {return fun.error(req, res, err, "Error while kicking from class", `/schools/${req.params.school_id}/classes/${req.params.class_id}`)}
-
-                db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
-
-                    if(err) {return fun.error(req, res, err, "Error updating session", `/logout`)}
-
-                    req.login(results[0], (err) => {
-
-                        if(err) {return fun.error(req, res, err, "Error updating session", `/logout`)}
-
-                        req.flash("success", "Kicked user out of class successfully");
-                        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-                    });
-                });
-            });
-        }
     });
 });
 

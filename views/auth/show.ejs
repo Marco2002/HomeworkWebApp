@@ -2,24 +2,26 @@
 
 <div class="container row no-m">
 
-    <h4 class="header"><%= user.username%></h4>
 
-    <p class="divider"></p>
-
-    <table class="striped">
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th><h5 class="bold no-m"><%= user.username%></h5></th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
-                <td class="bold"><%= texts.SCHOOL %>:</td>
-                <td class="center"><%= r.school_name %></td>
-                <td class="center"><a class="btn blue" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></td>
+                <td><h6 class="bold"><%= texts.SCHOOL %>:</h6></td>
+                <td class="center"><h6><%= r.school_name %></h6></td>
+                <td class="center"><h6><a class="btn blue" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
             </tr>
             <tr>
-                <td class="bold"><%= texts.CLASS %>:</td>
-                <td class="center"><%= r.class_name %></td>
-                <td class="center"><a class="btn blue" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></td>
+                <td><h6 class="bold"><%= texts.CLASS %>:</h6></td>
+                <td class="center"><h6><%= r.class_name %></h6></td>
+                <td class="center"><h6><a class="btn blue" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
             </tr>
             <tr>
-                <td class="bold row"><%= texts.LANGUAGE %>:</td>
+                <td><h6 class="bold"><%= texts.LANGUAGE %>:</h6></td>
                 <td><form action="#">
                     <p class="center-align">
                         <input <%=(lang=="en"?"checked":"")%> name="lang" type="radio" id="en" />
@@ -30,11 +32,6 @@
                         <label for="de"><%= texts.GERMAN %></label>
                     </p>
                 </form></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
                 <td></td>
             </tr>
         </tbody>

@@ -24,11 +24,11 @@
                     <nav class="nav-extended">
                         <div class="col s12 l11 right" id="no-mp">
                             <div class="nav-wrapper blue">
-                                <div class="brand-logo center">
+                                <div class="brand-logo center truncate">
                                     
                                     <% if(title == "TITLE_HOMEWORK") {%>
                                     
-                                        <img class="margin-logo logo" src="/res/homework_text.png">
+                                        <img class="margin-logo logo responsive" src="/res/homework_title.png">
                                         
                                     <% } else if(texts[title]) { %>
 
@@ -75,7 +75,7 @@
                         <% if(user.google_image) {%>
                         
                             <div class="row no-m">
-                                <div class="col s5 no-p">
+                                <div class="col s4 no-p">
                                     <img class="no-p responsive" src="<%= user.google_image%>">
                                 </div>
                             </div>

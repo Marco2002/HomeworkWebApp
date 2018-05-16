@@ -3,7 +3,9 @@
 
 <div class="container">
     <div class="row no-m">
-        <% include ./partials/flash %>
+        <div class="col s12">
+            <% include ./partials/flash %>
+        </div>
         <div id="homework">
             <% if(homework[0].title) { %>
             <% homework.forEach(h => {%>
@@ -206,6 +208,11 @@
             <% }) %>
             <% } %>
         </div>
+        <% if(user.is_admin == 1) { %>
+            <div class="bot">
+                <a class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
+            </div>
+        <% } %>
     </div>
 </div>
 

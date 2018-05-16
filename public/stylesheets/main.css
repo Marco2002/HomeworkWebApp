@@ -11,6 +11,12 @@ p, h1, h2, h3, h4, h5 {
     padding: 0!important;
 }
 
+.btn {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+
 .blue-background {
     background-color: #2196f3;
     height: 100vh;
@@ -21,7 +27,7 @@ p, h1, h2, h3, h4, h5 {
     padding:0;
 }
 
-div.brand-logo {
+img.logo {
     width: 210px!important;
 }
 
@@ -153,12 +159,6 @@ div.brand-logo {
     background-repeat: no-repeat;
 }
 
-tr.row {
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    border-bottom-color: grey;
-}
-
 .card-margin {
     margin-top: 0;
     margin-bottom: 8px;
@@ -168,11 +168,21 @@ tr.row {
     width: 4.5em;
 }
 
-.brand-logo {
-    width: 90%!important;
-}
-
 .google_logo {
     top: 6px;
     right: 9px;
+}
+
+h6 {
+    font-size: 1.3em;
+}
+
+.no-p-bot {
+    padding-bottom: 0!important;
+}
+
+.bot {
+    position: fixed;
+    right: 23px;
+    bottom: 23px;
 }
