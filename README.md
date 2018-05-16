@@ -1,5 +1,5 @@
 # Homework Web Application
-An online homework planner accessible for all classmates
+One howework planner for the whole class
 
 ## Prerequisites
 * nodejs ^6.12.3
