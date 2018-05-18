@@ -24,13 +24,9 @@
                     <div class="col s12 right" id="no-mp">
                         <div class="nav-wrapper blue">
                             <div class="container">
-                                <ul><li><div class="brand-logo center truncate">
-                                    
-                                    <% if(title == "TITLE_HOMEWORK") {%>
-                                    
-                                        <img class="margin-logo logo responsive" src="/res/homework_title.png">
-                                        
-                                    <% } else if(texts[title]) { %>
+                                <ul><li><div class="nav-title-width brand-logo center truncate">
+ 
+                                    <% if(texts[title]) { %>
     
                                         <%= texts[title] %>
     

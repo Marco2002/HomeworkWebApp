@@ -186,3 +186,7 @@ h6 {
 .card-margin-bot {
     margin-bottom: 45px!important;
 }
+
+.nav-title-width {
+    width: 72%;
+}

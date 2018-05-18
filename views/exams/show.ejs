@@ -36,6 +36,7 @@
                     <h4 class="no-m center-align"><%= r.title %></h4>
                 </div>
                 
+                <% if(r.topic) {%>
                 <table>
                     <thead>
                         <tr>
@@ -52,6 +53,8 @@
                         <% }) %>
                     </tbody>
                 </table>
+                
+                <% } %>
                 
                 <div class="row"></div>
                 <p class="divider"></p>
