@@ -1,46 +1,67 @@
+<% let color, textColor %>
+<% switch(r.subject) { case "Maths": %>
+    <% color="blue"; textColor="white"; break; %>
+    <% case "Language Arts": color="red"; textColor="white"; break; %>
+    <% case "Foreign Language 1": color="yellow"; textColor="black"; break; %>
+    <% case "Foreign Language 2": color="purple"; textColor="white"; break; %>
+    <% case "Foreign Language 3": color="pink accent-2"; textColor="white"; break; %>
+    <% case "Music": color="teal accent-4"; textColor="white"; break; %>
+    <% case "History": color="indigo"; textColor="white"; break; %>
+    <% case "Geography": color="brown"; textColor="white"; break; %>
+    <% case "Biology": color="green"; textColor="white"; break; %>
+    <% case "Physical Education": color="green accent-4"; textColor="white"; break; %>
+    <% case "Politics": color="grey"; textColor="white"; break; %>
+    <% case "Religion": color="amber"; textColor="white"; break; %>
+    <% case "Philosophy": color="cyan"; textColor="white"; break; %>
+    <% case "Ethics": color="light-blue"; textColor="white"; break; %>
+    <% case "Physics": color="deep-purple"; textColor="white"; break; %>
+    <% case "Science": color="blue-grey"; textColor="white"; break; %>
+    <% case "Chemistry": color="deep-orange"; textColor="white"; break; %>
+    <% case "Art": color="pink"; textColor="white"; break; %>
+    <% case "Other": color="white"; textColor="black"; break; %>
+<% } %>
+
 <% include ../partials/header %>
 
 <div class="container">
+    
     <% include ../partials/flash %>
-    <div class="card">
+    
+    <div class="card <%= color %> <%=textColor%>-text">
         <div class="card-content">
-            <div class="row">
-                <h3 class="col no-m"><%= r.title %></h3>
-            </div>
-
-            <% if (r.topic) {%>
-            <div class="row no-m">
-                <h5 class="col s8"><%= texts.TOPICS %></h5>
-                <h5 class="col s4 right-align"><%= texts.LEARN %></h5>
-            </div>
-            <hr>
-            <% } %>
-            <% results.forEach(t => {%>
-            <div class="row no-m">
-                <h6 class="col s8"><%=t.topic%></h6>
-                <p class="col s4 margin-t right-align"><%=t.learn%><p>
-            </div>
-            <hr>
-            <% }); %>
-
-            <div class="row"></div>
-            <div class="row no-m">
-                <% if(user.is_admin) { %>
+            
+            <div class="container">
                 
-                    <div class="container col s4 m2">
-                        <div class="row no-m">
-                            <a href="/classes/<%=r.class_id%>/exams/<%=r.exam_id%>/edit" class="waves-effect waves-light btn yellow accent-2 black-text col s10 push-s1"><%= texts.EDIT %><i class="material-icons left">create</i></a>
-                        </div>
-                    </div>
-                    <div class="container col s4 m2">
-                        <div class="row no-m">
-                            <a class="red accent-4 waves-effect waves-light btn modal-trigger col s10 push-s1" href="#warning"><%= texts.DELETE %><i class="material-icons left">delete</i></a>
-                        </div>
-                    </div>
+                 <div class="row">
+                    <h4 class="no-m center-align"><%= r.title %></h4>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h6 class="bold"><%= texts.TOPICS %></h6></th>
+                            <th><h6 class="right-align bold"><%= texts.LEARN %></h6></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% results.forEach(t => {%>
+                        <tr>
+                            <td><h6><%= t.topic %></h6></td>
+                            <td><h6 class="right-align"><%= t.learn %></h6></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                
+                <div class="row"></div>
+                <p class="divider"></p>
+                <div class="row"></div>
+                
+                <% if(user.is_admin) { %>
+                    <a href="/classes/<%=r.class_id%>/exams/<%=r.exam_id%>/edit"><i class="left material-icons <%=textColor%>-text">create</i></a>
+                    <a class="modal-trigger" href="#warning"><i class="left material-icons <%=textColor%>-text">delete</i></a>
                     
-                    <p class="col right s4 l8 right-align"><%=r.date%></p>
-                    
-                    <div id="warning" class="modal">
+                    <div id="warning" class="modal black-text">
                         <div class="modal-content">
                             <h5 class="s12 center"><%= texts.DELETE_WARNING_EXAM %></h5>
                             <h6 class="s12 center"><%= texts.DELETE_WARNING %></h6>
@@ -52,9 +73,10 @@
                             </div>
                         </form>
                     </div>
-                
                 <% } %>
-
+                
+                <p class="col right s8 right-align"><%= texts.UNTIL %> <%=r.date%></p>
+                <div class="card-margin-bot"></div>
             </div>
         </div>
     </div>

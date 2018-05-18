@@ -82,7 +82,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
 
         if(err) {return fun.error(req, res, err, "Error while adding your homework", `/classes/${req.params.class_id}/homework`)}
 
-        req.flash("success", "Added homework successfully");
+        req.flash("success", "Added homework");
         res.redirect(`/classes/${req.params.class_id}/homework`);
     });
 });
@@ -114,7 +114,7 @@ router.delete("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res)
 
         if(err) {return fun.error(req, res, err, "Error while deleting your homework", `/classes/${req.params.class_id}/homework`)}
 
-        req.flash("success", "Deleted homework successfully");
+        req.flash("success", "Deleted homework");
         res.redirect(`/classes/${req.params.class_id}/homework`);
     });
 });
@@ -162,7 +162,7 @@ router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
 
         if(err) {return fun.error(req, res, err, "Error while updating your homework", `/classes/${req.params.class_id}/homework`)}
 
-        req.flash("success", "Updated homework successfully");
+        req.flash("success", "Updated homework");
         res.redirect(`/classes/${req.params.class_id}/homework`);
     });
 });

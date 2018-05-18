@@ -36,7 +36,7 @@ img.logo {
 }
 
 .margin-logo {
-    margin-top: 10px;
+    margin-top: 14px!important;
 }
 
 .b-img {
@@ -75,10 +75,6 @@ img.logo {
 
 .margin-t2 {
     margin-top: 3%;
-}
-
-.logo {
-    margin-top: 9px!important;
 }
 
 .hide {
@@ -174,7 +170,7 @@ img.logo {
 }
 
 h6 {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .no-p-bot {
@@ -185,4 +181,8 @@ h6 {
     position: fixed;
     right: 23px;
     bottom: 23px;
+}
+
+.card-margin-bot {
+    margin-bottom: 45px!important;
 }

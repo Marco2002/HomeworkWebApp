@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework Web App</title>
+        
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/res/logo.png">
+        
+        <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        <!-- FontAwesome icons -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body id="no-mp">
+        <div class="row" id="no-mp">
+
+            <div class="navbar-fixed">
+                <nav class="nav-extended">
+                    <div class="col s12 l11 right" id="no-mp">
+                        <div class="nav-wrapper blue">
+                            <div class="brand-logo center truncate">
+                                
+                                <% if(title == "TITLE_HOMEWORK") {%>
+                                
+                                    <img class="margin-logo logo responsive" src="/res/homework_title.png">
+                                    
+                                <% } else if(texts[title]) { %>
+
+                                    <%= texts[title] %>
+
+                                <% } else { %>
+
+                                    <%= title %>
+
+                                <% } %>
+                            </div>
+
+                            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+                        </div>
+                        
+                        <div class="nav content">
+
+                            <ul id="tabs-swipe-demo" class="tabs blue">
+                                <div class="col l2"></div>
+                                <li class="tab col s6 l4"><a class="active" href="#homework"><%= texts.HOMEWORK %></a></li>
+                                <li class="tab col s6 l4"><a class="" href="#exams"><%= texts.EXAMS %></a></li>
+                                <div class="col l2"></div>
+                            </ul>
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <ul id="slide-out" class="side-nav fixed">
+            <li>
+                <div class="user-view">
+                    <div class="background">
+                        <div class="slidenav-background">
+                        </div>
+                    </div>
+                    
+                    
+                        <% if(user.google_image) {%>
+                        
+                            <div class="row no-m">
+                                <div class="col s4 no-p">
+                                    <img class="no-p responsive" src="<%= user.google_image%>">
+                                </div>
+                            </div>
+                            
+                        <% } else {%>
+                            
+                            <div class="row"></div>
+                            <div class="row"></div>
+                    
+                        <% } %>
+                        <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
+                        <p class="no-m bold"><%=r.school_name%> - <%=r.class_name%></p>
+                    
+                </div>
+            </li>
+
+            <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
+
+            <% if(user.is_admin) { %>
+                <li><a class="collapsible-header" href="/schools/<%=r.school_id%>/classes/<%=r.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
+            <% } %>
+
+            <li><div class="divider"></div></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
+            <li><div class="divider"></div></li>
+
+            <% if(user.is_admin) { %>
+
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=r.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
+                <li><div class="divider"></div></li>
+            <% } %>
+
+            <li><a class="collapsible-header" href="/about"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
+        </ul>
+
+        <div class="row no-m">
+            <div class="col s12 l11 push-l1" id="body-home">

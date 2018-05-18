@@ -93,7 +93,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
             }
         }
 
-        req.flash("success", "Added exam successfully");
+        req.flash("success", "Added exam");
         res.redirect(`/classes/${req.params.class_id}/exams`);
     });
 });
@@ -130,7 +130,7 @@ router.delete("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isA
 
             if(err) {return fun.error(req, res, err, "Error while deleting your exam's topics", `/classes/${req.params.class_id}/exams`)}
 
-            req.flash("success", "Deleted exam successfully");
+            req.flash("success", "Deleted exam");
             res.redirect(`/classes/${req.params.class_id}/exams`);
         });
     });
@@ -195,7 +195,7 @@ router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmi
 
             }
 
-            req.flash("success", "Updated exam successfully");
+            req.flash("success", "Updated exam");
             res.redirect(`/classes/${req.params.class_id}/homework`);
         });
     });

@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
         
         if(err) { return fun.error(req, res, err, "Error while adding School", "/schools/new") }
         
-        req.flash("success", "Added School successfully");
+        req.flash("success", "Added School");
         res.redirect("/");
     });
 });

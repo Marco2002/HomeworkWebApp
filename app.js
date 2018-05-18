@@ -148,8 +148,6 @@ passport.use(new GoogleStrategy({
     
             if(err) { return done(err) }
             
-            console.log(profile);
-            
             if(results.length === 0) {
                 
                 db.query("INSERT INTO users (username, google_id, google_token, google_image) VALUES (?, ?, ?, ?)", [profile.displayName, profile.id, accessToken, profile.photos[0].value], (err, results, fields) => {

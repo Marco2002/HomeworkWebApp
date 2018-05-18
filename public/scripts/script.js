@@ -112,22 +112,22 @@ $(function() {
         }
     
         if(formConfigTitle() && formConfigDate() && formConfigDes() && formConfigSubjectName() && formConfigSubject() == true) {
+            $(".hide").remove();
             $("#subjectName").prop("disabled", false);
             $("#form").submit();
         }
     }
 
     // Add Topic
-    var htmlCode = $("#topicContainer").html();
     
     this.addTopic = function() {
         
-        $("#topicForm").append('<div id="topicContainer">' + htmlCode + "</div>");
+        $(".hide").first().removeClass("hide");
     }
     
     // Remove Topic
     this.removeTopic = function() {
-        $('#topicContainer').last().remove();
+        $('#topicContainer:not(.hide)').last().addClass("hide");
     }
     
     // Close Alert

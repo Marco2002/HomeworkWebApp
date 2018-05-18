@@ -87,7 +87,7 @@ router.put("/:class_id", mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
 
         if(err) {return fun.error(req, res, err, "Error while updating class", `/schools/${req.params.school_id}/classes/${req.params.class_id}`)}
 
-        req.flash("success", "Updated class successfully");
+        req.flash("success", "Updated class");
         res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
 });
@@ -101,7 +101,7 @@ router.get("/:class_id/users/:id/admin", mid.isLoggedIn, mid.updateUser, mid.isP
 
         if(err) {return fun.error(req, res, err, "Error while making user admin", `/schools/${req.params.school_id}/classes/${req.params.class_id}`)}
 
-        req.flash("success", "Made admin successfully");
+        req.flash("success", "Made admin");
         res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
 });
@@ -131,7 +131,7 @@ router.get("/:class_id/users/:id/deadmin", mid.isLoggedIn, mid.updateUser, mid.i
 
                         if(err) {return fun.error(req, res, err, "Error updating session", `/logout`)}
 
-                        req.flash("success", "Removed admin successfully");
+                        req.flash("success", "Removed admin");
                         res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
                     });
                 });

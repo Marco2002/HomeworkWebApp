@@ -1,4 +1,4 @@
-<% include ./partials/header %>
+<% include ./partials/headerHome %>
 <% let color, prevDate, ePrevDate %>
 
 <div class="container">
@@ -11,62 +11,25 @@
             <% homework.forEach(h => {%>
             <!-- Get the color -->
             <% switch(h.subject) { case "Maths": %>
-                <% color="blue"; %>
-                <% break; %>
-            <% case "Language Arts": %>
-                <% color="red"; %>
-                <% break; %>
-            <% case "Foreign Language 1": %>
-                <% color="yellow"; %>
-                <% break; %>
-            <% case "Foreign Language 2": %>
-                <% color="purple"; %>
-                <% break; %>
-            <% case "Foreign Language 3": %>
-                <% color="pink accent-2"; %>
-                <% break; %>
-            <% case "Music": %>
-                <% color="teal accent-4"; %>
-                <% break; %>
-            <% case "History": %>
-                <% color="indigo"; %>
-                <% break %>
-            <% case "Geography": %>
-                <% color="brown"; %>
-                <% break; %>
-            <% case "Biology": %>
-                <% color="green"; %>
-                <% break; %>
-            <% case "Physical Education": %>
-                <% color="green accent-4"; %>
-                <% break; %>
-            <% case "Politics": %>
-                <% color="grey"; %>
-                <% break; %>
-            <% case "Religion": %>
-                <% color="amber"; %>
-                <% break; %>
-            <% case "Philosophy": %>
-                <% color="cyan"; %>
-                <% break; %>
-            <% case "Ethics": %>
-                <% color="light-blue"; %>
-                <% break; %>
-            <% case "Physics": %>
-                <% color="deep-purple"; %>
-                <% break; %>
-            <% case "Science": %>
-                <% color="blue-grey"; %>
-                <% break; %>
-            <% case "Chemistry": %>
-                <% color="deep-orange"; %>
-                <% break; %>
-            <% case "Art": %>
-                <% color="pink"; %>
-                <% break; %>
-            <% case "Other": %>
-                <% color="white"; %>
-                <% break; %>
+                <% color="blue"; break; %>
+                <% case "Language Arts": color="red"; break; %>
+                <% case "Foreign Language 1": color="yellow"; break; %>
+                <% case "Foreign Language 2": color="purple"; break; %>
+                <% case "Foreign Language 3": color="pink accent-2"; break; %>
+                <% case "Music": color="teal accent-4"; break; %>
+                <% case "History": color="indigo"; break; %>
+                <% case "Geography": color="brown"; break; %>
+                <% case "Biology": color="green"; break; %>
+                <% case "Physical Education": color="green accent-4"; break; %>
+                <% case "Politics": color="grey"; break; %>
+                <% case "Religion": color="amber"; break; %>
+                <% case "Philosophy": color="cyan"; break; %>
+                <% case "Ethics": color="light-blue"; break; %>
+                <% case "Physics": color="deep-purple"; break; %>
+                <% case "Science": color="blue-grey";  break; %>
+                <% case "Chemistry": color="deep-orange";  break; %>
+                <% case "Art": color="pink"; break; %>
+                <% case "Other": color="white"; break; %>
             <% } %>
             
             <% if(prevDate != h.date) { %>
@@ -112,62 +75,25 @@
             <% exams.forEach(e => { %>
             <!-- Get the color -->
             <% switch(e.subject) { case "Maths": %>
-                <% color="blue"; %>
-                <% break; %>
-            <% case "Language Arts": %>
-                <% color="red"; %>
-                <% break; %>
-            <% case "Foreign Language 1": %>
-                <% color="yellow"; %>
-                <% break; %>
-            <% case "Foreign Language 2": %>
-                <% color="purple"; %>
-                <% break; %>
-            <% case "Foreign Language 3": %>
-                <% color="pink accent-2"; %>
-                <% break; %>
-            <% case "Music": %>
-                <% color="teal accent-4"; %>
-                <% break; %>
-            <% case "History": %>
-                <% color="indigo"; %>
-                <% break %>
-            <% case "Geography": %>
-                <% color="brown"; %>
-                <% break; %>
-            <% case "Biology": %>
-                <% color="green"; %>
-                <% break; %>
-            <% case "Physical Education": %>
-                <% color="green accent-4"; %>
-                <% break; %>
-            <% case "Politics": %>
-                <% color="grey"; %>
-                <% break; %>
-            <% case "Religion": %>
-                <% color="amber"; %>
-                <% break; %>
-            <% case "Philosophy": %>
-                <% color="cyan"; %>
-                <% break; %>
-            <% case "Ethics": %>
-                <% color="light-blue"; %>
-                <% break; %>
-            <% case "Physics": %>
-                <% color="deep-purple"; %>
-                <% break; %>
-            <% case "Science": %>
-                <% color="blue-grey"; %>
-                <% break; %>
-            <% case "Chemistry": %>
-                <% color="deep-orange"; %>
-                <% break; %>
-            <% case "Art": %>
-                <% color="pink"; %>
-                <% break; %>
-            <% case "Other": %>
-                <% color="white"; %>
-                <% break; %>
+                <% color="blue"; break; %>
+                <% case "Language Arts": color="red"; break; %>
+                <% case "Foreign Language 1": color="yellow"; break; %>
+                <% case "Foreign Language 2": color="purple"; break; %>
+                <% case "Foreign Language 3": color="pink accent-2"; break; %>
+                <% case "Music": color="teal accent-4"; break; %>
+                <% case "History": color="indigo"; break; %>
+                <% case "Geography": color="brown"; break; %>
+                <% case "Biology": color="green"; break; %>
+                <% case "Physical Education": color="green accent-4"; break; %>
+                <% case "Politics": color="grey"; break; %>
+                <% case "Religion": color="amber"; break; %>
+                <% case "Philosophy": color="cyan"; break; %>
+                <% case "Ethics": color="light-blue"; break; %>
+                <% case "Physics": color="deep-purple"; break; %>
+                <% case "Science": color="blue-grey";  break; %>
+                <% case "Chemistry": color="deep-orange";  break; %>
+                <% case "Art": color="pink"; break; %>
+                <% case "Other": color="white"; break; %>
             <% } %>
             
             <% if(ePrevDate != e.date) { %>
@@ -210,7 +136,7 @@
         </div>
         <% if(user.is_admin == 1) { %>
             <div class="bot">
-                <a class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
+                <a href="/classes/<%=r.class_id%>/homework/new" class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
             </div>
         <% } %>
     </div>
