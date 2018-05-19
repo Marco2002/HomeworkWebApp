@@ -42,24 +42,33 @@ $(function() {
     
     // check which subject
     $("#homeworkSubject").change(function() {
+        $("#subjectNameModal").modal({dismissible: false});
         var subject = $("#homeworkSubject")[0].value
         
         if ((subject == "Other") || (subject == "Foreign Language 1") || (subject == "Foreign Language 2") || (subject == "Foreign Language 3")) {
-            $("#subjectName").prop("disabled", false);
+            $("#subjectNameModal").modal("open");
             $("#subjectName").val("");
         } else {
             $("#subjectName").val(subject);
-            $("#subjectName").prop("disabled", true);
         }
     });
     
+    // subject modal close
+    $("#subjectNameSubmit").click(function() {
+        if($("#subjectName").val() != undefined && $("#subjectName").val() != "") {
+            $("#subjectNameModal").modal("close");
+        } else {
+            Materialize.toast('Please enter a subject name!', 4000);
+        }
+    })
+    
     // Form Configuration
-    this.formConfig = function() {
+    $("#btn-submit").click(function() {
         
         function formConfigTitle() {
             var x = $("#homeworkTitle").val();
             if (x == "") { 
-                Materialize.toast('Please enter a value for the title!', 4000);
+                Materialize.toast('Please enter the title!', 4000);
             } else if( x.length > 40 ) {
                 Materialize.toast('Title cant be longer than 40 characters!', 4000);
             } else {
@@ -70,7 +79,7 @@ $(function() {
         function formConfigDate() {
             var x = $("#homeworkDate").val();
             if(x == "") { 
-                Materialize.toast('Please enter a value for the deadline!', 4000);
+                Materialize.toast('Please enter the deadline!', 4000);
             } else {
                 return true;
             }
@@ -83,7 +92,7 @@ $(function() {
             
             var x = $("#homeworkDescription").val();
             if (x == "") { 
-                Materialize.toast('Please enter a value for the description!', 4000);
+                Materialize.toast('Please enter a description!', 4000);
             } else if( x.length > 500) {
                 Materialize.toast('Description cant be longer than 300 characters!', 4000);
             } else {
@@ -94,41 +103,29 @@ $(function() {
         function formConfigSubject() {
             var x = $("#homeworkSubject").val();
             if (x == undefined) { 
-                Materialize.toast('Please enter a value for the subject!', 4000);
+                Materialize.toast('Please enter a subject!', 4000);
             } else {
                 return true;
             }
         }
     
-        function formConfigSubjectName() {
-            var x = $("#subjectName").val();
-            if (x == undefined || x == "") { 
-                Materialize.toast('Please enter a value for the subject name!', 4000);
-            } else if( x.length > 20 ) {
-                Materialize.toast('Subject name cant be longer than 20 characters!', 4000);
-            } else {
-                return true;
-            }
-        }
-    
-        if(formConfigTitle() && formConfigDate() && formConfigDes() && formConfigSubjectName() && formConfigSubject() == true) {
+        if(formConfigTitle() && formConfigDate() && formConfigDes() && formConfigSubject() == true) {
             $(".hide").remove();
             $("#subjectName").prop("disabled", false);
             $("#form").submit();
         }
-    }
+    });
 
     // Add Topic
-    
-    this.addTopic = function() {
+    $("#btnAddTopic").click(function() {
         
         $(".hide").first().removeClass("hide");
-    }
+    });
     
     // Remove Topic
-    this.removeTopic = function() {
+    $("#btnRemoveTopic").click(function() {
         $('#topicContainer:not(.hide)').last().addClass("hide");
-    }
+    });
     
     // Close Alert
     $(".alert").on("click", "#alert-close", function() {

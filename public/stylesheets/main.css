@@ -187,6 +187,8 @@ h6 {
     margin-bottom: 45px!important;
 }
 
-.nav-title-width {
-    width: 72%;
+@media only screen and (max-width: 600px) {
+    .nav-title-width {
+        width: 72%;
+    }
 }

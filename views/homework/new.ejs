@@ -1,10 +1,10 @@
 <% include ../partials/header %>
 
-<div class="container">
+<div class="container margin-to-nav">
     <% include ../partials/flash %>
     <div class="card">
+        <div class="row"></div>
         <form method="POST" action="/classes/<%=user.class_id%>/homework" id="form">
-            <div class="row"></div>
             <div class="container">
                 <div class="row no-m">
                     <div class="input-field col s12 m6">
@@ -15,7 +15,7 @@
                         <input name="homework[date]" id="homeworkDate" type="text" class="datepicker">
                         <label class="active" for="homeworkDate"><%= texts.DEADLINE %></label>
                     </div>
-                    <div class="input-field col s8">
+                    <div class="input-field col s12">
                         <select name="homework[subject]" id="homeworkSubject">
                             <option value="" disabled selected><%= texts.CHOOSE_SUBJECT %></option>
                             <option value="Maths"><%= texts.Maths %></option>
@@ -40,10 +40,19 @@
                         </select>
                         <label><%= texts.SUBJECT %></label>
                     </div>
-                    <div class="input-field col s4">
-                        <input disabled value=" " name="homework[subjectName]" id="subjectName" type="text" class="validate">
-                        <label for="disabled"><%= texts.SUBJECT_NAME %></label>
+                    
+                    <div id="subjectNameModal" class="modal">
+                        <div class="modal-content">
+                            <h5><%= texts.SUBJECT_NAME %></h5>
+                            <div class="input-field">
+                                <input value="" name="homework[subjectName]" id="subjectName" type="text" class="validate" maxlength="20">
+                            </div>
+                            <div class="center">
+                                <a class="blue btn waves-effect waves-light" id="subjectNameSubmit">OK</a>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="input-field col s12">
                         <textarea name="homework[description]" id="homeworkDescription" class="materialize-textarea" maxlength="500"></textarea>
                         <label class="active" for="homeworkDescription"><%= texts.TASK %></label>
@@ -52,7 +61,7 @@
             </div>
         </form>
         <div class="row center">
-            <button class="blue btn waves-effect waves-light" name="action" id="btn-submit" onclick="formConfig()"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+            <button class="blue btn waves-effect waves-light" id="btn-submit"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
         </div>
         <div class="row"></div>
     </div>

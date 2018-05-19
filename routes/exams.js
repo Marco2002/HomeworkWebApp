@@ -66,12 +66,19 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
 
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/homework/new`)}
+    if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/exams/new`)}
 
     const db = require("../db");
 
     const e = req.body.exam;
-    const topics = req.body.topics;
+    
+    let topics = req.body.topics;
+    if(!Array.isArray(topics.topic)) {
+        topics.topic = [topics.topic];
+    }
+    if(!Array.isArray(topics.learn)) {
+        topics.learn = [topics.learn];
+    }
 
     const date = moment(e.date, "DD.MM.YYYY").format("YYYY-MM-DD");
 
@@ -80,7 +87,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
         if(err) {return fun.error(req, res, err, "Error while adding your exam", `/classes/${req.params.class_id}/exams`)}
 
         if(topics) {
-
+            
             for(let i = 0; i < topics.topic.length; i++) {
 
                 if(topics.topic[i] != null && topics.topic[i] != "") {
@@ -168,8 +175,14 @@ router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmi
 
     const db = require("../db");
     const e = req.body.exam;
-    const topics = req.body.topics;
-
+    let topics = req.body.topics;
+    if(!Array.isArray(topics.topic)) {
+        topics.topic = [topics.topic];
+    }
+    if(!Array.isArray(topics.learn)) {
+        topics.learn = [topics.learn];
+    }
+    
     const date = moment(e.date, "DD.MM.YYYY").format("YYYY-MM-DD");
 
     db.query("UPDATE exams SET title = ?, subject = ?, subjectName = ?, date = ? WHERE exams.id = ?", [e.title, e.subject, e.subjectName, date, req.params.id], (err, results, fields) => {
