@@ -20,9 +20,4 @@ router.get("/about", (req, res) => {
     });
 });
 
-// Download Route
-router.get("/download", (req, res) => {
-    res.download("app/Homework.apk");
-});
-
 module.exports = router;

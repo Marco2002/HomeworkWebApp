@@ -71,11 +71,11 @@
                         
                         <% results.forEach(t => { %>
                         <div id="topicContainer">
-                            <div class="input-field col s7">
+                            <div class="input-field col s6">
                                 <input name="topics[topic]" id="examTopic" type="text" class="validate" value="<%=t.topic%>" maxlength="30">
                                 <label class="active" for="examTopic"><%= texts.TOPIC %></label>
                             </div>
-                            <div class="input-field col s5">
+                            <div class="input-field col s6">
                                 <input name="topics[learn]" id="examLearn" type="text" class="validate"value="<%=t.learn%>" maxlength="20">
                                 <label class="active" for="examLearn"><%= texts.LEARN %></label>
                             </div>
@@ -83,11 +83,11 @@
                         <% }) %>
                         <% for(let i = 0; i < (10 - results.length); i++) {%>
                             <div id="topicContainer" class="hide">
-                                <div class="input-field col s7">
+                                <div class="input-field col s6">
                                     <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                                     <label class="active" for="examTopic"><%= texts.TOPIC %></label>
                                 </div>
-                                <div class="input-field col s5">
+                                <div class="input-field col s6">
                                     <input name="topics[learn]" id="examLearn" type="text" class="validate" maxlength="20">
                                     <label class="active" for="examLearn"><%= texts.LEARN %></label>
                                 </div>
