@@ -3,22 +3,23 @@
 //=============================
 
 // Packages
-const express           = require("express");
-const bodyParser        = require("body-parser");
-const methodOverride    = require("method-override");
-const passport          = require("passport");
-const expressSession    = require("express-session");
-const flash             = require("connect-flash");
-const expressValidator  = require("express-validator");
-const moment            = require("moment");
-const cookieParser      = require('cookie-parser');
-const passwordHash      = require("password-hash");
-const schedule          = require("node-schedule");
-const path              = require('path');
-const i18n              = require("i18n-express");
-const LocalStrategy     = require("passport-local").Strategy;
-const GoogleStrategy    = require("passport-google-oauth").OAuth2Strategy;
-const MySQLStore        = require("express-mysql-session");
+const express             = require("express");
+const bodyParser          = require("body-parser");
+const methodOverride      = require("method-override");
+const passport            = require("passport");
+const expressSession      = require("express-session");
+const flash               = require("connect-flash");
+const expressValidator    = require("express-validator");
+const moment              = require("moment");
+const cookieParser        = require('cookie-parser');
+const passwordHash        = require("password-hash");
+const schedule            = require("node-schedule");
+const path                = require('path');
+const i18n                = require("i18n-express");
+const LocalStrategy       = require("passport-local").Strategy;
+const GoogleStrategy      = require("passport-google-oauth").OAuth2Strategy;
+const GoogleTokenStrategy = require('passport-google-id-token');
+const MySQLStore          = require("express-mysql-session");
 
 // Routes
 const indexRoutes     = require("./routes/index");
@@ -169,6 +170,42 @@ passport.use(new GoogleStrategy({
         });
     });
 }));
+
+// Google Token Strategy
+passport.use(new GoogleTokenStrategy({
+        clientID: process.env.GOOGLE_AUTH_CLIENT_ID
+    }, (parsedToken, googleId, done) => {
+        
+        process.nextTick(() => {
+        
+            const db = require("./db.js");
+        
+            db.query("SELECT * FROM users WHERE google_id = ?", [googleId], (err, results, fields) => {
+        
+                if(err) { return done(err) }
+                
+                if(results.length === 0) {
+                    
+                    db.query("INSERT INTO users (username, google_id, google_image) VALUES (?, ?, ?, ?)", [parsedToken.name, googleId, parsedToken.picture], (err, results, fields) => {
+                        
+                        if(err) { return done(err, false) }
+                        
+                        db.query("SELECT * FROM users WHERE google_id = ?", [googleId], (err, results, fields) => {
+                            
+                            if(err) { return done(err, false) }
+                            
+                            return done(null, results[0]);
+                        });
+                    });
+                    
+                } else {
+        
+                    return done(null, results[0]);
+                }
+            });
+        });
+    }
+));
 
 // trigger once a day to delete all homework
 schedule.scheduleJob("0 0 12 * * *", () => {

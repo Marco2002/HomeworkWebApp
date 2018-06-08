@@ -1,63 +1,41 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Homework Web App</title>
-    
-        <!-- Icon -->
-        <link rel="shortcut icon" href="/res/logo.png">
-        
-        <!-- Materialize -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-        <!-- main.css -->
-        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body class="blue-background">
 <% var selectedSchool; %>
+<% include ../partials/headerBasic %>
 
-
-        <div class="container">
-            <div class="row no-m">
-                <div class="col s12 l8 push-l2">
-                    <div class="margin"></div>
-                    <% include ../partials/flash %>
-                    <div class="card">
-                        <div class="card-content">
-                            <h4 class="center"><%= texts.SIGNUP %></h4>
-                            <form action="/register" method="POST">
-                                <div class="row no-m">
-                                    <div class="input-field col s12">
-                                        <input id="username" name="username" type="text" class="validate" maxlength="15">
-                                        <label for="username"><%= texts.USERNAME %></label>
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <input id="password" name="password" type="password" class="validate" maxlength="100">
-                                        <label for="password"><%= texts.PASSWORD %></label>
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <input id="reenterPassword" name="reenterPassword" type="password" class="validate" maxlength="100">
-                                        <label for="reenterPassword"><%= texts.REENTER_PASSWORD %></label>
-                                    </div>
+<div class="blue-background">
+    <div class="container">
+        <div class="row no-m">
+            <div class="col s12 l8 push-l2">
+                <div class="margin"></div>
+                <% include ../partials/flash %>
+                <div class="card">
+                    <div class="card-content">
+                        <h4 class="center"><%= texts.SIGNUP %></h4>
+                        <form action="/register" method="POST">
+                            <div class="row no-m">
+                                <div class="input-field col s12">
+                                    <input id="username" name="username" type="text" class="validate" maxlength="15">
+                                    <label for="username"><%= texts.USERNAME %></label>
                                 </div>
-                                <div class="row no-m center">
-                                    <button class="blue waves-effect waves-light btn"><%= texts.NEXT %><i class="material-icons right">navigate_next</i></button>
-                                    <div class="row"></div>
-                                    <p class="center col s12"><%= texts.HAVE_ACC %> <a href="/login"><%= texts.LOGIN %></a></p>
+                                <div class="input-field col s12">
+                                    <input id="password" name="password" type="password" class="validate" maxlength="100">
+                                    <label for="password"><%= texts.PASSWORD %></label>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="input-field col s12">
+                                    <input id="reenterPassword" name="reenterPassword" type="password" class="validate" maxlength="100">
+                                    <label for="reenterPassword"><%= texts.REENTER_PASSWORD %></label>
+                                </div>
+                            </div>
+                            <div class="row no-m center">
+                                <button class="blue waves-effect waves-light btn"><%= texts.NEXT %><i class="material-icons right">navigate_next</i></button>
+                                <div class="row"></div>
+                                <p class="center col s12"><%= texts.HAVE_ACC %> <a href="/login"><%= texts.LOGIN %></a></p>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- JQuery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <!-- Materialize -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-        <!-- script.js -->
-        <script src="/scripts/script.js"></script>
-        </body>
-</html>
+<% include ../partials/footerBasic %>

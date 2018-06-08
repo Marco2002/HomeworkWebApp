@@ -1,57 +1,38 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Homework Web App</title>
-    
-        <!-- Icon -->
-        <link rel="shortcut icon" href="/res/logo.png">
-        
-        <!-- Materialize -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-        <!-- main.css -->
-        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+<% var selectedSchool; %>
+<% include ../partials/headerBasic %>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body class="blue-background">
-        <div class="container">
-            <div class="row no-m">
-                <div class="col s12 l8 push-l2">
-                    <div class="margin"></div>
-                    <% include ../partials/flash %>
-                    <div class="card">
-                        <div class="card-content">
-                            <h4 class="center"><%= texts.SELECT_CLASS %></h4>
-                            <form action="/selectClass" method="POST">
-                                <div class="row">
-                                    <div class="input-field col s6 l9">
-                                        <select name="clas" id="class">
-                                            <option value="" disabled selected><%= texts.SELECT_CLASS %></option>
-                                            <% results.forEach(clas => { %>
-                                                <option value="<%=clas.id%>"><%=clas.name%></option>
-                                            <% }) %>
-                                        </select>
-                                        <label><%= texts.CLASS %></label>
-                                    </div>
-                                    <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.ADD_CLASS %></a>
+<div class="blue-background">
+    <div class="container">
+        <div class="row no-m">
+            <div class="col s12 l8 push-l2">
+                <div class="margin"></div>
+                <% include ../partials/flash %>
+                <div class="card">
+                    <div class="card-content">
+                        <h4 class="center"><%= texts.SELECT_CLASS %></h4>
+                        <form action="/selectClass" method="POST">
+                            <div class="row">
+                                <div class="input-field col s6 l9">
+                                    <select name="clas" id="class">
+                                        <option value="" disabled selected><%= texts.SELECT_CLASS %></option>
+                                        <% results.forEach(clas => { %>
+                                            <option value="<%=clas.id%>"><%=clas.name%></option>
+                                        <% }) %>
+                                    </select>
+                                    <label><%= texts.CLASS %></label>
                                 </div>
+                                <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 margin-t"><%= texts.ADD_CLASS %></a>
+                            </div>
 
-                                <div class="row no-m center">
-                                    <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="row no-m center">
+                                <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- JQuery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <!-- Materialize -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-        <!-- script.js -->
-        <script src="/scripts/script.js"></script>
-        </body>
-</html>
+<% include ../partials/footerBasic %>

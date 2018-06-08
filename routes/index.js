@@ -10,14 +10,25 @@ router.get("/", mid.isNotLoggedIn, (req, res) => {
 
 // Mobile Route
 router.get("/mobile", mid.isNotLoggedIn, (req, res) => {
-    res.render("mobile")
-})
+    res.render("mobile");
+});
 
 // About Route
 router.get("/about", (req, res) => {
-    res.render("about", {
+    res.render("about/about", {
         version: process.env.VERSION
     });
 });
+
+// Privacy Policy
+router.get("/PrivacyPolicy", (req, res) => {
+    res.render("about/privacy");
+});
+
+// Cookie Policy
+router.get("/CookiePolicy", (req, res) => {
+    res.render("about/cookie");
+});
+
 
 module.exports = router;

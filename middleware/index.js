@@ -1,4 +1,5 @@
-const fun = require("../functions");
+const fun       = require("../functions");
+const passport  = require("passport");
 
 let middlewareObj = {};
 
@@ -117,6 +118,15 @@ middlewareObj.updateUser = (req, res, next) => {
             });
         }
     });
+};
+
+middlewareObj.isLoggedInToken = (req, res, next) => {
+    
+    if(passport.authenticate('google-id-token')) {
+        return next();
+    }
+    
+    fun.error(req, res, "", "You must be logged in in order to do that", "/");
 };
 
 module.exports = middlewareObj;
