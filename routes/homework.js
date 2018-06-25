@@ -1,169 +1,200 @@
 //======================
-// /homework routing
+// Homework Routes
 //======================
 
-// Packages
-const express      = require("express");
-const moment       = require("moment");
+// packages
+const express      = require('express');
+const moment       = require('moment');
 const sanitizeHtml = require('sanitize-html');
-const mid          = require("../middleware");
-const fun          = require("../functions");
+const mid          = require('../middleware');
+const fun          = require('../functions');
+
+// models
+const Homework = require('../models/homework');
+const Exam = require('../models/exam');
+const Class = require('../models/class');
 
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get("/", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE classes.id = ? ORDER BY date", [req.params.class_id], (err, homework, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
-
-        db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN exams ON exams.class_id = classes.id WHERE classes.id = ? ORDER BY date", [req.params.class_id], (err, exams, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/homework`)}
-
-            for(let i = 0; i < homework.length; i++) {
-                homework[i].date = moment(homework[i].date).format("DD.MM.YYYY");
-            }
-
-            for(let i = 0; i < exams.length; i++) {
-                exams[i].date = moment(exams[i].date).format("DD.MM.YYYY");
-            }
-
-            res.render("home", {
-                title: "TITLE_HOMEWORK",
-                homework: homework,
-                exams: exams,
-                r: homework[0]
-            });
+router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
+    
+    // variables
+    let homework, exams;
+    
+    // get homework sorted by date
+    Homework.find({class_id: req.params.class_id}).sort({date: 1}).exec()
+    .then(h => {
+        // format date of all homework
+        for(let i = 0; i < h.length; i++) {
+            h[i].d = `${h[i].date.getDate()}.${h[i].date.getMonth()}`; // useing "d" becouse "date" cannot be overwritten
+        }
+        // store homework in variable
+        homework = h;
+        
+        // get exams
+        return Exam.find({class_id: req.params.class_id}).sort({date: 1}).exec();
+        
+    }, err => {
+        // handle error while loading homework
+        fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.params.class_id}/homework`);
+    }).then(e => {
+        // format date of all exams
+        for(let i = 0; i < e.length; i++) {
+            e[i].d = `${e[i].date.getDate()}.${e[i].date.getMonth()}`;// useing "d" becouse "date" cannot be overwritten
+        }
+        // store exams
+        exams = e;
+        
+        // get class and school
+        return Class.findById({_id: req.params.class_id}).populate('school_id').exec();
+        
+    }, err => {
+        // handle error while loading exam
+        fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.params.class_id}/homework`);
+    }).then(clas => {
+        
+        // render ejs template with content
+        res.render('home', {
+            title: 'TITLE_HOMEWORK',
+            homework: homework,
+            exams: exams,
+            clas: clas,
+            r: homework[0]
         });
+        
+    }, err => {
+        // handle error while loading class
+        fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.params.class_id}/homework`);
     });
 });
 
 // New Route
-router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    const db = require("../db");
-    
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id WHERE classes.id = ?", [req.params.class_id], (err, results, fields) => {
-    
-        if(err) {return fun.error(req, res, err, "Error while extracting content from the DB", `/classes/${req.params.class_id}/exams`)}
-
-        res.render("homework/new", {
-            title: "TITLE_ADD_HOMEWORK",
-            r: results[0]
-        }
-    )});
+router.get('/new', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // render ejs template
+    res.render('homework/new', {
+        title: 'TITLE_ADD_HOMEWORK'
+    });
 });
 
 // Create Route
-router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    req.checkBody("homework[title]", "Title field cannot be empty").notEmpty().len(1, 40);
-    req.checkBody("homework[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 600);
-    req.checkBody("homework[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
-    req.checkBody("homework[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
-
+router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // check inputs
+    req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
+    req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();
+    req.checkBody('homework[description]', 'Description field cannot be empty').notEmpty().len(1, 600);
+    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('homework[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
+    // handle input errors
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, errors, errors[0].msg, `/classes/${req.params.class_id}/homework/new`)}
 
-    const db = require("../db");
-    const h = req.body.homework;
-
-    const date = moment(h.date, "DD.MM.YYYY").format("YYYY-MM-DD");
-    const description = sanitizeHtml(String(h.description).replace(/\r/gi, "<br>"), {
-        allowedTags: ["br"]
+    let h = req.body.homework;
+    
+    // format date to match Date class format
+    h.date = moment(h.date, 'DD.MM.YYYY').format('YYYY-MM-DD');
+    // sanitize description input and replace 'enter' with <br> for showing in multiple lines
+    h.description = sanitizeHtml(String(h.description).replace(/\r/gi, '<br>'), {
+        allowedTags: ['br']
     });
-
-    db.query("INSERT INTO homework (class_id, title, subject, subjectName, date, description) VALUES (?, ?, ?, ?, ?, ?)", [req.params.class_id, h.title, h.subject, h.subjectName, date, description], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while adding your homework", `/classes/${req.params.class_id}/homework`)}
-
-        req.flash("success", "Added homework");
+    
+    // set class id
+    h.class_id = req.params.class_id;
+    
+    // crate homework based on "h" from body inputs
+    Homework.create(h)
+    // save homework to DB
+    .then( homework => {
+        // redirect to homescreen
+        req.flash('success', 'Added homework');
         res.redirect(`/classes/${req.params.class_id}/homework`);
+    }, err => {
+        // handle error while adding homework
+        fun.error(req, res, err, 'Error while adding your homework', `/classes/${req.params.class_id}/homework`);
     });
 });
 
 // Show Route
-router.get("/:id", mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, results, fields) => {
-
-        if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
-
-        results[0].date = moment(results[0].date).format("DD.MM.YYYY");
-
-        res.render("homework/show", {
-            title: results[0].subjectName,
-            r: results[0]
+router.get('/:id', mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
+    // find homework
+    Homework.findById({_id: req.params.id})
+    .then(homework => {
+        // format date
+        homework.d = moment(homework.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        // render ejs template
+        res.render('homework/show', {
+            title: homework.subjectName,
+            r: homework
         });
+    }, err => {
+        // handle error while finding homework
+        fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`);
     });
 });
 
 // Destroy Route
-router.delete("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("DELETE FROM homework WHERE homework.id = ?", [req.params.id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while deleting your homework", `/classes/${req.params.class_id}/homework`)}
-
-        req.flash("success", "Deleted homework");
+router.delete('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // delete homework
+    Homework.deleteOne({_id: req.params.id}, err => {
+        // handle error while deleting homework
+        if(err) return fun.error(req, res, err, 'Error while deleting your homework', `/classes/${req.params.class_id}/homework`);
+        
+        // flash message and redirect user
+        req.flash('success', 'Deleted homework');
         res.redirect(`/classes/${req.params.class_id}/homework`);
     });
 });
 
 // Edit Route
-router.get("/:id/edit", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name, classes.id AS class_id FROM schools JOIN classes ON classes.school_id = schools.id LEFT JOIN homework ON homework.class_id = classes.id WHERE homework.id = ?", [req.params.id], (err, results, fields) => {
-
-        if(err || results.length == 0) {return fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`)}
-
-        results[0].date = moment(results[0].date).format("DD.MM.YYYY");
-        results[0].description = String(results[0].description).replace(/<br\ \/>/g, "");
+router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // find homework
+    Homework.findById({_id: req.params.id})
+    .then( homework => {
         
-        res.render("homework/edit", {
-            title: "TITLE_EDIT_HOMEWORK",
-            r: results[0]
+        // format date
+        homework.d = moment(homework.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        // render ejs template
+        res.render('homework/edit', {
+            title: 'TITLE_EDIT_HOMEWORK',
+            r: homework
         });
+        
+    }, err => {
+        // handle error while finding homework
+        fun.error(req, res, err, "Couldn't find your homework", `/classes/${req.params.class_id}/homework`);
     });
 });
 
 // Update Route
-router.put("/:id", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    req.checkBody("homework[title]", "Title field cannot be empty").notEmpty().len(1, 40);
-    req.checkBody("homework[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("homework[description]", "Description field cannot be empty").notEmpty().len(1, 600);
-    req.checkBody("homework[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
-    req.checkBody("homework[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
-
+router.put('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // check body inputs
+    req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
+    req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();
+    req.checkBody('homework[description]', 'Description field cannot be empty').notEmpty().len(1, 600);
+    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('homework[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
+    // handle input errors
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/homework/${req.params.id}/edit`)}
+    if(errors) {return fun.error(req, res, '', errors[0].msg, `/classes/${req.params.class_id}/homework/${req.params.id}/edit`)}
 
-    const db = require("../db");
-    const h = req.body.homework;
-
-    const date = moment(h.date, "DD.MM.YYYY").format("YYYY-MM-DD");
-    const description = sanitizeHtml(String(h.description).replace(/\r/gi, "<br>"), {
-        allowedTags: ["br"]
+    let h = req.body.homework;
+    
+    // format date
+    h.date = moment(h.date, 'DD.MM.YYYY').format('YYYY-MM-DD');
+    // sanitize description input and replace 'enter' with <br> for showing in multiple lines
+    h.description = sanitizeHtml(String(h.description).replace(/\r/gi, '<br>'), {
+        allowedTags: ['br']
     });
-
-    db.query("UPDATE homework SET title = ?, subject = ?, subjectName = ?, date = ?, description = ? WHERE homework.id = ?", [h.title, h.subject, h.subjectName, date, description, req.params.id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while updating your homework", `/classes/${req.params.class_id}/homework`)}
-
-        req.flash("success", "Updated homework");
+    
+    // update homework
+    Homework.findByIdAndUpdate({_id: req.params.id}, h)
+    .then( homework => {
+        // flash msg and redirect user
+        req.flash('success', 'Updated homework');
         res.redirect(`/classes/${req.params.class_id}/homework`);
+    }, err => {
+        // handle error while updating homework
+        fun.error(req, res, err, 'Error while updating your homework', `/classes/${req.params.class_id}/homework`);
     });
 });
 

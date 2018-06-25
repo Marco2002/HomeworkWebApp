@@ -2,39 +2,51 @@
 // School Routes
 // ======================
 
-// Packages
-const express      = require("express");
+// packages
+const express      = require('express');
 const passwordHash = require('password-hash');
-const fun          = require("../functions");
+const fun          = require('../functions');
+const mid          = require('../middleware');
+
+// models
+const School = require("../models/school");
 
 const router = express.Router();
 
-// New Route
-router.get("/new", (req, res) => {
-    res.render("schools/new");
+// NEW route
+router.get('/new', mid.isLoggedIn, (req, res) => {
+    res.render('schools/new');
 });
 
-// Create Route
-router.post("/", (req, res) => {
+// CREATE route
+router.post('/', mid.isLoggedIn, (req, res) => {
     
-    req.checkBody("school[name]", "School-name must be between 4-30 characters long").notEmpty().len(4, 30);
-    req.checkBody("school[password]", "Password must be at least 8 characters long").notEmpty().len(8, 100);
-    req.checkBody("reenterPassword", "Passwords do not match, please try again").equals(req.body.school.password);
-    
-    const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, "/schools/new")}
-    
-    const db = require("../db");
-    
-    const password = passwordHash.generate(req.body.school.password);
+    // make sure user is not an adimn
+    if(req.user.is_admin == 0) {
+        // check inputs
+        req.checkBody('school[name]', 'School-name must be between 4-30 characters long').notEmpty().len(4, 30);
+        req.checkBody('school[password]', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
+        req.checkBody('reenterPassword', 'Passwords do not match, please try again').equals(req.body.school.password);
+        // handle input errors
+        const errors = req.validationErrors();
+        if(errors) {return fun.error(req, res, '', errors[0].msg, '/schools/new')}
         
-    db.query("INSERT INTO schools (name, password) VALUES (?, ?)", [req.body.school.name, password], (err, results, fields) => {
+        // hash school password
+        req.body.school.password = passwordHash.generate(req.body.school.password);
         
-        if(err) { return fun.error(req, res, err, "Error while adding School", "/schools/new") }
-        
-        req.flash("success", "Added School");
-        res.redirect("/");
-    });
+        // create school from body
+        const school = new School(req.body.school);
+        // save school in DB
+        school.save(err => {
+            // handle possible error
+            if(err) { return fun.error(req, res, err, 'Error while adding School', '/schools/new') }
+            
+            req.flash('success', 'Added School');
+            res.redirect('/selectSchool');
+        });
+    } else {
+        return fun.error(req, res, '', "You cannot create a school as an admin of another school's class", `/classes/${req.user.class_id}/homework`);
+    }
 });
 
 module.exports = router;

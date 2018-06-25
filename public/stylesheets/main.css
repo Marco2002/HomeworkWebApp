@@ -196,3 +196,7 @@ h6 {
         width: 72%;
     }
 }
+
+table {
+    table-layout: fixed;
+}

@@ -3,7 +3,7 @@
 <div class="container margin-to-nav">
     <% include ../partials/flash %>
     <div class="card">
-        <form method="POST" action="/classes/<%=r.class_id%>/exams/<%=r.exam_id%>?_method=PUT" id="form">
+        <form method="POST" action="/classes/<%=r.class_id%>/exams/<%=r._id%>?_method=PUT" id="form">
             <div class="row"></div>
                 <div class="container">
                     <div class="row no-m">
@@ -12,7 +12,7 @@
                             <label class="active" for="homeworkTitle"><%= texts.TITLE %></label>
                         </div>
                         <div class="input-field col s12 m6">
-                            <input name="exam[date]" id="homeworkDate" type="text" class="datepicker" value="<%=r.date%>">
+                            <input name="exam[date]" id="homeworkDate" type="text" class="datepicker" value="<%=r.d%>">
                             <label class="active" for="homeworkDate"><%= texts.DATE %></label>
                         </div>
                         <div class="input-field col s12">
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         
-                        <% results.forEach(t => { %>
+                        <% r.topics.forEach(t => { %>
                         <div id="topicContainer">
                             <div class="input-field col s6">
                                 <input name="topics[topic]" id="examTopic" type="text" class="validate" value="<%=t.topic%>" maxlength="30">
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <% }) %>
-                        <% for(let i = 0; i < (10 - results.length); i++) {%>
+                        <% for(let i = 0; i < (10 - r.topics.length); i++) {%>
                             <div id="topicContainer" class="hide">
                                 <div class="input-field col s6">
                                     <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">

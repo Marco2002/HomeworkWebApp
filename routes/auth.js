@@ -3,215 +3,226 @@
 // ========================
 
 // Packages
-const express       = require("express");
-const passport      = require("passport");
-const passwordHash  = require("password-hash");
-const fun           = require("../functions");
-const mid           = require("../middleware");
+const express       = require('express');
+const passport      = require('passport');
+const passwordHash  = require('password-hash');
+const fun           = require('../functions');
+const mid           = require('../middleware');
+
+// Models
+const User   = require('../models/user');
+const Class  = require('../models/class');
+const School = require('../models/school');
 
 const router = express.Router();
 
-router.get("/register", mid.isNotLoggedIn, (req, res) => {
-    res.render("auth/register");
+// GET register route
+router.get('/register', mid.isNotLoggedIn, (req, res) => {
+    res.render('auth/register');
 });
 
-router.post("/register", mid.isNotLoggedIn, (req, res) => {
 
-    req.checkBody("username", "Password must be at least 4 characters long").notEmpty().len(4, 15);
-    req.checkBody("password", "Password must be at least 8 characters long").notEmpty().len(8, 100);
-    req.checkBody("reenterPassword", "Passwords do not match, please try again").equals(req.body.password);
+// POST register route
+router.post('/register', mid.isNotLoggedIn, (req, res) => {
 
+    // check if inputs are correct
+    req.checkBody('username', 'Password must be at least 4 characters long').notEmpty().len(4, 15);
+    req.checkBody('password', 'Password must be at least 8 characters long').notEmpty().len(8, 100);
+    req.checkBody('reenterPassword', 'Passwords do not match, please try again').equals(req.body.password);
+    
+    // handle input errors    
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, "/register")}
-
-    const db = require("../db");
-
-    const hash = passwordHash.generate(req.body.password);
-
-    db.query("INSERT INTO users (username, password) VALUES (?, ?)", [req.body.username, hash], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Username already taken", "/register")}
-
-        db.query("SELECT * FROM users WHERE username = ?", [req.body.username], (err, results, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-
-            req.login(results[0], (err) => {
-
-                if(err) {return fun.error(req, res, err, "Error while signing up", "/register")}
-
-                res.redirect("/classes/0/homework");
-            });
+    if(errors) {return fun.error(req, res, '', errors[0].msg, '/register')}
+    
+    // register User
+    User.register(new User({
+        username: req.body.username,
+    }), req.body.password, (err, user) => {
+        // handle error
+        if(err) {return fun.error(req, res, err, err.message, '/register')}
+        
+        passport.authenticate('local')(req, res, () => {
+            req.flash('success', `Registered successfully. Welcome ${user.username}`);
+            res.redirect('/classes/undefined/homework');
         });
+    });
+
+});
+
+// GET select school route
+router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
+
+    School.find({})
+    .then(schools => {
+        res.render('auth/selectSchool', {
+            results: schools,
+        });
+    }, err => {
+        // handle error
+        return fun.error(req, res, err, 'Error while loading schools');
     });
 });
 
-router.get("/selectSchool", mid.isLoggedIn, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT name FROM schools ORDER BY name", (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while loading schools")}
-
-        res.render("auth/selectSchool", {
-            results: results,
-        });
-    });
-});
-
-router.post("/selectSchool", mid.isLoggedIn, (req, res) => {
-
-    if(req.user.is_admin == 0) {
-
-        req.checkBody("school", "School field cannot be empty").notEmpty();
-        req.checkBody("schoolPassword", "Password must be at least 8 characters long").notEmpty().len(8, 100);
-
+// POST select school route
+router.post('/selectSchool', mid.isLoggedIn, (req, res) => {
+    
+    // make sure user is not an admin
+    if(req.user.is_admin == false) {
+        // check if inputs are correct
+        req.checkBody('school', 'School field cannot be empty').notEmpty();
+        req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
+        // handle input errors
         const errors = req.validationErrors();
-        if(errors) {return fun.error(req, res, "", errors[0].msg, "/selectSchool")}
-
-        const db = require("../db");
-
-        db.query("SELECT id, password FROM schools WHERE schools.name = ?", [req.body.school], (err, results, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Couldn't find your school", "/selectSchool")}
-
-            if(passwordHash.verify(req.body.schoolPassword, results[0].password)) {
-
-                db.query("UPDATE users SET school_id = ?, class_id = 0 WHERE id = ?", [results[0].id, req.user.id], (err, results, fields) => {
-
-                    if(err) {return fun.error(req, res, err, "Error while adding you to the school", "/selectSchool")}
-
-                    db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
-
-                        if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
-
-                        req.login(results[0], (err) => {
-
-                            if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
-
-                            res.redirect("/selectClass");
-                        });
-                    });
-                });
+        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSchool')}
+        
+        School.findOne({name: req.body.school})
+        .then(school => {
+            // verify school password
+            if(passwordHash.verify(req.body.schoolPassword, school.password)) {
+                // right password => update users school
+                return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id}}); // return promise
+                
             } else {
-                fun.error(req, res, "", "Wrong school password", "/selectSchool");
+                // wrong password
+                fun.error(req, res, '', 'Wrong school password', '/selectSchool');
             }
-        });
-    } else {
-        return fun.error(req, res, "", "You cannot switch school as an admin", `/classes/${req.user.class_id}/homework`);
-    }
-});
+            
+        }, err => {
+            // handle error while finding school
+            fun.error(req, res, err, "Couldn't find your school", '/selectSchool');
+        }).then(user => {
+            // login updated user
+            req.login(user, err => {
 
-router.get("/selectClass", mid.isLoggedIn, (req, res) => {
+                if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-    if(req.user.school_id != 0) {
-
-        const db = require("../db");
-
-        db.query("SELECT * FROM classes WHERE school_id = ? ORDER BY name", [req.user.school_id], (err, results, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Error while loading classes", "/")}
-
-            res.render("auth/selectClass", {
-                results: results
+                res.redirect('/selectClass');
             });
+        }, err => {
+            // handle error while updating user
+            return fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
         });
     } else {
-        res.redirect("/selectSchool");
+        // user is an admin => user cann't switch school 
+        return fun.error(req, res, '', 'You cannot switch school as an admin', `/classes/${req.user.class_id}/homework`);
     }
 });
 
-router.post("/selectClass", mid.isLoggedIn, (req, res) => {
+// GET select class route
+router.get('/selectClass', mid.isLoggedIn, (req, res) => {
+    // make sure user is in a school
+    if(req.user.school_id != undefined) {
+        // find all classes in school
+        Class.find({school_id: req.user.school_id})
+        .then(classes => {
+            res.render('auth/selectClass', {
+                results: classes
+            });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while loading classes', '/');
+        });
+    } else {
+        // user is in no school => select school
+        res.redirect('/selectSchool');
+    }
+});
 
+// POST select class route
+router.post('/selectClass', mid.isLoggedIn, (req, res) => {
+    // make sure user is nat an admin
     if(req.user.is_admin == 0) {
-
-        req.checkBody("clas", "Class field cannot be empty").notEmpty();
-
+        // check inputs
+        req.checkBody('clas', 'Class field cannot be empty').notEmpty();
+        // handle input errors
         const errors = req.validationErrors();
-        if(errors) {return fun.error(req, res, "", errors[0].msg, "/selectClass")}
+        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
+        
+        User.findByIdAndUpdate({_id: req.user.id}, { $set: {is_admin: false, class_id: req.body.clas}})
+        .then(user => {
+            req.login(user, err => {
+                    // handle possible error
+                    if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-        const db = require("../db");
-
-        db.query("UPDATE users SET class_id = ?, is_admin = 0 WHERE id = ?", [req.body.clas, req.user.id], (err, results, fields) => {
-
-            if(err) {return fun.error(req, res, err, "Error while adding you to the school", "/selectSchool")}
-
-            db.query("SELECT * FROM users WHERE id = ?", [req.user.id], (err, results, fields) => {
-
-                if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
-
-                req.login(results[0], (err) => {
-
-                    if(err) {return fun.error(req, res, err, "Error while signing up", "/")}
-
-                    res.redirect(`/classes/${results[0].class_id}/homework`);
+                    res.redirect(`/classes/${user.class_id}/homework`);
                 });
-            });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
         });
     } else {
-        return fun.error(req, res, "", "You cannot switch class as an admin", `/classes/${req.user.class_id}/homework`);
+        return fun.error(req, res, '', 'You cannot switch class as an admin', `/classes/${req.user.class_id}/homework`);
     }
 });
 
-router.get("/login", mid.isNotLoggedIn, (req, res) => {
-    res.render("auth/login");
+// GET login route
+router.get('/login', mid.isNotLoggedIn, (req, res) => {
+    res.render('auth/login');
 });
 
-router.post("/login", mid.isNotLoggedIn, (req, res) => {
+// POST login route
+router.post('/login', mid.isNotLoggedIn, (req, res) => {
 
-    req.checkBody("username", "Username field cannot be empty").notEmpty();
-    req.checkBody("password", "Password field cannot be empty").notEmpty();
+    // check if inputs are correct
+    req.checkBody('username', 'Username field cannot be empty').notEmpty().len(4, 15);
+    req.checkBody('password', 'Password field cannot be empty').notEmpty().len(8, 100);
 
+    // handle input errors
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, "/login")}
+    if(errors) {return fun.error(req, res, '', errors[0].msg, '/login')}
 
-    passport.authenticate("local", (err, user) => {
-
-        if (err) {return fun.error(req, res, err, "Error while logging in", "/login")}
+    // authenticate
+    passport.authenticate('local', (err, user) => {
+        // handle possible error
+        if (err) {return fun.error(req, res, err, 'Error while logging in', '/login')}
 
         // Redirect if it fails
-        if (!user) {return fun.error(req, res, "", "Wrong password or username", "/login")}
+        if (!user) {return fun.error(req, res, '', 'Wrong password or username', '/login')}
 
+        // login user
         req.login(user, function(err) {
-
-            if (err) {return fun.error(req, res, err, "Error while logging in", "/login")}
+            // handle possible error
+            if (err) {return fun.error(req, res, err, 'Error while logging in', '/login')}
 
             // Redirect if it succeeds
-            req.flash("success", `Welcome back ${user.username}`);
+            req.flash('success', `Welcome back ${user.username}`);
             res.redirect(`/classes/${user.class_id}/homework`);
 
         });
     })(req, res);
 });
 
-router.get("/logout", mid.isLoggedIn, (req, res) => {
-    req.logout();
-    req.session.destroy();
-    res.redirect("/");
+// logout route
+router.get('/logout', mid.isLoggedIn, (req, res) => {
+    req.logout(); // logout user
+    req.session.destroy(); // destroy session
+    res.redirect('/'); // redirect to landingpage
 });
 
-// Google OAuth
-router.get("/auth/google/callback", passport.authenticate("google", {
-    successRedirect: "/",
-    failureRedirect: "/"
+// Google OAuth routes
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile']}));
+
+// callback route
+router.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/'
 }));
 
-router.get("/auth/google", passport.authenticate("google", {scope: ["profile"]}));
-
-router.get("/:user_id", mid.isLoggedIn, mid.isUser, (req, res) => {
-
-    const db = require("../db");
-
-    db.query("SELECT *, schools.name AS school_name, classes.name AS class_name FROM users JOIN classes ON classes.id = users.class_id JOIN schools ON schools.id = users.school_id WHERE users.id = ?", [req.params.user_id], (err, results, fields) => {
-
-        if(err) {return fun.error(req, res, err, "Error while loading user", `/classes/${req.user.class_id}/homework`)}
-
-        res.render("auth/show", {
-            title: "TITLE_ACCOUNT_SETTINGS",
-            results: results,
-            r: results[0]
+// GET user route
+router.get('/:user_id', mid.isLoggedIn, mid.isUser, (req, res) => {
+    
+    // find user
+    User.findById({_id: req.params.user_id}).populate('school_id').populate('class_id').exec()
+    .then(user => {
+        
+        // render ejs template
+        res.render('auth/show', {
+            title: 'TITLE_ACCOUNT_SETTINGS',
+            userR: user
         });
+    }, err => {
+        // handle error while loading user
+        fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.user.class_id}/homework`);
     });
 
 });

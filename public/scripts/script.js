@@ -8,7 +8,7 @@ $(function() {
     var url = window.location.pathname;
     
     $('ul.tabs').tabs(
-        "select_tab", url.substring(url.lastIndexOf("/") + 1), {
+        'select_tab', url.substring(url.lastIndexOf('/') + 1), {
         swipeable : true,
         }
     );
@@ -41,33 +41,33 @@ $(function() {
     });
     
     // check which subject
-    $("#homeworkSubject").change(function() {
-        $("#subjectNameModal").modal({dismissible: false});
-        var subject = $("#homeworkSubject")[0].value
+    $('#homeworkSubject').change(function() {
+        $('#subjectNameModal').modal({dismissible: false});
+        var subject = $('#homeworkSubject')[0].value
         
-        if ((subject == "Other") || (subject == "Foreign Language 1") || (subject == "Foreign Language 2") || (subject == "Foreign Language 3")) {
-            $("#subjectNameModal").modal("open");
-            $("#subjectName").val("");
+        if ((subject == 'Other') || (subject == 'Foreign Language 1') || (subject == 'Foreign Language 2') || (subject == 'Foreign Language 3')) {
+            $('#subjectNameModal').modal('open');
+            $('#subjectName').val('');
         } else {
-            $("#subjectName").val(subject);
+            $('#subjectName').val(subject);
         }
     });
     
     // subject modal close
-    $("#subjectNameSubmit").click(function() {
-        if($("#subjectName").val() != undefined && $("#subjectName").val() != "") {
-            $("#subjectNameModal").modal("close");
+    $('#subjectNameSubmit').click(function() {
+        if($('#subjectName').val() != undefined && $('#subjectName').val() != '') {
+            $('#subjectNameModal').modal('close');
         } else {
             Materialize.toast('Please enter a subject name!', 4000);
         }
     })
     
     // Form Configuration
-    $("#btn-submit").click(function() {
+    $('#btn-submit').click(function() {
         
         function formConfigTitle() {
-            var x = $("#homeworkTitle").val();
-            if (x == "") { 
+            var x = $('#homeworkTitle').val();
+            if (x == '') { 
                 Materialize.toast('Please enter the title!', 4000);
             } else if( x.length > 40 ) {
                 Materialize.toast('Title cant be longer than 40 characters!', 4000);
@@ -77,8 +77,8 @@ $(function() {
         }
         
         function formConfigDate() {
-            var x = $("#homeworkDate").val();
-            if(x == "") { 
+            var x = $('#homeworkDate').val();
+            if(x == '') { 
                 Materialize.toast('Please enter the deadline!', 4000);
             } else {
                 return true;
@@ -86,12 +86,12 @@ $(function() {
         }
         
         function formConfigDes() {
-            if(!document.getElementById("homeworkDescription")) {
+            if(!document.getElementById('homeworkDescription')) {
                 return true;
             }
             
-            var x = $("#homeworkDescription").val();
-            if (x == "") { 
+            var x = $('#homeworkDescription').val();
+            if (x == '') { 
                 Materialize.toast('Please enter a description!', 4000);
             } else if( x.length > 500) {
                 Materialize.toast('Description cant be longer than 300 characters!', 4000);
@@ -101,7 +101,7 @@ $(function() {
         }
         
         function formConfigSubject() {
-            var x = $("#homeworkSubject").val();
+            var x = $('#homeworkSubject').val();
             if (x == undefined) { 
                 Materialize.toast('Please enter a subject!', 4000);
             } else {
@@ -110,42 +110,54 @@ $(function() {
         }
     
         if(formConfigTitle() && formConfigDate() && formConfigDes() && formConfigSubject() == true) {
-            $(".hide").remove();
-            $("#subjectName").prop("disabled", false);
-            $("#form").submit();
+            $('.hide').remove();
+            $('#subjectName').prop('disabled', false);
+            $('#form').submit();
         }
     });
 
     // Add Topic
-    $("#btnAddTopic").click(function() {
+    $('#btnAddTopic').click(function() {
         
-        $(".hide").first().removeClass("hide");
+        $('.hide').first().removeClass('hide');
     });
     
     // Remove Topic
-    $("#btnRemoveTopic").click(function() {
-        $('#topicContainer:not(.hide)').last().addClass("hide");
+    $('#btnRemoveTopic').click(function() {
+        $('#topicContainer:not(.hide)').last().addClass('hide');
     });
     
     // Close Alert
-    $(".alert").on("click", "#alert-close", function() {
-        console.log('oeuoeu');
-        $(".alert").fadeOut("slow", function() {});
+    $('.alert').on('click', '#alert-close', function() {
+        $('.alert').fadeOut('slow', function() {});
     });
     
-    // Warning before delete. the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    // Warning before delete. the 'href' attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
     });
     
     // language submit button
-    $("#lang_submit").click(function() {
-        var lang = $("input[name='lang']:checked").attr("id");
+    $('#lang_submit').click(function() {
+        var lang = $('input[name="lang"]:checked').attr('id');
         
-        window.location.replace("/?clang=" + lang);
+        window.location.replace('/?clang=' + lang);
     });
     
-    console.log("script.js file active");
+    // Redirect to add homework or add exam page
+    $('#redirectToAddPage').click(function() {
+        // read class_id from url
+        var class_id = window.location.pathname.split('/')[2];
+        if($('#tabHomework').hasClass('active')) {
+            // homework tab is active => redirect to add homework
+            window.location = '/classes/' + class_id + '/homework/new';
+        } else {
+            // exams tab is active => redirect to add exam
+            window.location = '/classes/' + class_id + '/exams/new';
+        }
+    });
+    
+    console.log('script.js file active');
     
     return this;
 });

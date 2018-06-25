@@ -1,5 +1,5 @@
 <% include ./partials/headerHome %>
-<% let color, prevDate, ePrevDate %>
+<% let color, hPrevDate, ePrevDate %>
 
 <div class="container">
     <div class="row no-m">
@@ -7,7 +7,7 @@
             <% include ./partials/flash %>
         </div>
         <div id="homework">
-            <% if(homework[0].title) { %>
+            <% if(homework[0]) { %>
             <% homework.forEach(h => {%>
             <!-- Get the color -->
             <% switch(h.subject) { case "Maths": %>
@@ -32,16 +32,16 @@
                 <% case "Other": color="white"; break; %>
             <% } %>
             
-            <% if(prevDate != h.date) { %>
+            <% if(hPrevDate != h.d) { %>
                 <div class="col s12">
-                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.UNTIL %> <%=h.date%></p>
+                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.UNTIL %> <%=h.d%></p>
                     <hr>
                 </div>
             <% } %>
-            <% prevDate = h.date%>
+            <% hPrevDate = h.d%>
         
             <div class="col s12 l6">
-                <a href="/classes/<%=h.class_id%>/homework/<%=h.id%>">
+                <a href="/classes/<%=h.class_id%>/homework/<%=h._id%>">
                     <div class="card <%=color%> black-text card-margin">
                         <div class="card-content" >
                             <div class="row no-m">
@@ -71,7 +71,7 @@
             <% } %>
         </div>
         <div id="exams">
-            <% if(exams[0].title) { %>
+            <% if(exams[0]) { %>
             <% exams.forEach(e => { %>
             <!-- Get the color -->
             <% switch(e.subject) { case "Maths": %>
@@ -96,16 +96,16 @@
                 <% case "Other": color="white"; break; %>
             <% } %>
             
-            <% if(ePrevDate != e.date) { %>
+            <% if(ePrevDate != e.d) { %>
                 <div class="col s12">
-                    <p class="no-margin-bottom bold grey-text text-darken-2"><%=e.date%></p>
+                    <p class="no-margin-bottom bold grey-text text-darken-2"><%=e.d%></p>
                     <hr>
                 </div>
             <% } %>
-            <% ePrevDate = e.date%>
+            <% ePrevDate = e.d%>
     
             <div class="col s12 l6">
-                <a href="/classes/<%=e.class_id%>/exams/<%=e.id%>">
+                <a href="/classes/<%=e.class_id%>/exams/<%=e._id%>">
                     <div class="card <%=color%> black-text card-margin">
                         <div class="card-content">
                             <div class="row no-m">
@@ -134,9 +134,9 @@
             <% }) %>
             <% } %>
         </div>
-        <% if(user.is_admin == 1) { %>
+        <% if(user.is_admin == true) { %>
             <div class="bot">
-                <a href="/classes/<%=r.class_id%>/homework/new" class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
+                <a id="redirectToAddPage" class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
             </div>
         <% } %>
     </div>

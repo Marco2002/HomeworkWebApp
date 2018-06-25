@@ -5,7 +5,7 @@
 </div>
 
 <div class="container row no-m valign-wrapper">
-    <h4 class="col s6 l4"><%= r.class_name %></h4>
+    <h4 class="col s6 l4"><%= clas.name %></h4>
     <div class="col s6 l8">
         <a href="#change-name" class="btn blue waves-light right modal-trigger"><%= texts.CHANGE_NAME %><i class="material-icons right">edit</i></a>
         
@@ -16,7 +16,7 @@
                     <h4><%= texts.CHANGE_NAME %></h4>
                     <div class="row"></div>
                     <div class="input-field">
-                        <input id="name" name="class[name]" type="text" class="validate" value="<%=r.class_name%>" maxlength="10">
+                        <input id="name" name="class[name]" type="text" class="validate" value="<%=clas.name%>" maxlength="10">
                         <label for="name"><%= texts.NAME %></label>
                     </div>
                 </div>
@@ -39,18 +39,18 @@
         </thead>
         
         <tbody>
-        <% results.forEach((m) => { %>
+        <% users.forEach((u) => { %>
             <tr>
 
                 <td>
-                    <% if(m.username == user.username) {%>
+                    <% if(u.username == user.username) {%>
                         <h6 class="blue-text"><%= texts.YOU %></divh6>
                     <% } else { %>
-                        <h6><%= m.username %></h6>
+                        <h6><%= u.username %></h6>
                     <% } %>
                 </td>
                 <td class="center">
-                    <% if(m.is_admin) { %>
+                    <% if(u.is_admin) { %>
                         <h6 class="green-text">Admin</h6>
                     <% } else { %>
                         <h6 class="yellow-text text-darken-3"><%= texts.CLASSMATE %></h6>
@@ -58,10 +58,10 @@
                 </td>
 
                 <td>
-                    <% if(!m.is_admin) { %>
-                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/admin" class="btn green waves-light right"><%= texts.MAKE_ADMIN %></a>
+                    <% if(u.is_admin) { %>
+                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/deadmin" class="btn yellow black-text waves-light right"><%= texts.REMOVE_ADMIN %></a>
                     <% } else { %>
-                        <a href="/schools/<%=m.school_id%>/classes/<%=m.class_id%>/users/<%=m.id%>/deadmin" class="btn yellow black-text waves-light right"><%= texts.REMOVE_ADMIN %></a>
+                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="btn green waves-light right"><%= texts.MAKE_ADMIN %></a>
                     <% } %>
                 </td>
             </tr>

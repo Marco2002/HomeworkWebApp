@@ -1,48 +1,53 @@
-//=============================
+// =============================
 // Homework Web App
-//=============================
+// =============================
+
+// ==========
+// index file
+// ==========
 
 // Packages
-const express             = require("express");
-const bodyParser          = require("body-parser");
-const methodOverride      = require("method-override");
-const passport            = require("passport");
-const expressSession      = require("express-session");
-const flash               = require("connect-flash");
-const expressValidator    = require("express-validator");
-const moment              = require("moment");
+const express             = require('express');
+const bodyParser          = require('body-parser');
+const methodOverride      = require('method-override');
+const passport            = require('passport');
+const expressSession      = require('express-session');
+const flash               = require('connect-flash');
+const expressValidator    = require('express-validator');
+const moment              = require('moment');
 const cookieParser        = require('cookie-parser');
-const passwordHash        = require("password-hash");
-const schedule            = require("node-schedule");
+const schedule            = require('node-schedule');
 const path                = require('path');
-const i18n                = require("i18n-express");
-const LocalStrategy       = require("passport-local").Strategy;
-const GoogleStrategy      = require("passport-google-oauth").OAuth2Strategy;
-const GoogleTokenStrategy = require('passport-google-id-token');
-const MySQLStore          = require("express-mysql-session");
+const i18n                = require('i18n-express');
+const mongoose            = require('mongoose');
+const LocalStrategy       = require('passport-local').Strategy;
+const GoogleStrategy      = require('passport-google-oauth').OAuth2Strategy;
+const MongoStore          = require('connect-mongo')(expressSession);
+
+// Models
+const User = require('./models/user');
+const Homework = require('./models/homework');
+const Exam = require('./models/exam');
 
 // Routes
-const indexRoutes     = require("./routes/index");
-const schoolRoutes    = require("./routes/schools");
-const homeworkRoutes  = require("./routes/homework");
-const examRoutes      = require("./routes/exams");
-const authRoutes      = require("./routes/auth");
-const classRoutes     = require("./routes/classes");
+const indexRoutes     = require('./routes/index');
+const schoolRoutes    = require('./routes/schools');
+const homeworkRoutes  = require('./routes/homework');
+const examRoutes      = require('./routes/exams');
+const authRoutes      = require('./routes/auth');
+const classRoutes     = require('./routes/classes');
 
-// express setup
+// express()
 const app = express();
 
 // env variables setup
-require("dotenv/config");
-
-// mysql setup
-require("./db.js");
+require('dotenv/config');
 
 // ejs setup
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 // setup public directory
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + '/public'));
 
 // cookie-parser setup
 app.use(cookieParser());
@@ -50,210 +55,149 @@ app.use(cookieParser());
 // body-parser setup
 app.use(bodyParser.urlencoded({extended: true}));
 
-// passport and session setup
-const options = {
-    port: process.env.MYSQL_PORT,
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USERNAME,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DB,
-};
+// mongoDB setup
+// connect to DB
+mongoose.connect(process.env.MONGO_DB) // mongoDB url
+    .then(() => {
+         // log connection
+        console.log(`connected to ${mongoose.connection.db.databaseName}`);
+    },err => {
+        // handle error
+        console.log(err);
+    });
 
-const sessionStore = new MySQLStore(options);
-
-app.use(expressSession({
-    secret: process.env.COOKIE_SECRET,
-    name: 'hmwk',
-    resave: false,
-    rolling: true,
-    saveUninitialized: false,
-    store: sessionStore,
-    cookie: {
-        maxAge: 30 * 24 * 60 * 60 * 1000
-    }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((user, done) => {
-	done(null, user);
-});
-
-// express-validator setup
-app.use(expressValidator());
-
-// method-override setup
-app.use(methodOverride("_method"));
-
-// connect-flash setup
-app.use(flash());
-
-// i18n setup
-app.use(i18n({
-    translationsPath: path.join(__dirname, 'i18n'),
-    siteLangs: ["en", "de"]
-}));
-
-// ejs Paramenters
-app.use((req, res, next) => {
-    res.locals.user = req.user;
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    next();
-});
-
-// Passport-Local setup
-passport.use(new LocalStrategy((username, password, done) => {
+mongoose.connection.on('connected', () => { // when connected to mongoDB
+    // Session store
+    const store = new MongoStore({
+        url: process.env.MONGO_DB, // mongoDB url
+        ttl: 30 * 24 * 60 * 60 // session ttl
+    });
     
-    const db = require("./db.js");
-    
-    db.query("SELECT * FROM users WHERE username = ?", [username], (err, results, fields) => {
-
-        if(err) { return done(err) }
-
-        if(results.length === 0) {
-            
-            done(null, false);
-            
-        } else {
-
-            if(passwordHash.verify(password, results[0].password)) {
-
-                return done(null, results[0]);
-
-            } else {
-                
-                done(null, false);
-            }
+    // session setup
+    app.use(expressSession({
+        secret: process.env.COOKIE_SECRET,
+        name: process.env.COOKIE_NAME,
+        resave: false,
+        rolling: true, // update ttl after reconnect
+        saveUninitialized: false,
+        store: store, // set mongoDB store
+        cookie: {
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days ttl
         }
+    }));
+    
+    // passport setup
+    app.use(passport.initialize());
+    // session setup
+    app.use(passport.session());
+    
+    passport.serializeUser(User.serializeUser());
+    passport.deserializeUser(User.deserializeUser());
+    
+    // express-validator setup
+    app.use(expressValidator());
+    
+    // method-override setup
+    app.use(methodOverride('_method')); // parameter _method
+    
+    // connect-flash setup
+    app.use(flash());
+    
+    // i18n setup
+    app.use(i18n({
+        translationsPath: path.join(__dirname, 'i18n'), // path ./i18n
+        siteLangs: ['en', 'de'] // languages
+    }));
+    
+    // ejs Paramenters
+    app.use((req, res, next) => {
+        res.locals.user = req.user;
+        res.locals.error = req.flash('error');
+        res.locals.success = req.flash('success');
+        next();
     });
-}));
+    
+    // Passport-Local setup
+    passport.use(new LocalStrategy(User.authenticate()));
 
-// Google OAuth setup
-passport.use(new GoogleStrategy({
-    
-    clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_AUTH_CLIENT_CALLBACK,
+    // Google OAuth setup
+    passport.use(new GoogleStrategy({
         
-}, (accessToken, refreshToken, profile, done) => {
+        clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_AUTH_CLIENT_CALLBACK,
         
-    process.nextTick(() => {
-        
-        const db = require("./db.js");
-    
-        db.query("SELECT * FROM users WHERE google_id = ?", [profile.id], (err, results, fields) => {
-    
-            if(err) { return done(err) }
+    }, (accessToken, refreshToken, profile, done) => {
             
-            if(results.length === 0) {
-                
-                db.query("INSERT INTO users (username, google_id, google_token, google_image) VALUES (?, ?, ?, ?)", [profile.displayName, profile.id, accessToken, profile.photos[0].value], (err, results, fields) => {
-                    
-                    if(err) { return done(err, false) }
-                    
-                    db.query("SELECT * FROM users WHERE google_id = ?", [profile.id], (err, results, fields) => {
-                        
-                        if(err) { return done(err, false) }
-                        
-                        return done(null, results[0]);
-                    });
-                });
-                
-            } else {
-    
-                return done(null, results[0]);
-            }
-        });
-    });
-}));
-
-// Google Token Strategy
-passport.use(new GoogleTokenStrategy({
-        clientID: process.env.GOOGLE_AUTH_CLIENT_ID
-    }, (parsedToken, googleId, done) => {
-        
         process.nextTick(() => {
-        
-            const db = require("./db.js");
-        
-            db.query("SELECT * FROM users WHERE google_id = ?", [googleId], (err, results, fields) => {
-        
-                if(err) { return done(err) }
+            
+            // find or create user with google_id
+            User.findOne({google_id: profile.id})
+            .then(user => {
                 
-                if(results.length === 0) {
+                if(!user) {
                     
-                    db.query("INSERT INTO users (username, google_id, google_image) VALUES (?, ?, ?, ?)", [parsedToken.name, googleId, parsedToken.picture], (err, results, fields) => {
-                        
+                    // if no user exists, create user
+                    user = new User({
+                        username: profile.displayName,
+                        google_id: profile.id,
+                        google_token: accessToken,
+                        google_image: profile.photos[0].value
+                    });
+                    // save user in DB
+                    user.save(err => {
+                        // handel error
                         if(err) { return done(err, false) }
                         
-                        db.query("SELECT * FROM users WHERE google_id = ?", [googleId], (err, results, fields) => {
-                            
-                            if(err) { return done(err, false) }
-                            
-                            return done(null, results[0]);
-                        });
+                        // auth successful
+                        return done(null, user);
                     });
                     
                 } else {
-        
-                    return done(null, results[0]);
+                    // user exists => login user
+                    return done(null, user);
                 }
+                
+            }, err => {
+                // handle error
+                return done(err);
             });
         });
-    }
-));
-
-// trigger once a day to delete all homework
-schedule.scheduleJob("0 0 12 * * *", () => {
+    }));
     
-    const db = require("./db");
-    
-    db.query("DELETE FROM homework WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
+    // trigger once a day to delete all homework
+    schedule.scheduleJob('0 0 12 * * *', () => { // at 12:00
+        const date = moment(Date.now()).add(1,'days').format('YYYY-MM-DD');
         
-        if(err) {
-            console.log(err);
-        }
-        
-        console.log("deleted homework");
-    });
-    
-    db.query("SELECT id FROM exams WHERE date < ?",  [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
-        
-        if(err) {
-            console.log(err);
-        }
-        
-        db.query("DELETE FROM topics WHERE exam_id = ?", [results[0].id], (err, results, fields) => {
-            
+        Homework.deleteMany({date: {$lt: date}}, err => {
+            // log err if it exisits
             if(err) {
                 console.log(err);
             }
-            
-            db.query("DELETE FROM exams WHERE date < ?", [moment(Date.now()).add(1,"days").format("YYYY-MM-DD")], (err, results, fields) => {
-        
-                if(err) {
-                    console.log(err);
-                }
-                    
-                console.log("deleted exams");
-            });
+            // success
+            console.log(`deleted homework at date: ${date}`);
         });
-    });    
-});
-
-// Routes setup
-app.use(indexRoutes);
-app.use(authRoutes);
-app.use("/schools", schoolRoutes);
-app.use("/schools/:school_id/classes", classRoutes);
-app.use("/classes/:class_id/exams", examRoutes);
-app.use("/classes/:class_id/homework", homeworkRoutes);
-
-// start server
-app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
-    console.log(`server online on HOST:${process.env.SERVER_HOST}, PORT:${process.env.SERVER_PORT}`);
+        
+        Homework.deleteMany({date: {$lt: date}}, err => {
+            // log err if it exisits
+            if(err) {
+                console.log(err);
+            }
+            // success
+            console.log(`deleted exams at date: ${date}`);
+        });
+    });
+    
+    // Routes setup
+    app.use(indexRoutes);
+    app.use(authRoutes);
+    app.use('/schools', schoolRoutes);
+    app.use('/schools/:school_id/classes', classRoutes);
+    app.use('/classes/:class_id/exams', examRoutes);
+    app.use('/classes/:class_id/homework', homeworkRoutes);
+    
+    // start server
+    app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
+        console.log(`server online on HOST:${process.env.SERVER_HOST}, PORT:${process.env.SERVER_PORT}`); // log server location info
+    });
 });

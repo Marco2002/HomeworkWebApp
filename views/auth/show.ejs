@@ -3,22 +3,22 @@
 <div class="container row no-m">
 
 
-    <table class="bordered">
+    <table class="bordered centered">
         <thead>
             <tr>
-                <th><h5 class="bold no-m"><%= user.username%></h5></th>
+                <th><h6 class="bold no-m"><%= user.username %></h6></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><h6 class="bold"><%= texts.SCHOOL %>:</h6></td>
-                <td class="center"><h6><%= r.school_name %></h6></td>
-                <td class="center"><h6><a class="btn blue" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
+                <td><h6><%= userR.school_id.name %></h6></td>
+                <td><h6><a class="btn blue" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
             </tr>
             <tr>
                 <td><h6 class="bold"><%= texts.CLASS %>:</h6></td>
-                <td class="center"><h6><%= r.class_name %></h6></td>
-                <td class="center"><h6><a class="btn blue" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
+                <td><h6><%= userR.class_id.name %></h6></td>
+                <td><h6><a class="btn blue" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
             </tr>
             <tr>
                 <td><h6 class="bold"><%= texts.LANGUAGE %>:</h6></td>

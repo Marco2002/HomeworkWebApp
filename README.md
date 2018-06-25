@@ -22,12 +22,9 @@ One howework planner for the whole class
         - SERVER_PORT,
         - SERVER_HOST,
         - COOKIE_SECRET,
-        - MYSQL_HOST,
-        - MYSQL_PORT,
-        - MYSQL_USERNAME,
-        - MYSQL_PASSWORD,
-        - MYSQL_DB,
-        - VERSION
+        - COOKIE_NAME,
+        - MONGO_DB,
+        - VERSION,
         
 ## Running the tests
 
