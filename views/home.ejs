@@ -134,7 +134,7 @@
             <% }) %>
             <% } %>
         </div>
-        <% if(user.is_admin == true) { %>
+        <% if(user.power > 0) { %>
             <div class="bot">
                 <a id="redirectToAddPage" class="btn-floating btn-large blue right"><i class="material-icons">add</i></a>
             </div>

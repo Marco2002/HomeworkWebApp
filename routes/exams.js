@@ -3,10 +3,10 @@
 //======================
 
 // Packages
-const express    = require("express");
-const moment     = require("moment");
-const mid        = require("../middleware");
-const fun        = require("../functions");
+const express    = require('express');
+const moment     = require('moment');
+const mid        = require('../middleware');
+const fun        = require('../functions');
 
 const router  = express.Router({mergeParams: true});
 
@@ -26,7 +26,7 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
     .then(h => {
         // format date of all homework
         for(let i = 0; i < h.length; i++) {
-            h[i].d = `${h[i].date.getDate()}.${h[i].date.getMonth()}`; // useing "d" becouse "date" cannot be overwritten
+            h[i].d = `${h[i].date.getDate()}.${h[i].date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
         }
         // store homework in variable
         homework = h;
@@ -40,7 +40,7 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
     }).then(e => {
         // format date of all exams
         for(let i = 0; i < e.length; i++) {
-            e[i].d = `${e[i].date.getDate()}.${e[i].date.getMonth()}`;// useing "d" becouse "date" cannot be overwritten
+            e[i].d = `${e[i].date.getDate()}.${e[i].date.getMonth()}`;// useing 'd' becouse 'date' cannot be overwritten
         }
         // store exams
         exams = e;
@@ -69,23 +69,23 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
 });
 
 // New Route
-router.get("/new", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/new', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // renter ejs template
-    res.render("exams/new", {
-        title: "TITLE_ADD_EXAM",
+    res.render('exams/new', {
+        title: 'TITLE_ADD_EXAM',
     });
 });
 
 // Create Route
-router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // check inputs
-    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty().len(1, 40);
-    req.checkBody("exam[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
-    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
+    req.checkBody('exam[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
+    req.checkBody('exam[date]', 'Date field cannot be empty').notEmpty();
+    req.checkBody('exam[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('exam[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
     // handle input errors
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/exams/new`)}
+    if(errors) {return fun.error(req, res, '', errors[0].msg, `/classes/${req.params.class_id}/exams/new`)}
 
     let e = req.body.exam;
     
@@ -112,7 +112,7 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
         // loop through topics and import into exam
         for(let i = 0; i < topics.topic.length; i++) {
             // check if current index topic is not empty
-            if(topics.topic[i] != null && topics.topic[i] != "") {
+            if(topics.topic[i] != null && topics.topic[i] != '') {
                 
                 // import topic
                 e.topics[i] = {
@@ -123,28 +123,28 @@ router.post("/", mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
         }
     }
     
-    // create exam based on "e" from body inputs
+    // create exam based on 'e' from body inputs
     Exam.create(e)
     // save homework to DB
     .then(homework => {
         // flash success msg and redirect user
-        req.flash("success", "Added exam");
+        req.flash('success', 'Added exam');
         res.redirect(`/classes/${req.params.class_id}/exams`);
     }, err => {
         // handle error while adding exam
-        fun.error(req, res, err, "Error while adding your exam", `/classes/${req.params.class_id}/exams`);
+        fun.error(req, res, err, 'Error while adding your exam', `/classes/${req.params.class_id}/exams`);
     });
 });
 
 // Show Route
-router.get("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
+router.get('/:id', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
     // find exam
     Exam.findById({_id: req.params.id})
     .then(exam => {
         // format date
-        exam.d = moment(exam.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        exam.d = moment(exam.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
         // render ejs template
-        res.render("exams/show", {
+        res.render('exams/show', {
             title: exam.subjectName,
             r: exam
         });
@@ -155,7 +155,7 @@ router.get("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res)
 });
 
 // Destroy Route
-router.delete("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.delete('/:id', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // delete homework
     Exam.deleteOne({_id: req.params.id}, err => {
         // handle error while deleting exam
@@ -168,12 +168,12 @@ router.delete("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isA
 });
 
 // Edit Route
-router.get("/:id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/:id/edit', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // find exam
     Exam.findById({_id: req.params.id})
     .then(exam => {
         // format date
-        exam.d = moment(exam.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        exam.d = moment(exam.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
         // render ejs template
         res.render('exams/edit', {
             title: 'TITLE_EDIT_EXAM',
@@ -186,15 +186,15 @@ router.get("/:id/edit", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.i
 });
 
 // Update Route
-router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.put('/:id', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // check body inputs
-    req.checkBody("exam[title]", "Title field cannot be empty").notEmpty().len(1, 40);
-    req.checkBody("exam[date]", "Date field cannot be empty").notEmpty();
-    req.checkBody("exam[subject]", "Homework subject field cannot be empty").notEmpty().len(1, 20);
-    req.checkBody("exam[subjectName]", "Subject name field cannot be empty").notEmpty().len(1, 20);
+    req.checkBody('exam[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
+    req.checkBody('exam[date]', 'Date field cannot be empty').notEmpty();
+    req.checkBody('exam[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('exam[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
     // handle input errors
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, "", errors[0].msg, `/classes/${req.params.class_id}/exams/${req.params.id}/edit`)}
+    if(errors) {return fun.error(req, res, '', errors[0].msg, `/classes/${req.params.class_id}/exams/${req.params.id}/edit`)}
 
     let e = req.body.exam;
     let topics = req.body.topics;
@@ -213,7 +213,7 @@ router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmi
         // loop through topics and import into exam
         for(let i = 0; i < topics.topic.length; i++) {
             // check if current index topic is not empty
-            if(topics.topic[i] != null && topics.topic[i] != "") {
+            if(topics.topic[i] != null && topics.topic[i] != '') {
                 
                 // import topic
                 e.topics[i] = {
@@ -231,11 +231,11 @@ router.put("/:id", mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.isAdmi
     Exam.findByIdAndUpdate({_id: req.params.id}, e)
     .then( exam => {
         // flash msg and redirect user
-        req.flash("success", "Updated exam");
+        req.flash('success', 'Updated exam');
         res.redirect(`/classes/${req.params.class_id}/homework`);
     }, err => {
         // handle error while updating exam
-        fun.error(req, res, err, "Error while updating your exam", `/classes/${req.params.class_id}/exams`);
+        fun.error(req, res, err, 'Error while updating your exam', `/classes/${req.params.class_id}/exams`);
     });
 });
 

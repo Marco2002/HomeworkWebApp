@@ -76,16 +76,14 @@
 
             <li><a class="collapsible-header" href="/<%=user.id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
 
-            <% if(user.is_admin) { %>
-                <li><a class="collapsible-header" href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
-            <% } %>
+            <li><a class="collapsible-header" href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
 
             <li><div class="divider"></div></li>
             <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
             <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
             <li><div class="divider"></div></li>
 
-            <% if(user.is_admin) { %>
+            <% if(user.power > 0) { %>
 
                 <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
                 <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>

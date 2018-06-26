@@ -27,7 +27,7 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
     .then(h => {
         // format date of all homework
         for(let i = 0; i < h.length; i++) {
-            h[i].d = `${h[i].date.getDate()}.${h[i].date.getMonth()}`; // useing "d" becouse "date" cannot be overwritten
+            h[i].d = `${h[i].date.getDate()}.${h[i].date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
         }
         // store homework in variable
         homework = h;
@@ -41,7 +41,7 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
     }).then(e => {
         // format date of all exams
         for(let i = 0; i < e.length; i++) {
-            e[i].d = `${e[i].date.getDate()}.${e[i].date.getMonth()}`;// useing "d" becouse "date" cannot be overwritten
+            e[i].d = `${e[i].date.getDate()}.${e[i].date.getMonth()}`;// useing 'd' becouse 'date' cannot be overwritten
         }
         // store exams
         exams = e;
@@ -70,7 +70,7 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) =>
 });
 
 // New Route
-router.get('/new', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/new', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // render ejs template
     res.render('homework/new', {
         title: 'TITLE_ADD_HOMEWORK'
@@ -78,7 +78,7 @@ router.get('/new', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) =>
 });
 
 // Create Route
-router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // check inputs
     req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
     req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();
@@ -101,7 +101,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     // set class id
     h.class_id = req.params.class_id;
     
-    // crate homework based on "h" from body inputs
+    // crate homework based on 'h' from body inputs
     Homework.create(h)
     // save homework to DB
     .then( homework => {
@@ -120,7 +120,7 @@ router.get('/:id', mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
     Homework.findById({_id: req.params.id})
     .then(homework => {
         // format date
-        homework.d = moment(homework.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        homework.d = moment(homework.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
         // render ejs template
         res.render('homework/show', {
             title: homework.subjectName,
@@ -133,7 +133,7 @@ router.get('/:id', mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
 });
 
 // Destroy Route
-router.delete('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.delete('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // delete homework
     Homework.deleteOne({_id: req.params.id}, err => {
         // handle error while deleting homework
@@ -146,13 +146,13 @@ router.delete('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res)
 });
 
 // Edit Route
-router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // find homework
     Homework.findById({_id: req.params.id})
     .then( homework => {
         
         // format date
-        homework.d = moment(homework.date).format('DD.MM'); // useing "d" becouse "date" cannot be overwritten
+        homework.d = moment(homework.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
         // render ejs template
         res.render('homework/edit', {
             title: 'TITLE_EDIT_HOMEWORK',
@@ -166,7 +166,7 @@ router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, re
 });
 
 // Update Route
-router.put('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.put('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // check body inputs
     req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
     req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();

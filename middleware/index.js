@@ -81,10 +81,19 @@ middlewareObj.isPartOfClass = (req, res, next) => {
 // check if user is admin
 middlewareObj.isAdmin = (req, res, next) => {
     
-    if(req.user.is_admin) {
+    if(req.user.power == 2) {
         next();
     } else {
         fun.error(req, res, '', 'You need to be class admin to do that', `/classes/${req.user.class_id}/homework`);
+    }
+};
+
+middlewareObj.isNotRestricted = (req, res, next) => {
+    
+    if(req.user.power > 0) {
+        next();
+    } else {
+        fun.error(req, res, '', 'You are not allowed to do that', `/classes/${req.user.class_id}/homework`);
     }
 };
 

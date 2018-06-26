@@ -26,7 +26,7 @@ router.get('/register', mid.isNotLoggedIn, (req, res) => {
 router.post('/register', mid.isNotLoggedIn, (req, res) => {
 
     // check if inputs are correct
-    req.checkBody('username', 'Password must be at least 4 characters long').notEmpty().len(4, 15);
+    req.checkBody('username', 'Username must be at least 4 characters long').notEmpty().len(4, 15);
     req.checkBody('password', 'Password must be at least 8 characters long').notEmpty().len(8, 100);
     req.checkBody('reenterPassword', 'Passwords do not match, please try again').equals(req.body.password);
     
@@ -67,7 +67,7 @@ router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
 router.post('/selectSchool', mid.isLoggedIn, (req, res) => {
     
     // make sure user is not an admin
-    if(req.user.is_admin == false) {
+    if(req.user.power < 2) {
         // check if inputs are correct
         req.checkBody('school', 'School field cannot be empty').notEmpty();
         req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
@@ -84,7 +84,7 @@ router.post('/selectSchool', mid.isLoggedIn, (req, res) => {
                 
             } else {
                 // wrong password
-                fun.error(req, res, '', 'Wrong school password', '/selectSchool');
+                return fun.error(req, res, '', 'Wrong school password', '/selectSchool');
             }
             
         }, err => {
@@ -131,20 +131,20 @@ router.get('/selectClass', mid.isLoggedIn, (req, res) => {
 // POST select class route
 router.post('/selectClass', mid.isLoggedIn, (req, res) => {
     // make sure user is nat an admin
-    if(req.user.is_admin == 0) {
+    if(req.user.power < 2) {
         // check inputs
         req.checkBody('clas', 'Class field cannot be empty').notEmpty();
         // handle input errors
         const errors = req.validationErrors();
         if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
         
-        User.findByIdAndUpdate({_id: req.user.id}, { $set: {is_admin: false, class_id: req.body.clas}})
+        User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: req.body.clas}})
         .then(user => {
             req.login(user, err => {
                     // handle possible error
                     if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-                    res.redirect(`/classes/${user.class_id}/homework`);
+                    res.redirect(`/classes/${req.body.clas}/homework`);
                 });
         }, err => {
             // handle error
@@ -164,8 +164,8 @@ router.get('/login', mid.isNotLoggedIn, (req, res) => {
 router.post('/login', mid.isNotLoggedIn, (req, res) => {
 
     // check if inputs are correct
-    req.checkBody('username', 'Username field cannot be empty').notEmpty().len(4, 15);
-    req.checkBody('password', 'Password field cannot be empty').notEmpty().len(8, 100);
+    req.checkBody('username', 'Username must be at least 4 characters long').notEmpty().len(4, 15);
+    req.checkBody('password', 'Password must be at least 8 characters long').notEmpty().len(8, 100);
 
     // handle input errors
     const errors = req.validationErrors();

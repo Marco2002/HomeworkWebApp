@@ -7,6 +7,41 @@ p, h1, h2, h3, h4, h5 {
     margin-top: 0!important;
 }
 
+.red-box {
+    padding: 2px 4px;
+    border: 2px solid #f44336;
+    border-radius: 3px;
+}
+
+.yellow-box {
+    padding: 2px 4px;
+    border: 2px solid #f9a825;
+    border-radius: 3px;
+}
+
+.green-box {
+    padding: 2px 4px;
+    border: 2px solid #4caf50;
+    border-radius: 3px;
+}
+
+.center-text {
+    text-align-last: center;
+}
+
+.medium-cell {
+    width: 40%;
+}
+
+.large-cell {
+    width: 50%;
+}
+
+td.small-cell {
+    width: 10%;
+    margin-top: 8px;
+}
+
 .no-p {
     padding: 0!important;
 }
@@ -105,6 +140,18 @@ img.logo {
 
 .alert {
     opacity: 0.8;
+}
+
+.flash {
+    padding: 0.8rem 1.6rem
+}
+
+.smaller {
+    font-size: 1.3rem;
+}
+
+#alert-close {
+    margin-right: 0.8rem
 }
 
 .alert-error {

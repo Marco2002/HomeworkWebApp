@@ -31,11 +31,11 @@ const userSchema = new mongoose.Schema({
     },
     
     // boolean value for isAdmin
-    is_admin: {
-        type: Boolean,
+    power: {
+        type: Number,
         // properties
         required: true,
-        default: false
+        default: 1
     }
 });
 

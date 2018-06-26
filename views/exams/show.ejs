@@ -60,7 +60,7 @@
                 <p class="divider"></p>
                 <div class="row"></div>
                 
-                <% if(user.is_admin) { %>
+                <% if(user.power > 0) { %>
                     <a href="/classes/<%=r.class_id%>/exams/<%=r._id%>/edit"><i class="left material-icons <%=textColor%>-text">create</i></a>
                     <a class="modal-trigger" href="#warning"><i class="left material-icons <%=textColor%>-text">delete</i></a>
                     

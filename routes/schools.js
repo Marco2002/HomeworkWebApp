@@ -9,7 +9,7 @@ const fun          = require('../functions');
 const mid          = require('../middleware');
 
 // models
-const School = require("../models/school");
+const School = require('../models/school');
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.get('/new', mid.isLoggedIn, (req, res) => {
 router.post('/', mid.isLoggedIn, (req, res) => {
     
     // make sure user is not an adimn
-    if(req.user.is_admin == 0) {
+    if(req.user.power < 2) {
         // check inputs
         req.checkBody('school[name]', 'School-name must be between 4-30 characters long').notEmpty().len(4, 30);
         req.checkBody('school[password]', 'Password must be at least 4 characters long').notEmpty().len(4, 100);

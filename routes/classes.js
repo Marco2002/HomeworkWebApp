@@ -25,7 +25,7 @@ router.get('/new', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 // Create Route
 router.post('/', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
     
-    if(req.user.is_admin == 0) {
+    if(req.user.power < 2) {
         // check inputs    
         req.checkBody('class[name]', 'Class-name cannot be langer than 10 characters').notEmpty().len(0, 10);
         // handle input errors
@@ -44,14 +44,14 @@ router.post('/', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
             
             // make class creator admin 
             return User.findByIdAndUpdate({ _id: req.user.id}, { $set: { // return promise
-                is_admin: true,
+                power: 2,
                 class_id: clas._id
             }}).then(user => {
                 req.login(user, (err) => {
                     // handle possible error
                     if(err) {return fun.error(req, res, err, 'Error while signing up', '/register')}
                     
-                    res.redirect(`/classes/${user.class_id}/homework`);
+                    res.redirect(`/classes/${clas._id}/homework`);
                 });
             }, err => {
                 // handle error
@@ -64,7 +64,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 });
 
 // Show Route
-router.get('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, (req, res) => {
     
     // variables
     let clas;
@@ -95,7 +95,7 @@ router.get('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
 });
 
 // Update Route
-router.put('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.put('/:class_id', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     // check inputs
     req.checkBody('class[name]', 'Class-name cannot be langer than 10 characters').notEmpty().len(0, 10);
@@ -115,10 +115,10 @@ router.put('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
 });
 
 // Make Admin Route
-router.get('/:class_id/users/:id/admin', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+router.get('/:class_id/users/:id/admin', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
-    // set is_admin of user to false
-    User.findByIdAndUpdate({_id: req.params.id}, {$set: { is_admin: true }})
+    // set power of user to 2
+    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 2 }})
     .then(user => {
         // success
         req.flash('success', 'Made admin');
@@ -130,13 +130,15 @@ router.get('/:class_id/users/:id/admin', mid.isLoggedIn, mid.updateUser, mid.isP
 });
 
 // Romove Admin Route
-router.get('/:class_id/users/:id/deadmin', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-    
-    User.find({is_admin: true, class_id: req.params.class_id})
-    .then(admins => {
+router.get('/:class_id/users/:id/deadmin', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // find all admins
+    User.find({
+        power: 2,
+        class_id: req.params.class_id
+    }).then(admins => {
         // make sure there are at least 2 admins
         if(admins.length > 1) {
-            User.findByIdAndUpdate({_id: req.params.id}, { $set: {is_admin: false}})
+            User.findByIdAndUpdate({_id: req.params.id}, { $set: {power: 1}})
             .then( user => {
                 // removed admin
                 req.flash('success', 'Removed admin');
@@ -152,6 +154,74 @@ router.get('/:class_id/users/:id/deadmin', mid.isLoggedIn, mid.updateUser, mid.i
     }, err => {
         // handle err
         fun.error(req, res, err, 'Error while removing user from admins', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    });
+});
+
+// Make restricted member
+router.get('/:class_id/users/:id/restrict', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // get all admins
+    User.find({
+        power: 2,
+        class_id: req.params.class_id
+    }).then( admins => {
+        // check if user is last admin
+        if(admins.length == 1 && admins[0]._id == req.params.id) {
+            // user is last admin => error
+            return fun.error(req, res, '', 'You cannot remove the last admin', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+        }
+        // make restricted member
+        return User.findByIdAndUpdate({_id: req.params.id}, {$set: {
+            power: 0}
+        });
+    }).then( user => {
+        // success
+        req.flash('success', 'Made restricted member');
+        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    }, err => {
+        // handle error while making restricted member
+        fun.error(req, res, err, 'Error while making restricted member', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    });
+});
+
+// Remove restricted member
+router.get('/:class_id/users/:id/derestrict', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    
+    // set power of user back to 1
+    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 1 }})
+    .then(user => {
+        // success
+        req.flash('success', 'Removed restricted member');
+        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    }, err => {
+        // handle error
+        fun.error(req, res, err, 'Error while removing restricted member', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    });
+});
+
+// Kick route
+router.get('/:class_id/users/:id/kick', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+    // get all admins
+    User.find({
+        power: 2,
+        class_id: req.params.class_id
+    }).then( admins => {
+        // check if user is last admin
+        if(admins.length == 1 && admins[0]._id == req.params.id) {
+            // user is last admin => error
+            return fun.error(req, res, '', 'You cannot remove the last admin', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+        }
+        // remove user from class
+        return User.findByIdAndUpdate({_id: req.params.id}, {$set: {
+            class_id: undefined,
+            power: 1}
+        });
+    }).then( user => {
+        // success
+        req.flash('success', 'Kicked user out of class');
+        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    }, err => {
+        // handle error while updating user
+        fun.error(req, res, err, 'Error while kicking from class', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
 });
 
