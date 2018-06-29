@@ -36,7 +36,16 @@
     <table class="bordered">
         <thead>
             <tr>
-                <th><h6 class="bold no-m"><%= texts.MEMBERS %></h6></th>
+                <th>
+                    <div class="row no-m">
+                        <h6 class="col bold no-m"><%= texts.MEMBERS %></h6>
+                        <a class="modal-trigger" href="#userPermissionsInfo"><i class="col grey-text material-icons right">info_outline</i></a>
+                        
+                        <div id="userPermissionsInfo" class="modal">
+                            <img src="/res/user_permissions.png" class="responsive">
+                        </div>
+                    </div>
+                </th>
             </tr>
         </thead>
         

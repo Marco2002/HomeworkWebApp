@@ -82,7 +82,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         saveUninitialized: false,
         store: store, // set mongoDB store
         cookie: {
-            maxAge: 3 * 12 * 30 * 24 * 60 * 60 * 1000 // 3 Years
+            maxAge: 12 * 30 * 24 * 60 * 60 * 1000 // 1 Year
         }
     }));
     
