@@ -1,7 +1,7 @@
 <% var selectedSchool; %>
 <% include ../partials/headerBasic %>
 
-<div class="blue-background">
+<div class="app-color full-height">
     <div class="container">
         <div class="row no-m">
             <div class="col s12 l8 push-l2">
@@ -22,12 +22,12 @@
                                         </select>
                                         <label><%= texts.CLASS %></label>
                                     </div>
-                                    <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 blue"><%= texts.ADD_CLASS %></a>
+                                    <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 app-color"><%= texts.ADD_CLASS %></a>
                                 </div>
                             </div>
 
                             <div class="row no-m center">
-                                <button class="blue waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                                <button class="app-color waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
                             </div>
                         </form>
                     </div>

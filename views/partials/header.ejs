@@ -11,8 +11,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <!-- main.css -->
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
-        <!-- FontAwesome icons -->
-        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+        <!-- HelmholtzApp -->
+        <% if(typeof hhsapp !== 'undefined') { %>
+            <link rel="stylesheet" href="/stylesheets/hhsapp.css" type="text/css" />
+        <% } %>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -22,7 +24,7 @@
             <div class="navbar-fixed">
                 <nav class="nav-extended">
                     <div class="col s12 right" id="no-mp">
-                        <div class="nav-wrapper blue">
+                        <div class="nav-wrapper app-color">
                             <div class="container">
                                 <ul><li><div class="nav-title-width brand-logo center truncate">
  

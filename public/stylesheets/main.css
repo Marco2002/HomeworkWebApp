@@ -2,6 +2,10 @@ p, h1, h2, h3, h4, h5 {
     word-wrap: break-word;
 }
 
+.app-color {
+    background-color: #2196f3!important; 
+}
+
 .no-m {
     margin-bottom: 0!important;
     margin-top: 0!important;
@@ -52,8 +56,7 @@ td.small-cell {
     text-overflow:ellipsis;
 }
 
-.blue-background {
-    background-color: #2196f3;
+.full-height {
     height: 100vh;
 }
 

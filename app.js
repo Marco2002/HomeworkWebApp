@@ -114,6 +114,8 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         res.locals.user = req.user;
         res.locals.error = req.flash('error');
         res.locals.success = req.flash('success');
+        // HelmholtzschuleApp
+        res.locals.hhsapp = req.query.hhsapp
         next();
     });
     
