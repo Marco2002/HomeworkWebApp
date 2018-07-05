@@ -51,7 +51,6 @@ router.post('/register', mid.isNotLoggedIn, (req, res) => {
 
 // GET select school route
 router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
-
     School.find({})
     .then(schools => {
         res.render('auth/selectSchool', {
@@ -64,48 +63,41 @@ router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
 });
 
 // POST select school route
-router.post('/selectSchool', mid.isLoggedIn, (req, res) => {
+router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
+    // check if inputs are correct
+    req.checkBody('school', 'School field cannot be empty').notEmpty();
+    req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
+    // handle input errors
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSchool')}
     
-    // make sure user is not an admin
-    if(req.user.power < 2) {
-        // check if inputs are correct
-        req.checkBody('school', 'School field cannot be empty').notEmpty();
-        req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
-        // handle input errors
-        const errors = req.validationErrors();
-        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSchool')}
-        
-        School.findOne({name: req.body.school})
-        .then(school => {
-            // verify school password
-            if(passwordHash.verify(req.body.schoolPassword, school.password)) {
-                // right password => update users school
-                return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id}}); // return promise
-                
-            } else {
-                // wrong password
-                return fun.error(req, res, '', 'Wrong school password', '/selectSchool');
-            }
+    School.findOne({name: req.body.school})
+    .then(school => {
+        // verify school password
+        if(passwordHash.verify(req.body.schoolPassword, school.password)) {
+            // right password => update users school
+            return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id}}); // return promise
             
-        }, err => {
-            // handle error while finding school
-            fun.error(req, res, err, "Couldn't find your school", '/selectSchool');
-        }).then(user => {
-            // login updated user
-            req.login(user, err => {
+        } else {
+            // wrong password
+            return fun.error(req, res, '', 'Wrong school password', '/selectSchool');
+        }
+        
+    }, err => {
+        // handle error while finding school
+        fun.error(req, res, err, "Couldn't find your school", '/selectSchool');
+    }).then(user => {
+        // login updated user
+        req.login(user, err => {
 
-                if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
+            if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-                res.redirect('/selectClass');
-            });
-        }, err => {
-            // handle error while updating user
-            return fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
+            res.redirect('/selectClass');
         });
-    } else {
-        // user is an admin => user cann't switch school 
-        return fun.error(req, res, '', 'You cannot switch school as an admin', `/classes/${req.user.class_id}/homework`);
-    }
+    }, err => {
+        // handle error while updating user
+        return fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
+    });
 });
 
 // GET select class route
@@ -129,31 +121,40 @@ router.get('/selectClass', mid.isLoggedIn, (req, res) => {
 });
 
 // POST select class route
-router.post('/selectClass', mid.isLoggedIn, (req, res) => {
-    // make sure user is nat an admin
-    if(req.user.power < 2) {
-        // check inputs
-        req.checkBody('clas', 'Class field cannot be empty').notEmpty();
-        // handle input errors
-        const errors = req.validationErrors();
-        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
-        
-        User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: req.body.clas}})
-        .then(user => {
-            req.login(user, err => {
-                    // handle possible error
-                    if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
+router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
+    // check inputs
+    req.checkBody('clas', 'Class field cannot be empty').notEmpty();
+    // handle input errors
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
+    
+    User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: req.body.clas}})
+    .then(user => {
+        req.login(user, err => {
+                // handle possible error
+                if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-                    res.redirect(`/classes/${req.body.clas}/homework`);
-                });
-        }, err => {
-            // handle error
-            fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
-        });
-    } else {
-        return fun.error(req, res, '', 'You cannot switch class as an admin', `/classes/${req.user.class_id}/homework`);
-    }
+                res.redirect(`/classes/${req.body.clas}/homework`);
+            });
+    }, err => {
+        // handle error
+        fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
+    });
 });
+
+// Leave Class Route
+router.get('/leaveClass', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
+    // update user
+    User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: undefined}})
+    .then(user => {
+        // redirect to select class
+        res.redirect('/selectClass');
+    }, err => {
+        // handle error while updating user
+        fun.error(req, res, err, 'Error while leaving class', `/classes/${req.user.class_id}/homework`);
+    });
+});
+
 
 // GET login route
 router.get('/login', mid.isNotLoggedIn, (req, res) => {

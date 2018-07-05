@@ -3,7 +3,7 @@
 // ====================
 
 // Packages
-const fun       = require('../functions');
+const fun = require('../functions');
 
 // Models
 const User = require('../models/user');
@@ -106,6 +106,26 @@ middlewareObj.isUser = (req, res, next) => {
         fun.error(req, res, '', "You aren't logged in as that user", `/${req.user.id}`);
     }
 };
+
+middlewareObj.isNotLastAdmin = (req, res, next) => {
+    // find all admins
+    User.find({
+        power: 2,
+        class_id: req.user.class_id
+    }).then(admins => {
+        // make sure user is not last admin
+        if(!(admins.length == 1 && admins[0]._id == req.user.id)) {
+            // user is not last admin
+            next();
+        } else {
+            // user is last admin
+            fun.error(req, res, '', 'You cannot do that as the last admin', `/classes/${req.user.class_id}/homework`);
+        }
+    }, err => {
+        // handle err
+        fun.error(req, res, err, 'Error while removing user from admins', `/classes/${req.user.class_id}/homework`);
+    });
+}
 
 middlewareObj.updateUser = (req, res, next) => {
     
