@@ -100,10 +100,10 @@ middlewareObj.isNotRestricted = (req, res, next) => {
 // check if logged in user is the same than in parameter
 middlewareObj.isUser = (req, res, next) => {
     
-    if(req.params.user_id == req.user.id) {
+    if(req.params.user_id == req.user._id) {
         next();
     } else {
-        fun.error(req, res, '', "You aren't logged in as that user", `/${req.user.id}`);
+        fun.error(req, res, '', "You aren't logged in as that user", `/${req.user._id}`);
     }
 };
 
@@ -114,7 +114,7 @@ middlewareObj.isNotLastAdmin = (req, res, next) => {
         class_id: req.user.class_id
     }).then(admins => {
         // make sure user is not last admin
-        if(!(admins.length == 1 && admins[0]._id == req.user.id)) {
+        if(!(admins.length == 1 && admins[0]._id == req.user._id)) {
             // user is not last admin
             next();
         } else {
@@ -130,20 +130,14 @@ middlewareObj.isNotLastAdmin = (req, res, next) => {
 middlewareObj.updateUser = (req, res, next) => {
     
     // find current user
-    User.findOne({_id: req.user.id})
+    User.findOne({_id: req.user._id})
     .then( user => {
-        if(req.user == user) {
-            // user is still the same (no update needed)
+        req.login(user, (err) => {
+            // handle possible error
+            if(err) {return fun.error(req, res, err, 'Error while updating session', `/classes/${user.class_id}/homework`)}
+            
             next();
-        } else {
-            // user changed => update session
-            req.login(user, (err) => {
-                // handle possible error
-                if(err) {return fun.error(req, res, err, 'Error while updating session', `/classes/${req.user.class_id}/homework`)}
-                
-                next();
-            });
-        }
+        });
     }, err => {
         // handle error
         fun.error(req, res, err, 'Error while updating session', `/classes/${req.user.class_id}/homework`);

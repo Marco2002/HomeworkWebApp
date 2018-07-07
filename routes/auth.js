@@ -34,19 +34,29 @@ router.post('/register', mid.isNotLoggedIn, (req, res) => {
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, '/register')}
     
-    // register User
-    User.register(new User({
-        username: req.body.username,
-    }), req.body.password, (err, user) => {
-        // handle error
-        if(err) {return fun.error(req, res, err, err.message, '/register')}
-        
-        passport.authenticate('local')(req, res, () => {
+    // hash school password
+    req.body.password = passwordHash.generate(req.body.password);
+
+    const {username, password} = req.body;
+
+    // create User
+    let user = new User({
+        username,
+        password
+    });
+    // store user in DB
+    user.save(err => {
+        // handle error while storing user
+        if(err) return fun.error(req, res, err, 'Username already taken', '/register');
+        // authenticate user
+        req.login(user, err => {
+
+            if(err) return fun.error(req, res, err, "Error while logging in", "/login");
+
             req.flash('success', `Registered successfully. Welcome ${user.username}`);
             res.redirect('/classes/undefined/homework');
         });
     });
-
 });
 
 // GET select school route
@@ -90,7 +100,7 @@ router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
         // login updated user
         req.login(user, err => {
 
-            if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
+            if(err) return fun.error(req, res, err, 'Error while signing up', '/');
 
             res.redirect('/selectClass');
         });
@@ -128,7 +138,7 @@ router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, 
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
     
-    User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: req.body.clas}})
+    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: req.body.clas}})
     .then(user => {
         req.login(user, err => {
                 // handle possible error
@@ -145,7 +155,7 @@ router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, 
 // Leave Class Route
 router.get('/leaveClass', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // update user
-    User.findByIdAndUpdate({_id: req.user.id}, { $set: {power: 1, class_id: undefined}})
+    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: undefined}})
     .then(user => {
         // redirect to select class
         res.redirect('/selectClass');
@@ -181,7 +191,7 @@ router.post('/login', mid.isNotLoggedIn, (req, res) => {
         if (!user) {return fun.error(req, res, '', 'Wrong password or username', '/login')}
 
         // login user
-        req.login(user, function(err) {
+        req.login(user, (err) => {
             // handle possible error
             if (err) {return fun.error(req, res, err, 'Error while logging in', '/login')}
 

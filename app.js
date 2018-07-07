@@ -58,7 +58,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // mongoDB setup
 // connect to DB
-mongoose.connect(process.env.MONGO_DB) // mongoDB url
+mongoose.connect(process.env.MONGO_DB, { useNewUrlParser: true }) // mongoDB url
 .then(() => {
      // log connection
     console.log(`connected to DB: ${mongoose.connection.db.databaseName}`);
@@ -71,7 +71,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
     // Session store
     const store = new MongoStore({
         url: process.env.MONGO_DB, // mongoDB url
-        ttl: 3 * 30 * 24 * 60 * 60 // 3 Months
+        ttl: 12 * 30 * 24 * 60 * 60 // 1 Year
     });
     
     // session setup
@@ -172,13 +172,13 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
                     }
 
                     // if no user exists, create user
-                    user = new User({
+                    let user = new User({
                         username: profile.displayName,
+                        google_id: profile.id,
+                        google_token: accessToken,
+                        google_image: imageUrl
                     });
-                    user.google_id = profile.id;
-                    user.google_token = accessToken;
-                    user.google_image = imageUrl;
-
+                    
                     // save user in DB
                     user.save(err => {
                         // handel error

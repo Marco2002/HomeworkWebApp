@@ -107,7 +107,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, r
         topics.learn = [topics.learn];
     }
     
-    e.topics = [];
+    e.topics = [topics.topic.length];
     if(topics) {
         // loop through topics and import into exam
         for(let i = 0; i < topics.topic.length; i++) {

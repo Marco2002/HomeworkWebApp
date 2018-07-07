@@ -42,7 +42,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfSchool, mid.isNotLastAdmin, (req, r
         if(err) {return fun.error(req, res, err, 'Error while adding your class', '/selectClass')}
         
         // make class creator admin 
-        User.findByIdAndUpdate({ _id: req.user.id}, { $set: {
+        User.findByIdAndUpdate({ _id: req.user._id}, { $set: {
             power: 2,
             class_id: clas._id
         }}).then(user => {
