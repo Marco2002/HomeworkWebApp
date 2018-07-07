@@ -3,13 +3,13 @@
 // ======================
 
 // packages
-const express    = require('express');
-const fun        = require('../functions');
-const mid        = require('../middleware');
+const express = require('express');
+const fun = require('../functions');
+const mid = require('../middleware');
 
 // models
-const Class  = require('../models/class');
-const User   = require('../models/user');
+const Class = require('../models/class');
+const User = require('../models/user');
 
 const router = express.Router({mergeParams: true});
 
@@ -23,44 +23,40 @@ router.get('/new', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
 });
 
 // Create Route
-router.post('/', mid.isLoggedIn, mid.isPartOfSchool, (req, res) => {
+router.post('/', mid.isLoggedIn, mid.isPartOfSchool, mid.isNotLastAdmin, (req, res) => {
     
-    if(req.user.power < 2) {
-        // check inputs    
-        req.checkBody('class[name]', 'Class-name cannot be langer than 10 characters').notEmpty().len(0, 10);
-        // handle input errors
-        const errors = req.validationErrors();
-        if(errors) {return fun.error(req, res, '', errors[0].msg, `/schools/${req.params.school_id}/classes/new`)}
+    // check inputs    
+    req.checkBody('class[name]', 'Class-name cannot be langer than 10 characters').notEmpty().len(0, 10);
+    // handle input errors
+    const errors = req.validationErrors();
+    if(errors) {return fun.error(req, res, '', errors[0].msg, `/schools/${req.params.school_id}/classes/new`)}
+    
+    // create class object
+    const clas = new Class({
+        name: req.body.class.name,
+        school_id: req.params.school_id
+    });
+    // save class to db
+    clas.save(err => {
+        // handle possible error
+        if(err) {return fun.error(req, res, err, 'Error while adding your class', '/selectClass')}
         
-        // create class object
-        const clas = new Class({
-            name: req.body.class.name,
-            school_id: req.params.school_id
-        });
-        // save class to db
-        clas.save(err => {
-            // handle possible error
-            if(err) {return fun.error(req, res, err, 'Error while adding your class', '/selectClass')}
-            
-            // make class creator admin 
-            return User.findByIdAndUpdate({ _id: req.user.id}, { $set: { // return promise
-                power: 2,
-                class_id: clas._id
-            }}).then(user => {
-                req.login(user, (err) => {
-                    // handle possible error
-                    if(err) {return fun.error(req, res, err, 'Error while signing up', '/register')}
-                    
-                    res.redirect(`/classes/${clas._id}/homework`);
-                });
-            }, err => {
-                // handle error
-                fun.error(req, res, err, 'Error while making you class admin', '/selectClass');
+        // make class creator admin 
+        User.findByIdAndUpdate({ _id: req.user.id}, { $set: {
+            power: 2,
+            class_id: clas._id
+        }}).then(user => {
+            req.login(user, (err) => {
+                // handle possible error
+                if(err) {return fun.error(req, res, err, 'Error while signing up', '/register')}
+                
+                res.redirect(`/classes/${clas._id}/homework`);
             });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while making you class admin', '/selectClass');
         });
-    } else {
-        return fun.error(req, res, '', 'You cannot create a class as an admin of another class', `/classes/${req.user.class_id}/homework`);
-    }
+    });
 });
 
 // Show Route

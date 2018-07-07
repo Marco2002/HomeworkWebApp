@@ -3,15 +3,15 @@
 // ========================
 
 // Packages
-const express       = require('express');
-const passport      = require('passport');
-const passwordHash  = require('password-hash');
-const fun           = require('../functions');
-const mid           = require('../middleware');
+const express = require('express');
+const passport = require('passport');
+const passwordHash = require('password-hash');
+const fun = require('../functions');
+const mid = require('../middleware');
 
 // Models
-const User   = require('../models/user');
-const Class  = require('../models/class');
+const User = require('../models/user');
+const Class = require('../models/class');
 const School = require('../models/school');
 
 const router = express.Router();

@@ -7,22 +7,22 @@
 // ==========
 
 // Packages
-const express             = require('express');
-const bodyParser          = require('body-parser');
-const methodOverride      = require('method-override');
-const passport            = require('passport');
-const expressSession      = require('express-session');
-const flash               = require('connect-flash');
-const expressValidator    = require('express-validator');
-const moment              = require('moment');
-const cookieParser        = require('cookie-parser');
-const schedule            = require('node-schedule');
-const path                = require('path');
-const i18n                = require('i18n-express');
-const mongoose            = require('mongoose');
-const LocalStrategy       = require('passport-local').Strategy;
-const GoogleStrategy      = require('passport-google-oauth').OAuth2Strategy;
-const MongoStore          = require('connect-mongo')(expressSession);
+const express = require('express');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const passport = require('passport');
+const expressSession = require('express-session');
+const flash = require('connect-flash');
+const expressValidator = require('express-validator');
+const moment = require('moment');
+const cookieParser = require('cookie-parser');
+const schedule = require('node-schedule');
+const path = require('path');
+const i18n = require('i18n-express');
+const mongoose = require('mongoose');
+const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const MongoStore = require('connect-mongo')(expressSession);
 
 // Models
 const User = require('./models/user');
@@ -30,12 +30,12 @@ const Homework = require('./models/homework');
 const Exam = require('./models/exam');
 
 // Routes
-const indexRoutes     = require('./routes/index');
-const schoolRoutes    = require('./routes/schools');
-const homeworkRoutes  = require('./routes/homework');
-const examRoutes      = require('./routes/exams');
-const authRoutes      = require('./routes/auth');
-const classRoutes     = require('./routes/classes');
+const indexRoutes = require('./routes/index');
+const schoolRoutes = require('./routes/schools');
+const homeworkRoutes = require('./routes/homework');
+const examRoutes = require('./routes/exams');
+const authRoutes = require('./routes/auth');
+const classRoutes = require('./routes/classes');
 
 // express()
 const app = express();
@@ -58,19 +58,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 // mongoDB setup
 // connect to DB
 mongoose.connect(process.env.MONGO_DB) // mongoDB url
-    .then(() => {
-         // log connection
-        console.log(`connected to ${mongoose.connection.db.databaseName}`);
-    },err => {
-        // handle error
-        console.log(err);
-    });
+.then(() => {
+     // log connection
+    console.log(`connected to DB: ${mongoose.connection.db.databaseName}`);
+}, err => {
+    // handle error
+    console.log(err);
+});
 
 mongoose.connection.on('connected', () => { // when connected to mongoDB
     // Session store
     const store = new MongoStore({
         url: process.env.MONGO_DB, // mongoDB url
-        ttl: 30 * 24 * 60 * 60 // session ttl
+        ttl: 12 * 30 * 24 * 60 * 60 // session ttl
     });
     
     // session setup
@@ -138,19 +138,25 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
             .then(user => {
                 
                 if(!user) {
-                    
+                    // get user img
+                    let imageUrl = '';
+                    if (profile.photos && profile.photos.length) {
+                        imageUrl = profile.photos[0].value;
+                    }
+
                     // if no user exists, create user
                     user = new User({
                         username: profile.displayName,
                         google_id: profile.id,
                         google_token: accessToken,
-                        google_image: profile.photos[0].value
+                        google_image: imageUrl
                     });
+                    console.log(user)
                     // save user in DB
                     user.save(err => {
                         // handel error
                         if(err) { return done(err, false) }
-                        
+                        console.log(user)
                         // auth successful
                         return done(null, user);
                     });
@@ -201,5 +207,6 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
     // start server
     app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
         console.log(`server online on HOST:${process.env.SERVER_HOST}, PORT:${process.env.SERVER_PORT}`); // log server location info
+        console.log(`version: ${process.env.VERSION}`); // log backend version
     });
 });
