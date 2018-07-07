@@ -48,33 +48,15 @@
             </div>
         </div>
         <ul id="slide-out" class="side-nav fixed">
-            <li>
-                <div class="user-view">
-                    <div class="background">
-                        <div class="slidenav-background">
-                        </div>
-                    </div>
-                    
-                    
-                        <% if(user.google_image) {%>
-                        
-                            <div class="row no-m">
-                                <div class="col s3 no-p">
-                                    <img class="no-p responsive" src="<%= user.google_image%>">
-                                </div>
-                            </div>
-                            
-                        <% } else {%>
-                            
-                            <div class="row"></div>
-                            <div class="row"></div>
-                    
-                        <% } %>
-                        <h5 class="no-m blue-grey-text text-darken-4"><%=user.username%></h5>
-                        <p class="no-m bold"><%=clas.school_id.name%><span class="right"><%=clas.name%><span></p>
-                    
-                </div>
-            </li>
+            <li><div class="user-view">
+            <div class="background">
+                <img src="/res/slideNavBackground.jpg">
+              </div>
+              <a><img class="circle" src="<%= user.google_image ? user.google_image : '/res/logo.png' %>"></a>
+              <a><span class="white-text name"><%=user.username ? user.username : user.google_username %></span></a>
+              <a><span class="white-text email"><%=clas.school_id.name%><span class="right"><%=clas.name%><span></span></a>
+            </div></li>
+            
 
             <li><a class="collapsible-header" href="/<%=user._id%>/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
 

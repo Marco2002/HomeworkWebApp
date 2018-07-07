@@ -6,7 +6,7 @@
     <table class="bordered centered">
         <thead>
             <tr>
-                <th><h6 class="bold no-m"><%= user.username %></h6></th>
+                <th><h6 class="bold no-m"><%= user.username ? user.username : user.google_username %></h6></th>
             </tr>
         </thead>
         <tbody>

@@ -165,7 +165,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
             .then(user => {
                 
                 if(!user) {
-                    // get user img
+                    // get profile img
                     let imageUrl = '';
                     if (profile.photos && profile.photos.length) {
                         imageUrl = profile.photos[0].value;
@@ -173,7 +173,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
 
                     // if no user exists, create user
                     let user = new User({
-                        username: profile.displayName,
+                        google_username: profile.displayName,
                         google_id: profile.id,
                         google_token: accessToken,
                         google_image: imageUrl

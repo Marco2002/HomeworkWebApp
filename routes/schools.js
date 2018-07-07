@@ -3,10 +3,10 @@
 // ======================
 
 // packages
-const express      = require('express');
+const express = require('express');
 const passwordHash = require('password-hash');
-const fun          = require('../functions');
-const mid          = require('../middleware');
+const fun = require('../functions');
+const mid = require('../middleware');
 
 // models
 const School = require('../models/school');

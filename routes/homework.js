@@ -3,11 +3,11 @@
 //======================
 
 // packages
-const express      = require('express');
-const moment       = require('moment');
+const express = require('express');
+const moment = require('moment');
 const sanitizeHtml = require('sanitize-html');
-const mid          = require('../middleware');
-const fun          = require('../functions');
+const mid = require('../middleware');
+const fun = require('../functions');
 
 // models
 const Homework = require('../models/homework');

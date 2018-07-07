@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         // properties
-        required: true,
+        required: false,
         index: { unique: true },
         maxlength: 15
     }, 
@@ -42,6 +42,35 @@ const userSchema = new mongoose.Schema({
         // properties
         required: true,
         default: 1
+    },
+    
+    // google oauth
+    // google username (can doesn't have to be unique)
+    google_username: {
+        type: String,
+        // properties
+        required: false
+    },
+    
+    // unique id
+    google_id: {
+        type: String,
+        // properties
+        required: false
+    },
+    
+    // token
+    google_token: {
+        type: String,
+        // properties
+        required: false
+    },
+    
+    // profile img
+    google_image: {
+        type: String,
+        // properties
+        required: false
     }
 });
 

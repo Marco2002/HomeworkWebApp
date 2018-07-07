@@ -57,7 +57,7 @@
                     <% if(u.username == user.username) {%>
                         <h6 class="blue-text"><%= texts.YOU %></divh6>
                     <% } else { %>
-                        <h6><%= u.username %></h6>
+                        <h6><%= u.username ? u.username : u.google_username %></h6>
                     <% } %>
                 </td>
                 
