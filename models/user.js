@@ -4,7 +4,6 @@
 
 // packages
 const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
 
 // schema
 const userSchema = new mongoose.Schema({
@@ -17,6 +16,13 @@ const userSchema = new mongoose.Schema({
         index: { unique: true },
         maxlength: 15
     }, 
+    
+    // password
+    password: {
+        type: String,
+        // properties
+        required: false,
+    },
     
     // school ref
     school_id: { 
@@ -38,9 +44,6 @@ const userSchema = new mongoose.Schema({
         default: 1
     }
 });
-
-// plugin passport-local-mongoose methods for passport session
-userSchema.plugin(passportLocalMongoose);
 
 // export
 module.exports = mongoose.model('User', userSchema);

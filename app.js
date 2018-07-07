@@ -20,6 +20,7 @@ const schedule = require('node-schedule');
 const path = require('path');
 const i18n = require('i18n-express');
 const mongoose = require('mongoose');
+const passwordHash = require("password-hash");
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const MongoStore = require('connect-mongo')(expressSession);
@@ -70,7 +71,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
     // Session store
     const store = new MongoStore({
         url: process.env.MONGO_DB, // mongoDB url
-        ttl: 12 * 30 * 24 * 60 * 60 // session ttl
+        ttl: 3 * 30 * 24 * 60 * 60 // 3 Months
     });
     
     // session setup
@@ -82,7 +83,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         saveUninitialized: false,
         store: store, // set mongoDB store
         cookie: {
-            maxAge: 12 * 30 * 24 * 60 * 60 * 1000 // 1 Year
+            maxAge: 3 * 30 * 24 * 60 * 60 * 1000 // 3 Months
         }
     }));
     
@@ -91,8 +92,12 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
     // session setup
     app.use(passport.session());
     
-    passport.serializeUser(User.serializeUser());
-    passport.deserializeUser(User.deserializeUser());
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+    passport.deserializeUser((user, done) => {
+        done(null, user);
+    });
     
     // express-validator setup
     app.use(expressValidator());
@@ -115,12 +120,34 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         res.locals.error = req.flash('error');
         res.locals.success = req.flash('success');
         // HelmholtzschuleApp
-        res.locals.hhsapp = req.query.hhsapp
+        res.locals.hhsapp = req.query.hhsapp;
         next();
     });
     
     // Passport-Local setup
-    passport.use(new LocalStrategy(User.authenticate()));
+    passport.use(new LocalStrategy((username, password, done) => {
+        // find user
+        User.findOne({username: username})
+        .then(user => {
+            // check if user exists
+            if(user) {
+                // verify password
+                if(passwordHash.verify(password, user.password)) {
+                    // password correct => login
+                    return done(null, user);
+                } else {
+                    // password wrong
+                    done(null, false);
+                }
+            } else {
+                // user does not exist
+                done(null, false);
+            }
+        }, err => {
+            // handle error while finding user
+            return done(err);
+        });
+    }));
 
     // Google OAuth setup
     passport.use(new GoogleStrategy({
@@ -147,16 +174,15 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
                     // if no user exists, create user
                     user = new User({
                         username: profile.displayName,
-                        google_id: profile.id,
-                        google_token: accessToken,
-                        google_image: imageUrl
                     });
-                    console.log(user)
+                    user.google_id = profile.id;
+                    user.google_token = accessToken;
+                    user.google_image = imageUrl;
+
                     // save user in DB
                     user.save(err => {
                         // handel error
                         if(err) { return done(err, false) }
-                        console.log(user)
                         // auth successful
                         return done(null, user);
                     });
@@ -186,7 +212,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
             console.log(`deleted homework at date: ${date}`);
         });
         
-        Homework.deleteMany({date: {$lt: date}}, err => {
+        Exam.deleteMany({date: {$lt: date}}, err => {
             // log err if it exisits
             if(err) {
                 console.log(err);
