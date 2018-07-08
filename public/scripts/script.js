@@ -9,7 +9,7 @@ $(function() {
     
     $('ul.tabs').tabs(
         'select_tab', url.substring(url.lastIndexOf('/') + 1), {
-        swipeable : true,
+            swipeable : true
         }
     );
     
@@ -43,7 +43,7 @@ $(function() {
     // check which subject
     $('#homeworkSubject').change(function() {
         $('#subjectNameModal').modal({dismissible: false});
-        var subject = $('#homeworkSubject')[0].value
+        var subject = $('#homeworkSubject')[0].value;
         
         if ((subject == 'Other') || (subject == 'Foreign Language 1') || (subject == 'Foreign Language 2') || (subject == 'Foreign Language 3')) {
             $('#subjectNameModal').modal('open');
@@ -60,7 +60,7 @@ $(function() {
         } else {
             Materialize.toast('Please enter a subject name!', 4000);
         }
-    })
+    });
     
     // Form Configuration
     $('#btn-submit').click(function() {

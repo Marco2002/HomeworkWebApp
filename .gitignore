@@ -38,6 +38,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# minfy-cache
+minfy-cache/*
+
 # Typescript v1 declaration files
 typings/
 

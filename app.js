@@ -20,7 +20,9 @@ const schedule = require('node-schedule');
 const path = require('path');
 const i18n = require('i18n-express');
 const mongoose = require('mongoose');
-const passwordHash = require("password-hash");
+const passwordHash = require('password-hash');
+const minify = require('express-minify');
+const uglifyJS = require('uglify-js')
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const MongoStore = require('connect-mongo')(expressSession);
@@ -46,6 +48,12 @@ require('dotenv/config');
 
 // ejs setup
 app.set('view engine', 'ejs');
+
+// minify setup
+app.use(minify({
+    cache: `${__dirname}/minify-cache`,
+    uglifyJsModule: uglifyJS
+}));
 
 // setup public directory
 app.use(express.static(__dirname + '/public'));

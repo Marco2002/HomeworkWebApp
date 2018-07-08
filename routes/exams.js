@@ -112,7 +112,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, r
         // loop through topics and import into exam
         for(let i = 0; i < topics.topic.length; i++) {
             // check if current index topic is not empty
-            if(topics.topic[i] != null && topics.topic[i] != '') {
+            if(topics.topic[i] != null && topics.topic[i] !== '') {
                 
                 // import topic
                 e.topics[i] = {
