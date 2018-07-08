@@ -45,7 +45,8 @@ router.post('/', mid.isLoggedIn, mid.isPartOfSchool, mid.isNotLastAdmin, (req, r
         User.findByIdAndUpdate({ _id: req.user._id}, { $set: {
             power: 2,
             class_id: clas._id
-        }}).then(user => {
+        }}, {new: true})
+        .then(user => {
             req.login(user, (err) => {
                 // handle possible error
                 if(err) {return fun.error(req, res, err, 'Error while signing up', '/register')}
@@ -114,7 +115,7 @@ router.put('/:class_id', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, 
 router.get('/:class_id/users/:id/admin', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     // set power of user to 2
-    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 2 }})
+    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 2 }}, {new: true})
     .then(user => {
         // success
         req.flash('success', 'Made admin');
@@ -134,7 +135,7 @@ router.get('/:class_id/users/:id/deadmin', mid.isLoggedIn, mid.isPartOfSchool, m
     }).then(admins => {
         // make sure there are at least 2 admins
         if(admins.length > 1) {
-            User.findByIdAndUpdate({_id: req.params.id}, { $set: {power: 1}})
+            User.findByIdAndUpdate({_id: req.params.id}, { $set: {power: 1}}, {new: true})
             .then( user => {
                 // removed admin
                 req.flash('success', 'Removed admin');
@@ -168,7 +169,7 @@ router.get('/:class_id/users/:id/restrict', mid.isLoggedIn, mid.isPartOfSchool, 
         // make restricted member
         return User.findByIdAndUpdate({_id: req.params.id}, {$set: {
             power: 0}
-        });
+        }, {new: true});
     }).then( user => {
         // success
         req.flash('success', 'Made restricted member');
@@ -183,7 +184,7 @@ router.get('/:class_id/users/:id/restrict', mid.isLoggedIn, mid.isPartOfSchool, 
 router.get('/:class_id/users/:id/derestrict', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     
     // set power of user back to 1
-    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 1 }})
+    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 1 }}, {new: true})
     .then(user => {
         // success
         req.flash('success', 'Removed restricted member');
@@ -210,7 +211,7 @@ router.get('/:class_id/users/:id/kick', mid.isLoggedIn, mid.isPartOfSchool, mid.
         return User.findByIdAndUpdate({_id: req.params.id}, {$set: {
             class_id: undefined,
             power: 1}
-        });
+        }, {new: true});
     }).then( user => {
         // success
         req.flash('success', 'Kicked user out of class');

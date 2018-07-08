@@ -54,7 +54,7 @@ router.post('/register', mid.isNotLoggedIn, (req, res) => {
             if(err) return fun.error(req, res, err, "Error while logging in", "/login");
 
             req.flash('success', `Registered successfully. Welcome ${user.username}`);
-            res.redirect('/classes/undefined/homework');
+            res.redirect('/selectSchool');
         });
     });
 });
@@ -86,7 +86,7 @@ router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
         // verify school password
         if(passwordHash.verify(req.body.schoolPassword, school.password)) {
             // right password => update users school
-            return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id}}); // return promise
+            return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined}}, {new: true}); // return promise
             
         } else {
             // wrong password
@@ -138,14 +138,14 @@ router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, 
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
     
-    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: req.body.clas}})
+    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: req.body.clas}}, {new: true})
     .then(user => {
         req.login(user, err => {
-                // handle possible error
-                if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
+            // handle possible error
+            if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
 
-                res.redirect(`/classes/${req.body.clas}/homework`);
-            });
+            res.redirect(`/classes/${req.body.clas}/homework`);
+        });
     }, err => {
         // handle error
         fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
@@ -155,7 +155,7 @@ router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, 
 // Leave Class Route
 router.get('/leaveClass', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // update user
-    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: undefined}})
+    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: undefined}}, {new: true})
     .then(user => {
         // redirect to select class
         res.redirect('/selectClass');
