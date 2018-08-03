@@ -12,22 +12,14 @@
                         <h4 class="center"><%= texts.SELECT_SCHOOL %></h4>
                         <form action="/selectSchool" method="POST">
                             
-                            <div class="valign-wrapper row ">
-                                <div class="input-field col l9 s7">
-                                <select name="school" id="school">
-                                    <option value="" disabled selected><%= texts.SELECT_SCHOOL %></option>
-                                    <% results.forEach(school => { %>
-                                        <option value="<%=school.name%>"><%=school.name%></option>
-                                    <% }) %>
-                                </select>
-                                <label><%= texts.SCHOOL %></label>
-                                </div>
-                                <a href="/schools/new" class="col l3 s5 btn app-color"><%= texts.ADD_SCHOOL %></a>
-                            </div>
-                            
                             <div class="input-field">
-                                <input id="schoolPassword" name="schoolPassword" type="password" class="validate">
-                                <label for="schoolPassword"><%= texts.SCHOOL_PASSWORD %></label>
+                            <select name="school" id="school">
+                                <option value="" disabled selected><%= texts.SELECT_SCHOOL %></option>
+                                <% results.forEach(school => { %>
+                                    <option value="<%=school.name%>"><%=school.name%></option>
+                                <% }) %>
+                            </select>
+                            <label><%= texts.SCHOOL %></label>
                             </div>
                             
                             <div class="row no-m center">

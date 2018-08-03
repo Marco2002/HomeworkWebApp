@@ -3,8 +3,9 @@
     <nav>
         <div class="nav-wrapper app-color">
             <div class="container">
-                <ul class="left">
+                <ul class="left ">
                     <li><a href="/about"><i class="medium material-icons left">info</i><%= texts.ABOUT %></a></li>
+                    <li class="hide-on-med-and-down"><a href="/addSchool"><i class="medium material-icons left">add</i><%= texts.ADD_SCHOOL %></a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=com.hmwk.homework"><i class="medium material-icons left">file_download</i><%= texts.DOWNLOAD %></a></li>
                 </ul>
                 <ul class="right hide-on-med-and-down">
@@ -88,13 +89,28 @@
         </div>
         
         <div class="row"></div>
-        <p class="divider"></p>
-        <div class="row"></div>
-        
-        <div class="center">
-            <a href="/about" class="app-color btn waves-effect waves-light"><%= texts.ABOUT %><i class="medium material-icons right">info</i></a>
-        </div>
-        <div class="row"></div>
+
     </div>
 </div>
+
+<footer class="page-footer app-color">
+  <div class="container">
+    <div class="row">
+      <div class="col l3 s8 push-s2">
+        <img class="responsive" src="/res/homework_title.png">
+      </div>
+      <div class="col right">
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="/?clang=<%= lang == 'en' ? 'de' : 'en'%>"><%= lang == 'en' ? texts.GERMAN : texts.ENGLISH %></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    © 2018 Marco Rodriguez de Paz
+    <a class="grey-text text-lighten-4 right" href="/about"><%= texts.ABOUT %></a>
+    </div>
+  </div>
+</footer>
 <% include ./partials/footerBasic %>

@@ -1,145 +1,227 @@
-<% include ./partials/headerHome %>
 <% let color, hPrevDate, ePrevDate %>
 
-<div class="container">
-    <div class="row no-m">
-        <div class="col s12">
-            <% include ./partials/flash %>
-        </div>
-        <div id="homework">
-            <% if(homework[0]) { %>
-            <% homework.forEach(h => {%>
-            <!-- Get the color -->
-            <% switch(h.subject) { case "Maths": %>
-                <% color="blue"; break; %>
-                <% case "Language Arts": color="red"; break; %>
-                <% case "Foreign Language 1": color="yellow"; break; %>
-                <% case "Foreign Language 2": color="purple"; break; %>
-                <% case "Foreign Language 3": color="pink accent-2"; break; %>
-                <% case "Music": color="teal accent-4"; break; %>
-                <% case "History": color="indigo"; break; %>
-                <% case "Geography": color="brown"; break; %>
-                <% case "Biology": color="green"; break; %>
-                <% case "Physical Education": color="green accent-4"; break; %>
-                <% case "Politics": color="grey"; break; %>
-                <% case "Religion": color="amber"; break; %>
-                <% case "Philosophy": color="cyan"; break; %>
-                <% case "Ethics": color="light-blue"; break; %>
-                <% case "Physics": color="deep-purple"; break; %>
-                <% case "Science": color="blue-grey";  break; %>
-                <% case "Chemistry": color="deep-orange";  break; %>
-                <% case "Art": color="pink"; break; %>
-                <% case "Other": color="white"; break; %>
-            <% } %>
-            
-            <% if(hPrevDate != h.d) { %>
-                <div class="col s12">
-                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.UNTIL %> <%=h.d%></p>
-                    <hr>
-                </div>
-            <% } %>
-            <% hPrevDate = h.d%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework Web App</title>
         
-            <div class="col s12 l6">
-                <a href="/classes/<%=h.class_id%>/homework/<%=h._id%>">
-                    <div class="card <%=color%> black-text card-margin">
-                        <div class="card-content" >
-                            <div class="row no-m">
-                                <div class="col s12">
-                                    <div class="row no-m">
-                                        <div class="card-title">
-                                        <% if(h.subjectName != h.subject) { %>
-                                            <%= h.subjectName %>
-                                        <% } else { %>
-                                            <%= texts[h.subject] %>
-                                        <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col s12">
-                                    <div class="row no-m">
-                                        <h4 class="no-m"><%= h.title %></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </a>
-            </div> 
-            <% })%>
-            <% } %>
-        </div>
-        <div id="exams">
-            <% if(exams[0]) { %>
-            <% exams.forEach(e => { %>
-            <!-- Get the color -->
-            <% switch(e.subject) { case "Maths": %>
-                <% color="blue"; break; %>
-                <% case "Language Arts": color="red"; break; %>
-                <% case "Foreign Language 1": color="yellow"; break; %>
-                <% case "Foreign Language 2": color="purple"; break; %>
-                <% case "Foreign Language 3": color="pink accent-2"; break; %>
-                <% case "Music": color="teal accent-4"; break; %>
-                <% case "History": color="indigo"; break; %>
-                <% case "Geography": color="brown"; break; %>
-                <% case "Biology": color="green"; break; %>
-                <% case "Physical Education": color="green accent-4"; break; %>
-                <% case "Politics": color="grey"; break; %>
-                <% case "Religion": color="amber"; break; %>
-                <% case "Philosophy": color="cyan"; break; %>
-                <% case "Ethics": color="light-blue"; break; %>
-                <% case "Physics": color="deep-purple"; break; %>
-                <% case "Science": color="blue-grey";  break; %>
-                <% case "Chemistry": color="deep-orange";  break; %>
-                <% case "Art": color="pink"; break; %>
-                <% case "Other": color="white"; break; %>
-            <% } %>
-            
-            <% if(ePrevDate != e.d) { %>
-                <div class="col s12">
-                    <p class="no-margin-bottom bold grey-text text-darken-2"><%=e.d%></p>
-                    <hr>
-                </div>
-            <% } %>
-            <% ePrevDate = e.d%>
-    
-            <div class="col s12 l6">
-                <a href="/classes/<%=e.class_id%>/exams/<%=e._id%>">
-                    <div class="card <%=color%> black-text card-margin">
-                        <div class="card-content">
-                            <div class="row no-m">
-                                <div class="col s12">
-                                    <div class="row no-m">
-                                        <div class="card-title">
-                                            <% if(e.subjectName != e.subject) { %>
-                                                <%= e.subjectName %>
-                                            <% } else { %>
-                                                <%= texts[e.subject] %>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col s12">
-                                    <div class="row no-m">
-                                        <h4 class="no-m"><%= e.title %></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <% }) %>
-            <% } %>
-        </div>
-        <% if(user.power > 0) { %>
-            <div class="bot">
-                <a id="redirectToAddPage" class="btn-floating btn-large app-color right"><i class="material-icons">add</i></a>
-            </div>
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/res/logo.png">
+        
+        <!-- Materialize -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <!-- main.css -->
+        <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        <!-- HelmholtzApp -->
+        <% if(typeof hhsapp !== 'undefined') { %>
+            <link rel="stylesheet" href="/stylesheets/hhsapp.css" type="text/css" />
         <% } %>
-    </div>
-</div>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body id="no-mp">
+        <div class="row" id="no-mp">
+
+            <div class="navbar-fixed">
+                <nav class="nav-extended">
+                    <div class="col s12 l11 right" id="no-mp">
+                        <div class="nav-wrapper app-color">
+                            <div class="brand-logo center">
+                                <img class="margin-logo logo responsive" src="/res/homework_title.png">
+                            </div>
+
+                            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+                        </div>
+                        
+                        <div class="nav content">
+
+                            <ul id="tabs-swipe-demo" class="tabs app-color">
+                                <div class="col l2"></div>
+                                <li class="tab col s6 l4"><a id="tabHomework" class="active" href="#homework"><%= texts.HOMEWORK %></a></li>
+                                <li class="tab col s6 l4"><a class="" href="#exams"><%= texts.EXAMS %></a></li>
+                                <div class="col l2"></div>
+                            </ul>
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <ul id="slide-out" class="side-nav fixed">
+            <li><div class="user-view">
+            <div class="background">
+                <img src="/res/slideNavBackground.jpg">
+              </div>
+              <a><img class="circle" src="<%= user.google_image ? user.google_image : '/res/logo.png' %>"></a>
+              <a><span class="white-text name"><%=user.username ? user.username : user.google_username %></span></a>
+              <a><span class="white-text email"><%=clas.school_id.name%><span class="right"><%=clas.name%><span></span></a>
+            </div></li>
+            
+
+            <li><a class="collapsible-header" href="/accountSettings/"><i class="material-icons">settings</i><%= texts.ACCOUNT_SETTINGS %></a></li>
+
+            <li><a class="collapsible-header" href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/"><i class="material-icons">settings</i><%= texts.CLASS_SETTINGS %></a></li>
+
+            <li><div class="divider"></div></li>
+            <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/homework"><i class="material-icons">content_paste</i><%= texts.HOMEWORK %></a></li>
+            <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/exams"><i class="material-icons">library_books</i><%= texts.EXAMS %></a></li>
+            <li><div class="divider"></div></li>
+
+            <% if(user.power > 0) { %>
+
+                <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/homework/new"><i class="material-icons">note_add</i><%= texts.ADD_HOMEWORK %></a></li>
+                <li><a class="collapsible-header" href="/classes/<%=user.class_id%>/exams/new"><i class="material-icons">library_add</i><%= texts.ADD_EXAM %></a></li>
+                <li><div class="divider"></div></li>
+            <% } %>
+
+            <li><a class="collapsible-header" href="/about"><i class="material-icons">info</i><%= texts.ABOUT %></a></li>
+        </ul>
+
+        <div class="row no-m">
+            <div class="col s12 l11 push-l1" id="body-home">
+
+
+                <div class="container">
+                    <div class="row no-m">
+                        <div class="col s12">
+                            <% include ./partials/flash %>
+                        </div>
+                        <div id="homework">
+                            <% if(homework[0]) { %>
+                            <% homework.forEach(h => {%>
+                            <!-- Get the color -->
+                            <% switch(h.subject) { case "Maths": %>
+                                <% color="blue"; break; %>
+                                <% case "Language Arts": color="red"; break; %>
+                                <% case "Foreign Language 1": color="yellow"; break; %>
+                                <% case "Foreign Language 2": color="purple"; break; %>
+                                <% case "Foreign Language 3": color="pink accent-2"; break; %>
+                                <% case "Music": color="teal accent-4"; break; %>
+                                <% case "History": color="indigo"; break; %>
+                                <% case "Geography": color="brown"; break; %>
+                                <% case "Biology": color="green"; break; %>
+                                <% case "Physical Education": color="green accent-4"; break; %>
+                                <% case "Politics": color="grey"; break; %>
+                                <% case "Religion": color="amber"; break; %>
+                                <% case "Philosophy": color="cyan"; break; %>
+                                <% case "Ethics": color="light-blue"; break; %>
+                                <% case "Physics": color="deep-purple"; break; %>
+                                <% case "Science": color="blue-grey";  break; %>
+                                <% case "Chemistry": color="deep-orange";  break; %>
+                                <% case "Art": color="pink"; break; %>
+                                <% case "Other": color="white"; break; %>
+                            <% } %>
+                            
+                            <% if(hPrevDate != h.d) { %>
+                                <div class="col s12">
+                                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.UNTIL %> <%=h.d%></p>
+                                    <hr>
+                                </div>
+                            <% } %>
+                            <% hPrevDate = h.d%>
+                        
+                            <div class="col s12 l6">
+                                <a href="/classes/<%=h.class_id%>/homework/<%=h._id%>">
+                                    <div class="card <%=color%> black-text card-margin">
+                                        <div class="card-content" >
+                                            <div class="row no-m">
+                                                <div class="col s12">
+                                                    <div class="row no-m">
+                                                        <div class="card-title">
+                                                        <% if(h.subjectName != h.subject) { %>
+                                                            <%= h.subjectName %>
+                                                        <% } else { %>
+                                                            <%= texts[h.subject] %>
+                                                        <% } %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s12">
+                                                    <div class="row no-m">
+                                                        <h4 class="no-m"><%= h.title %></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            </div> 
+                            <% })%>
+                            <% } %>
+                        </div>
+                        <div id="exams">
+                            <% if(exams[0]) { %>
+                            <% exams.forEach(e => { %>
+                            <!-- Get the color -->
+                            <% switch(e.subject) { case "Maths": %>
+                                <% color="blue"; break; %>
+                                <% case "Language Arts": color="red"; break; %>
+                                <% case "Foreign Language 1": color="yellow"; break; %>
+                                <% case "Foreign Language 2": color="purple"; break; %>
+                                <% case "Foreign Language 3": color="pink accent-2"; break; %>
+                                <% case "Music": color="teal accent-4"; break; %>
+                                <% case "History": color="indigo"; break; %>
+                                <% case "Geography": color="brown"; break; %>
+                                <% case "Biology": color="green"; break; %>
+                                <% case "Physical Education": color="green accent-4"; break; %>
+                                <% case "Politics": color="grey"; break; %>
+                                <% case "Religion": color="amber"; break; %>
+                                <% case "Philosophy": color="cyan"; break; %>
+                                <% case "Ethics": color="light-blue"; break; %>
+                                <% case "Physics": color="deep-purple"; break; %>
+                                <% case "Science": color="blue-grey";  break; %>
+                                <% case "Chemistry": color="deep-orange";  break; %>
+                                <% case "Art": color="pink"; break; %>
+                                <% case "Other": color="white"; break; %>
+                            <% } %>
+                            
+                            <% if(ePrevDate != e.d) { %>
+                                <div class="col s12">
+                                    <p class="no-margin-bottom bold grey-text text-darken-2"><%=e.d%></p>
+                                    <hr>
+                                </div>
+                            <% } %>
+                            <% ePrevDate = e.d%>
+                    
+                            <div class="col s12 l6">
+                                <a href="/classes/<%=e.class_id%>/exams/<%=e._id%>">
+                                    <div class="card <%=color%> black-text card-margin">
+                                        <div class="card-content">
+                                            <div class="row no-m">
+                                                <div class="col s12">
+                                                    <div class="row no-m">
+                                                        <div class="card-title">
+                                                            <% if(e.subjectName != e.subject) { %>
+                                                                <%= e.subjectName %>
+                                                            <% } else { %>
+                                                                <%= texts[e.subject] %>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s12">
+                                                    <div class="row no-m">
+                                                        <h4 class="no-m"><%= e.title %></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <% }) %>
+                            <% } %>
+                        </div>
+                        <% if(user.power > 0) { %>
+                            <div class="bot">
+                                <a id="redirectToAddPage" class="btn-floating btn-large app-color right"><i class="material-icons">add</i></a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
 
 <% include ./partials/footer %>

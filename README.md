@@ -25,6 +25,7 @@ One howework planner for the whole class
         - COOKIE_NAME,
         - MONGO_DB,
         - VERSION,
+        - DEV_USERNAME
 
 4. create minify-cache directory
 ```mkdir minify-cache```

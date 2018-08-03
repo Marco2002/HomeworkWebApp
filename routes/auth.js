@@ -76,22 +76,15 @@ router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
 router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // check if inputs are correct
     req.checkBody('school', 'School field cannot be empty').notEmpty();
-    req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
+
     // handle input errors
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSchool')}
     
     School.findOne({name: req.body.school})
     .then(school => {
-        // verify school password
-        if(passwordHash.verify(req.body.schoolPassword, school.password)) {
-            // right password => update users school
-            return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined}}, {new: true}); // return promise
-            
-        } else {
-            // wrong password
-            return fun.error(req, res, '', 'Wrong school password', '/selectSchool');
-        }
+        // update users school
+        return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined}}, {new: true}); // return promise
         
     }, err => {
         // handle error while finding school
@@ -220,10 +213,10 @@ router.get('/auth/google/callback', passport.authenticate('google', {
 }));
 
 // GET user route
-router.get('/:user_id', mid.isLoggedIn, mid.isUser, (req, res) => {
+router.get('/accountSettings', mid.isLoggedIn, (req, res) => {
     
     // find user
-    User.findById({_id: req.params.user_id}).populate('school_id').populate('class_id').exec()
+    User.findById({_id: req.user._id}).populate('school_id').populate('class_id').exec()
     .then(user => {
         
         // render ejs template

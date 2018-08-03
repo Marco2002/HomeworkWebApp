@@ -79,7 +79,6 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
     // Session store
     const store = new MongoStore({
         url: process.env.MONGO_DB, // mongoDB url
-        ttl: 12 * 30 * 24 * 60 * 60 // 1 Year
     });
     
     // session setup
@@ -91,7 +90,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         saveUninitialized: false,
         store: store, // set mongoDB store
         cookie: {
-            maxAge: 3 * 30 * 24 * 60 * 60 * 1000 // 3 Months
+            maxAge: 2 * 30 * 24 * 60 * 60 * 1000 // 2 Months
         }
     }));
     

@@ -97,16 +97,6 @@ middlewareObj.isNotRestricted = (req, res, next) => {
     }
 };
 
-// check if logged in user is the same than in parameter
-middlewareObj.isUser = (req, res, next) => {
-    
-    if(req.params.user_id == req.user._id) {
-        next();
-    } else {
-        fun.error(req, res, '', "You aren't logged in as that user", `/${req.user._id}`);
-    }
-};
-
 middlewareObj.isNotLastAdmin = (req, res, next) => {
     // find all admins
     User.find({
@@ -125,7 +115,7 @@ middlewareObj.isNotLastAdmin = (req, res, next) => {
         // handle err
         fun.error(req, res, err, 'Error while removing user from admins', `/classes/${req.user.class_id}/homework`);
     });
-}
+};
 
 middlewareObj.updateUser = (req, res, next) => {
     
@@ -142,6 +132,11 @@ middlewareObj.updateUser = (req, res, next) => {
         // handle error
         fun.error(req, res, err, 'Error while updating session', `/classes/${req.user.class_id}/homework`);
     });
+};
+
+middlewareObj.isDev = (req, res, next) => {
+    // check if user is dev 
+    req.user.username == process.env.DEV_USERNAME ? next() : fun.error(req, res, '', 'That route is only for the developer', `/classes/${req.user.class_id}/homework`);
 };
 
 module.exports = middlewareObj;
