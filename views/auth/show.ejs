@@ -1,48 +1,54 @@
 <% include ../partials/header %>
 
 <div class="container row no-m">
-
-
-    <table class="bordered centered">
-        <thead>
-            <tr>
-                <th><h6 class="bold no-m"><%= user.username ? user.username : user.google_username %></h6></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><h6 class="bold"><%= texts.SCHOOL %>:</h6></td>
-                <td><h6><%= userR.school_id.name %></h6></td>
-                <td><h6><a class="btn app-color" href="/selectSchool"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
-            </tr>
-            <tr>
-                <td><h6 class="bold"><%= texts.CLASS %>:</h6></td>
-                <td><h6><%= userR.class_id.name %></h6></td>
-                <td><h6><a class="btn app-color" href="/selectClass"><%= texts.EDIT %><i class="material-icons right">edit</i></a></h6></td>
-            </tr>
-            <tr>
-                <td><h6 class="bold"><%= texts.LANGUAGE %>:</h6></td>
-                <td><form action="#">
-                    <p class="center-align">
-                        <input <%=(lang=="en"?"checked":"")%> name="lang" type="radio" id="en" />
-                        <label for="en"><%= texts.ENGLISH %></label>
-                    </p>
-                    <p class="center-align">
-                        <input <%=(lang=="de"?"checked":"")%> name="lang" type="radio" id="de" />
-                        <label for="de"><%= texts.GERMAN %></label>
-                    </p>
-                </form></td>
-                <td></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <td></td>
-            <td class="center"><button id="lang_submit" class="btn app-color waves-effect waves-light"><%= texts.SUBMIT %><i class="material-icons right">send</i></button></td>
-            <td class="center"><a class="btn red waves-effect waves-light" href="/logout"><%= texts.LOGOUT %><i class="material-icons right">exit_to_app</i></a></td>
-        </tfooter>
-
-    </table>
-
+    
+    <div class="row"></div>
+    
+    <div class="row card">
+        <div class="row"></div>
+        <div class="col s12 l3 center row no-m">
+            <div class="row"></div>
+            <div class="container col s4 l12">
+                <img class="circle responsive col s12 l8 push-l2" id="no-mp" src="<%= user.google_image ? user.google_image : '/res/logo.png' %>">
+                <div class="row"></div>
+            </div>
+            
+            <div class="col s8 l12">
+                <h6 class="bold no-m center"><%= user.username ? user.username : user.google_username %></h6>
+                <div class="row"></div>
+                <a class="btn red waves-effect waves-light" href="/logout"><%= texts.LOGOUT %><i class="material-icons right">exit_to_app</i></a>
+                <div class="row"></div>
+            </div>
+        </div>
+        
+        <div class="col s12 l9">
+            <div class="row"></div>
+            <div class="row no-m valign-wrapper">
+                <div class="col s3 l4 bold"><%= texts.SCHOOL %>:</div>
+                <div class="col s6 center"><%= userR.school_id.name %></div>
+                <div class="col s3 l2"><a class="btn-flat" href="/selectSchool"><i class="material-icons">edit</i></a></div>
+            </div>
+            <p class="divider"></p>
+            <div class="row no-m valign-wrapper">
+                <div class="col s3 l4 bold"><%= texts.CLASS %>:</div>
+                <div class="col s6 center"><%= userR.class_id.name %></div>
+                <div class="col s3 l2"><a class="btn-flat" href="/selectSchool"><i class="material-icons">edit</i></a></div>
+            </div>
+            <p class="divider"></p>
+            <div class="row valign-wrapper">
+                <div class="col s3 l4 bold"><%= texts.LANGUAGE %>:</div>
+                <div class="col s6">
+                    <div class="input-field">
+                        <select id="selectedLang">
+                            <option value="en" <%= lang=="en" ? "selected" : "" %>selected><%= texts.ENGLISH %></option>
+                            <option value="de" <%= lang=="de" ? "selected" : "" %>><%= texts.GERMAN %></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col s3 l2"><button id="lang_submit" class="btn-flat"><i class="material-icons">send</i></button></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <% include ../partials/footer %>

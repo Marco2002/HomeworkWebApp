@@ -51,10 +51,9 @@
         
         <tbody>
         <% users.forEach((u) => { %>
-            <tr>
     
                 <td class="left cell">
-                    <% if(u.username == user.username) {%>
+                    <% if(u._id == user._id) {%>
                         <h6 class="blue-text"><%= texts.YOU %></divh6>
                     <% } else { %>
                         <h6><%= u.username ? u.username : u.google_username %></h6>
@@ -64,32 +63,35 @@
                 <%if(user.power == 2) {%>
                     <td class="small-cell right">
                         
-                        <a class="modal-trigger" href="#more-<%= u.username %>"><i class="material-icons grey-text text-darken-1 right">more_vert</i></a>
+                        <a class="modal-trigger" href="#more-<%= u._id %>"><i class="material-icons grey-text text-darken-1 right">more_vert</i></a>
                         
-                        <!-- Modal Structure -->
-                        <div id="more-<%= u.username %>" class="modal">
-                            <div class="container center">
-                                <div class="modal-content">
-                                    <% if(u.power == 2) { %>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/deadmin" class="waves-effect waves-blue btn-flat"><%= texts.REMOVE_ADMIN %></a>
-                                        <p class="divider"></p>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/restrict" class="waves-effect waves-blue btn-flat"><%= texts.MAKE_RESTRICTED %></a>
-                                        <p class="divider"></p>
-                                    <% } else if(u.power == 0) { %>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/derestrict" class="waves-effect waves-blue btn-flat"><%= texts.REMOVE_RESTRICTED %></a>
-                                        <p class="divider"></p>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="waves-effect waves-blue btn-flat"><%= texts.MAKE_ADMIN %></a>
-                                        <p class="divider"></p>
-                                    <% } else {%>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="waves-effect waves-blue btn-flat"><%= texts.MAKE_ADMIN %></a>
-                                        <p class="divider"></p>
-                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/restrict" class="waves-effect waves-blue btn-flat"><%= texts.MAKE_RESTRICTED %></a>
-                                        <p class="divider"></p>
-                                    <% } %>
-                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/kick" class="waves-effect waves-blue btn-flat"><%= texts.KICK %></a>
-                                </div>
-                            </div>
+                        <div id="more-<%= u._id %>" class="modal">
+                            <div class="modal-content container center">
+                                
+                                <h5><%= texts.ROLE%></h5>
                             
+                                <div class="col s12 l4 valign-wrapper m-bot">
+                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/restrict" class="auto">
+                                        <h6 class="red-text red-box <%= u.power == 0 ? 'active' : '' %>"><%= texts.RESTRICTED_MEMBER %></h6>
+                                    </a>
+                                </div>
+                                <div class="col s12 l4 valign-wrapper m-bot">
+                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/member" class="auto">
+                                        <h6 class="yellow-text text-darken-3 yellow-box <%= u.power == 1 ? 'active' : '' %>"><%= texts.CLASSMATE %></h6>
+                                    </a>
+                                </div>
+                                <div class="col s12 l4 valign-wrapper m-bot">
+                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="auto">
+                                        <h6 class="green-text green-box <%= u.power == 2 ? 'active' : '' %>">Admin</h6>
+                                    </a>
+                                </div>
+                                <p><br></p>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/kick" class="btn red waves-effect waves-red"><%= texts.KICK %></a>
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat"><%= texts.CANCEL %></a>
+                            </div>
                         </div>
                     </td>
                 <% } %>

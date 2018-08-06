@@ -20,10 +20,6 @@ router.get('/about', (req, res) => {
     });
 });
 
-router.get('/addSchool', (req, res) => {
-    res.render('schools/addSchool')
-});
-
 // Privacy Policy
 router.get('/PrivacyPolicy', (req, res) => {
     res.render('about/privacy');

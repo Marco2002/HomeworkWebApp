@@ -5,7 +5,6 @@
             <div class="container">
                 <ul class="left ">
                     <li><a href="/about"><i class="medium material-icons left">info</i><%= texts.ABOUT %></a></li>
-                    <li class="hide-on-med-and-down"><a href="/addSchool"><i class="medium material-icons left">add</i><%= texts.ADD_SCHOOL %></a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=com.hmwk.homework"><i class="medium material-icons left">file_download</i><%= texts.DOWNLOAD %></a></li>
                 </ul>
                 <ul class="right hide-on-med-and-down">
@@ -24,20 +23,30 @@
                 <h3 class="header white-text"><%= texts.APP_DESCRIPTION %></h3>
             </div>
             
-            <div class="col s10 push-s1 l6 margin-t">
+            <div class="col s12 l6 margin-t">
                 <img class="responsive" src="/res/homework_preview.png">
             </div>
         </div>
         
         <div class="row no-m">
-            <div class="card col s10 push-s1 l4 push-l4 center">
-                <h4><%= texts.GET_STARTED %></h4>
-                <div class="row">
-                    <a href="/login" class="app-color btn waves-effect waves-light "><%= texts.LOGIN %></a>
-                    <a href="/register" class="app-color btn waves-effect waves-light"><%= texts.SIGNUP %></a>
-                </div>
-                <div class="row">
-                    <a href="/auth/google" class="app-color btn waves-effect waves-light"><img class="google_logo" src="/res/google_logo.png" width="22" height="22"><%= texts.GOOGLE_SIGNIN %></a>
+            <div class="container col s10 push-s1 l6 push-l3">
+                <div class="card center">
+                    <div class="row"></div>
+                    <h4><%= texts.GET_STARTED %></h4>
+                    <div class="row no-m">
+                        <div class="container col s5 push-s1 row btn-landing">
+                            <a href="/login" class="app-color btn waves-effect waves-light col s12"><%= texts.LOGIN %></a>
+                        </div>
+                        <div class="container col s5 pull-s1 right row btn-landing">
+                            <a href="/register" class="app-color btn waves-effect waves-light col s12"><%= texts.SIGNUP %></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="container col s10 push-s1 google-button">
+                        <a href="/auth/google" class="app-color btn waves-effect waves-light col s12"><img class="google_logo" src="/res/google_logo.png" width="22" height="22"><%= texts.GOOGLE_SIGNIN %></a>
+                        </div>
+                    </div>
+                    <div class="row"></div>
                 </div>
             </div>
             <div class="row"></div>
@@ -77,6 +86,15 @@
                     <p class="flow-text"><%= texts.DES_3 %></p>
                 </div>
             </div>
+        </div>
+        
+        <div class="row"></div>
+        <p class="divider"></p>
+        <div class="row"></div>
+        
+        <div class="center">
+            <h4 class="header"><%= texts.REGISTER_SCHOOL %></h4>
+            <p class="flow-text"><%- texts.REGISTER_SCHOOL_TEXT %></p>
         </div>
         
         <div class="row"></div>

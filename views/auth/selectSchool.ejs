@@ -12,14 +12,28 @@
                         <h4 class="center"><%= texts.SELECT_SCHOOL %></h4>
                         <form action="/selectSchool" method="POST">
                             
-                            <div class="input-field">
-                            <select name="school" id="school">
-                                <option value="" disabled selected><%= texts.SELECT_SCHOOL %></option>
-                                <% results.forEach(school => { %>
-                                    <option value="<%=school.name%>"><%=school.name%></option>
-                                <% }) %>
-                            </select>
-                            <label><%= texts.SCHOOL %></label>
+                            <div class="valign-wrapper">
+                                <div class="input-field col s10">
+                                    <select name="school" id="school">
+                                        <option value="" disabled selected><%= texts.SELECT_SCHOOL %></option>
+                                        <% results.forEach(school => { %>
+                                            <option value="<%=school.name%>"><%=school.name%></option>
+                                        <% }) %>
+                                    </select>
+                                    <label><%= texts.SCHOOL %></label>
+                                </div>
+                                <a class="col s2 app-color waves-effect waves-light btn modal-trigger" href="#modalAddSchool"><i class="material-icons">add</i></a>
+                                
+                                <div id="modalAddSchool" class="modal">
+                                    <div class="modal-content center-align">
+                                        <h4><%= texts.REGISTER_SCHOOL %></h4>
+                                        <div class="row"></div>
+                                        <p><%- texts.REGISTER_SCHOOL_TEXT %></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="row no-m center">

@@ -126,23 +126,23 @@ router.get('/:class_id/users/:id/admin', mid.isLoggedIn, mid.isPartOfSchool, mid
     });
 });
 
-// Romove Admin Route
-router.get('/:class_id/users/:id/deadmin', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
+// Make member Route
+router.get('/:class_id/users/:id/member', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
     // find all admins
     User.find({
         power: 2,
         class_id: req.params.class_id
     }).then(admins => {
         // make sure there are at least 2 admins
-        if(admins.length > 1) {
+        if(!(admins.length == 1 && admins[0]._id == req.params.id)) {
             User.findByIdAndUpdate({_id: req.params.id}, { $set: {power: 1}}, {new: true})
             .then( user => {
                 // removed admin
-                req.flash('success', 'Removed admin');
+                req.flash('success', 'Made user standart member');
                 res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
             }, err => {
                 // handle error while updating user
-                fun.error(req, res, err, 'Error while removing user from admins', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+                fun.error(req, res, err, 'Error while making user normal member', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
             });
         } else {
             // only 1 admin => cannot remove last admin
@@ -177,21 +177,6 @@ router.get('/:class_id/users/:id/restrict', mid.isLoggedIn, mid.isPartOfSchool, 
     }, err => {
         // handle error while making restricted member
         fun.error(req, res, err, 'Error while making restricted member', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-    });
-});
-
-// Remove restricted member
-router.get('/:class_id/users/:id/derestrict', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-    
-    // set power of user back to 1
-    User.findByIdAndUpdate({_id: req.params.id}, {$set: { power: 1 }}, {new: true})
-    .then(user => {
-        // success
-        req.flash('success', 'Removed restricted member');
-        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-    }, err => {
-        // handle error
-        fun.error(req, res, err, 'Error while removing restricted member', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
 });
 

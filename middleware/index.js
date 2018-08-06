@@ -136,7 +136,9 @@ middlewareObj.updateUser = (req, res, next) => {
 
 middlewareObj.isDev = (req, res, next) => {
     // check if user is dev 
-    req.user.username == process.env.DEV_USERNAME ? next() : fun.error(req, res, '', 'That route is only for the developer', `/classes/${req.user.class_id}/homework`);
+    req.user.username == process.env.DEV_USERNAME 
+        ? next() 
+        : fun.error(req, res, '', 'That route is only for the developer', `/classes/${req.user.class_id}/homework`);
 };
 
 module.exports = middlewareObj;

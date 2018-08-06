@@ -139,7 +139,7 @@ $(function() {
     
     // language submit button
     $('#lang_submit').click(function() {
-        var lang = $('input[name="lang"]:checked').attr('id');
+        var lang = $('#selectedLang option:selected').val();
         
         window.location.replace('/?clang=' + lang);
     });

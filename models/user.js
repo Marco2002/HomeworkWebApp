@@ -13,9 +13,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         // properties
         required: false,
+        trim: true,
         index: { 
             unique: true,
-            partialFilterExpression: {username: {$type: 'string'}}
+            sparse: true
         },
         maxlength: 15
     }, 
