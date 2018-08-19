@@ -18,18 +18,8 @@ const examSchema = new mongoose.Schema({
     
     // subject
     subject: {
-        type: String,
-        // properties
-        required: true,
-        maxlength: 20
-    },
-    
-    // subject name (user can change the name of a subject)
-    subjectName: {
-        type: String,
-        // properties
-        required: true,
-        maxlength: 20
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Subject'
     },
     
     // exam date

@@ -78,6 +78,16 @@ middlewareObj.isPartOfClass = (req, res, next) => {
     }
 };
 
+middlewareObj.hasSelectedSubjects = (req, res, next) => {
+    // check if user has selected his subjects
+    if(req.user.subjects.length !== 0) {
+        next();
+    } else {
+        // user hasn't selected any subjects
+        res.redirect('/selectSubjects');
+    }
+};
+
 // check if user is admin
 middlewareObj.isAdmin = (req, res, next) => {
     
@@ -109,11 +119,11 @@ middlewareObj.isNotLastAdmin = (req, res, next) => {
             next();
         } else {
             // user is last admin
-            fun.error(req, res, '', 'You cannot do that as the last admin', `/classes/${req.user.class_id}/homework`);
+            fun.error(req, res, '', 'You cannot do that as the only admin of your class', `/classes/${req.user.class_id}/homework`);
         }
     }, err => {
         // handle err
-        fun.error(req, res, err, 'Error while removing user from admins', `/classes/${req.user.class_id}/homework`);
+        fun.error(req, res, err, 'Error while finding admins', `/classes/${req.user.class_id}/homework`);
     });
 };
 

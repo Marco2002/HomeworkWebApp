@@ -11,12 +11,108 @@
                         <form action="/schools/<%=school_id%>/classes" method="POST">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="name" name="class[name]" type="text" class="validate">
+                                    <input id="name" name="class[name]" type="text" class="validate" maxlength="10">
                                     <label for="name"><%= texts.NAME %></label>
                                 </div>
+                                
                             </div>
+
+                            
                             <div class="row">
-                                <button class="app-color col s6 push-s3 m4 push-m4 l2 push-l5 waves-effect waves-light btn"><%= texts.SUBMIT %></button>
+                                <div class="row no-m">
+                                    <div class="col s4">
+                                        <h6 class="header center-align"><%= texts.SUBJECT %></h6>
+                                    </div>
+                                    <div class="col s4">
+                                        <h6 class="header center-align"><%= texts.TEACHER %></h6>
+                                    </div>
+                                    <div class="col s4">
+                                        <h6 class="header center-align"><%= texts.COLOR %></h6>
+                                    </div>
+                                </div>
+                                
+                                <% for(let i = 0; i < 5; i++) {%>
+                                <div class="row no-m" id="container">
+                                    <div class="input-field col s4 no-m">
+                                        <input name="subjects[subject]" type="text" class="validate" maxlength="20">
+                                    </div>
+                                    <div class="input-field col s4 no-m">
+                                        <input name="subjects[teacher]" type="text" class="validate" maxlength="20">
+                                    </div>
+                                    <div class="input-field col s4 no-m color-picker">
+                                        <select name="subjects[color]">
+                                            <option value="" disabled selected><%= texts.PICK_COLOR %></option>
+                                            <option value="red" class="red"><%= texts.RED %></option>
+                                            <option value="pink"><%= texts.PINK %></option>
+                                            <option value="purple"><%= texts.PURPLE %></option>
+                                            <option value="deep-purple"><%= texts.DEEP_PURPLE %></option>
+                                            <option value="indigo"><%= texts.INDIGO %></option>
+                                            <option value="blue"><%= texts.BLUE %></option>
+                                            <option value="light-blue"><%= texts.LIGHT_BLUE %></option>
+                                            <option value="cyan"><%= texts.CYAN %></option>
+                                            <option value="teal"><%= texts.TEAL %></option>
+                                            <option value="green"><%= texts.GREEN %></option>
+                                            <option value="light-green"><%= texts.LIGHT_GREEN %></option>
+                                            <option value="lime"><%= texts.LIME %></option>
+                                            <option value="yellow"><%= texts.YELLOW %></option>
+                                            <option value="amber"><%= texts.AMBER %></option>
+                                            <option value="orange"><%= texts.ORANGE %></option>
+                                            <option value="deep-orange"><%= texts.DEEP_ORANGE %></option>
+                                            <option value="brown"><%= texts.BROWN %></option>
+                                            <option value="grey"><%= texts.GREY %></option>
+                                            <option value="blue-grey"><%= texts.BLUE_GREY %></option>
+                                            <option value="black"><%= texts.BLACK %></option>
+                                            <option value="white"><%= texts.WHITE %></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <% for(let i = 0; i < 65; i++) {%>
+                                <div class="row no-m hide" id="container">
+                                    <div class="input-field col s4 no-m">
+                                        <input name="subjects[subject]" type="text" class="validate" maxlength="30">
+                                    </div>
+                                    <div class="input-field col s4 no-m">
+                                        <input name="subjects[teacher]" type="text" class="validate" maxlength="20">
+                                    </div>
+                                    <div class="input-field col s4 no-m color-picker">
+                                        <select name="subjects[color]">
+                                            <option value="" disabled selected><%= texts.PICK_COLOR %></option>
+                                            <option value="red"<%= texts.RED %></option>
+                                            <option value="pink"><%= texts.PINK %></option>
+                                            <option value="purple"><%= texts.PURPLE %></option>
+                                            <option value="deep-purple"><%= texts.DEEP_PURPLE %></option>
+                                            <option value="indigo"><%= texts.INDIGO %></option>
+                                            <option value="blue"><%= texts.BLUE %></option>
+                                            <option value="light-blue"><%= texts.LIGHT_BLUE %></option>
+                                            <option value="cyan"><%= texts.CYAN %></option>
+                                            <option value="teal"><%= texts.TEAL %></option>
+                                            <option value="green"><%= texts.GREEN %></option>
+                                            <option value="light-green"><%= texts.LIGHT_GREEN %></option>
+                                            <option value="lime"><%= texts.LIME %></option>
+                                            <option value="yellow"><%= texts.YELLOW %></option>
+                                            <option value="amber"><%= texts.AMBER %></option>
+                                            <option value="orange"><%= texts.ORANGE %></option>
+                                            <option value="deep-orange"><%= texts.DEEP_ORANGE %></option>
+                                            <option value="brown"><%= texts.BROWN %></option>
+                                            <option value="grey"><%= texts.GREY %></option>
+                                            <option value="blue-grey"><%= texts.BLUE_GREY %></option>
+                                            <option value="black"><%= texts.BLACK %></option>
+                                            <option value="white"><%= texts.WHITE %></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <% } %>
+                            </div>
+                            <div class="container right-align col s3 l2 left">
+                                <a id="btnAddContainer" class="center-align btn app-color waves-effect waves-light"><i class="material-icons center">add</i></a>
+                            </div>
+                            <div class="container center-align col s3 l2 left">
+                                <a id="btnRemoveContainer" class="red center-align btn waves-effect waves-light"><i class="material-icons center">close</i></a>
+                            </div>
+                            
+                            <div class="row no-m center-align">
+                                <button class="app-color waves-effect waves-light btn right"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
                             </div>
                         </form>
                     </div>

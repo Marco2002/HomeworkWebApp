@@ -103,7 +103,12 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         done(null, user);
     });
     passport.deserializeUser((user, done) => {
-        done(null, user);
+        User.findById({ _id: user._id}).populate('subjects')
+        .then(u => {
+            done(null, u);
+        }, err => {
+            done(err, null);
+        });
     });
     
     // express-validator setup

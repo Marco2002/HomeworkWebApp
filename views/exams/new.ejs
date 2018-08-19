@@ -18,39 +18,11 @@
                     <div class="input-field col s12">
                         <select name="exam[subject]" id="homeworkSubject">
                             <option value="" disabled selected><%= texts.CHOOSE_SUBJECT %></option>
-                            <option value="Maths"><%= texts.Maths %></option>
-                            <option value="Language Arts"><%= texts["Language Arts"] %></option>
-                            <option value="Foreign Language 1"><%= texts["Foreign Language 1"] %></option>
-                            <option value="Foreign Language 2"><%= texts["Foreign Language 2"] %></option>
-                            <option value="Foreign Language 3"><%= texts["Foreign Language 3"] %></option>
-                            <option value="Physics"><%= texts.Physics %></option>
-                            <option value="Politics"><%= texts.Politics %></option>
-                            <option value="Science"><%= texts.Science %></option>
-                            <option value="Art"><%= texts.Art %></option>
-                            <option value="Music"><%= texts.Music %></option>
-                            <option value="Geography"><%= texts.Geography %></option>
-                            <option value="History"><%= texts.History %></option>
-                            <option value="Biology"><%= texts.Biology %></option>
-                            <option value="Physical Education"><%= texts["Physical Education"] %></option>
-                            <option value="Philosophy"><%= texts.Philosophy %></option>
-                            <option value="Ethics"><%= texts.Ethics %></option>
-                            <option value="Chemistry"><%= texts.Chemistry %></option>
-                            <option value="Religion"><%= texts.Religion %></option>
-                            <option value="Other"><%= texts.Other %></option>
+                            <% user.subjects.forEach(subject => { %>
+                            <option value="<%= subject._id %>"><%= subject.subject %></option>
+                            <% }) %>
                         </select>
                         <label><%= texts.SUBJECT %></label>
-                    </div>
-                    
-                    <div id="subjectNameModal" class="modal">
-                        <div class="modal-content">
-                            <h5><%= texts.SUBJECT_NAME %></h5>
-                            <div class="input-field">
-                                <input value="" name="exam[subjectName]" id="subjectName" type="text" class="validate" maxlength="20">
-                            </div>
-                            <div class="center">
-                                <a class="blue btn waves-effect waves-light" id="subjectNameSubmit">OK</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -62,14 +34,14 @@
                         <p class="card-title col s6 l8"><%= texts.TOPICS %></p>
                     
                         <div class="container right-align col s3 l2">
-                            <a id="btnAddTopic" class="center-align btn app-color waves-effect waves-light"><i class="material-icons center">add</i></a>
+                            <a id="btnAddContainer" class="center-align btn app-color waves-effect waves-light"><i class="material-icons center">add</i></a>
                         </div>
                         <div class="container center-align col s3 l2">
-                            <a id="btnRemoveTopic" class="red center-align btn waves-effect waves-light"><i class="material-icons center">close</i></a>
+                            <a id="btnRemoveContainer" class="red center-align btn waves-effect waves-light"><i class="material-icons center">close</i></a>
                         </div>
                     </div>
                     
-                    <div id="topicContainer">
+                    <div id="container">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -79,7 +51,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -89,7 +61,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -99,7 +71,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -109,7 +81,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -119,7 +91,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -129,7 +101,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -139,7 +111,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -149,7 +121,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>
@@ -159,7 +131,7 @@
                             <label class="active" for="examLearn"><%= texts.LEARN %></label>
                         </div>
                     </div>
-                    <div id="topicContainer" class="hide">
+                    <div id="container" class="hide">
                         <div class="input-field col s6">
                             <input name="topics[topic]" id="examTopic" type="text" class="validate" maxlength="30">
                             <label class="active" for="examTopic"><%= texts.TOPIC %></label>

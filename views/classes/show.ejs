@@ -14,7 +14,7 @@
         <div id="change-name" class="modal">
             <form action="/schools/<%=user.school_id%>/classes/<%=user.class_id%>?_method=PUT" method="POST">
                 <div class="modal-content no-p-bot">
-                    <h4><%= texts.CHANGE_NAME %></h4>
+                    <h4 class=center><%= texts.CHANGE_NAME %></h4>
                     <div class="row"></div>
                     <div class="input-field">
                         <input id="name" name="class[name]" type="text" class="validate" value="<%=clas.name%>" maxlength="10">
@@ -33,85 +33,249 @@
     
 <div class="container">
     <p class="divider"></p>
-    <table class="bordered">
-        <thead>
-            <tr>
-                <th>
-                    <div class="row no-m">
-                        <h6 class="col bold no-m"><%= texts.MEMBERS %></h6>
-                        <a class="modal-trigger" href="#userPermissionsInfo"><i class="col grey-text material-icons right">info_outline</i></a>
-                        
-                        <div id="userPermissionsInfo" class="modal">
-                            <img src="/res/user_permissions.png" class="responsive">
-                        </div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        
-        <tbody>
-        <% users.forEach((u) => { %>
     
-                <td class="left cell">
-                    <% if(u._id == user._id) {%>
-                        <h6 class="blue-text"><%= texts.YOU %></divh6>
-                    <% } else { %>
-                        <h6><%= u.username ? u.username : u.google_username %></h6>
-                    <% } %>
-                </td>
-                
-                <%if(user.power == 2) {%>
-                    <td class="small-cell right">
-                        
-                        <a class="modal-trigger" href="#more-<%= u._id %>"><i class="material-icons grey-text text-darken-1 right">more_vert</i></a>
-                        
-                        <div id="more-<%= u._id %>" class="modal">
-                            <div class="modal-content container center">
+    <div class="card">
+        <div class="card-content no-p-top">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="row no-m valign-wrapper">
+                            <h5 class="header col capitalize no-m"><%= texts.SUBJECTS %></h5>
+                            <% if(user.power == 2) { %>
+                            <div class="col s2 right">
                                 
-                                <h5><%= texts.ROLE%></h5>
-                            
-                                <div class="col s12 l4 valign-wrapper m-bot">
-                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/restrict" class="auto">
-                                        <h6 class="red-text red-box <%= u.power == 0 ? 'active' : '' %>"><%= texts.RESTRICTED_MEMBER %></h6>
-                                    </a>
-                                </div>
-                                <div class="col s12 l4 valign-wrapper m-bot">
-                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/member" class="auto">
-                                        <h6 class="yellow-text text-darken-3 yellow-box <%= u.power == 1 ? 'active' : '' %>"><%= texts.CLASSMATE %></h6>
-                                    </a>
-                                </div>
-                                <div class="col s12 l4 valign-wrapper m-bot">
-                                    <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="auto">
-                                        <h6 class="green-text green-box <%= u.power == 2 ? 'active' : '' %>">Admin</h6>
-                                    </a>
-                                </div>
-                                <p><br></p>
+                                <a class="btn-floating waves-effect waves-light app-color modal-trigger right" href="#addSubejct"><i class="material-icons">add</i></a>
                                 
+                                <div id="addSubejct" class="modal">
+                                    <form action="/schools/<%= user.school_id %>/classes/<%= user.class_id %>/subjects" method="POST">
+                                        <div class="modal-content no-p-bot">
+                                            <h4 class="center"><%= texts.ADD_SUBJECT %></h4>
+                                            <div class="row no-m">
+                                                <div class="input-field col s12 no-m">
+                                                    <input name="subject[subject]" id="subject" type="text" class="validate" maxlength="20">
+                                                    <label for="subject"><%= texts.SUBJECT %></label> 
+                                                </div>
+                                                <div class="input-field col s12 no-m">
+                                                    <input name="subject[teacher]" type="text" id="teacher" class="validate" maxlength="20">
+                                                    <label for="teacher"><%= texts.TEACHER %></label>
+                                                </div>
+                                                <div class="input-field col s12 no-m color-picker color-picker-modal">
+                                                    <select name="subject[color]">
+                                                        <option value="" disabled selected><%= texts.PICK_COLOR %></option>
+                                                        <option value="red"><%= texts.RED %></option>
+                                                        <option value="pink"><%= texts.PINK %></option>
+                                                        <option value="purple"><%= texts.PURPLE %></option>
+                                                        <option value="deep-purple"><%= texts.DEEP_PURPLE %></option>
+                                                        <option value="indigo"><%= texts.INDIGO %></option>
+                                                        <option value="blue"><%= texts.BLUE %></option>
+                                                        <option value="light-blue"><%= texts.LIGHT_BLUE %></option>
+                                                        <option value="cyan"><%= texts.CYAN %></option>
+                                                        <option value="teal"><%= texts.TEAL %></option>
+                                                        <option value="green"><%= texts.GREEN %></option>
+                                                        <option value="light-green"><%= texts.LIGHT_GREEN %></option>
+                                                        <option value="lime"><%= texts.LIME %></option>
+                                                        <option value="yellow"><%= texts.YELLOW %></option>
+                                                        <option value="amber"><%= texts.AMBER %></option>
+                                                        <option value="orange"><%= texts.ORANGE %></option>
+                                                        <option value="deep-orange"><%= texts.DEEP_ORANGE %></option>
+                                                        <option value="brown"><%= texts.BROWN %></option>
+                                                        <option value="grey"><%= texts.GREY %></option>
+                                                        <option value="blue-grey"><%= texts.BLUE_GREY %></option>
+                                                        <option value="black"><%= texts.BLACK %></option>
+                                                        <option value="white"><%= texts.WHITE %></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            
+                                            <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat"><%= texts.CANCEL %></a>
+                                            <button class="app-color waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="row">
+                <% clas.subjects.forEach(subject => { %>
+                <td class="col s12 row no-m">
+                    <div class="card round-card row valign-wrapper row">
+                        <div class="<%= subject.color %> subject-border"></div>
+                        <h6 class="col <%= (user.power == 2) ? 's3' : '' %> bold truncate <%= subject.color == 'white' ? 'black' : subject.color %>-text"><%= subject.subject %></h6>
+                        <h6 class="col">-</h6>
+                        <h6 class="col <%= (user.power == 2) ? 's4' : '' %> truncate"><%= subject.teacher %></h6>
+                        
+                        <% if(user.power === 2) { %>
+                        <div class="col s5 right row no-m">
+                            <a class="col right modal-trigger" href="#edit<%= subject._id %>"><i class="grey-text material-icons">edit</i></a>
+                            <a class="col right modal-trigger" href="#delete<%= subject._id %>"><i class="grey-text material-icons">delete</i></a>
+                        </div>
+                        
+                        <div id="edit<%= subject._id %>" class="modal">
+                            <form action="/schools/<%= user.school_id %>/classes/<%= user.class_id %>/subjects/<%= subject._id %>?_method=PUT" method="POST">
+                                <div class="modal-content no-p-bot">
+                                    <h4 class="center"><%= texts.EDIT_SUBJECT %></h4>
+                                    <div class="row no-m">
+                                        <div class="input-field col s12 no-m">
+                                            <input name="subject[subject]" id="subject" type="text" class="validate" maxlength="20" value="<%= subject.subject %>">
+                                            <label for="subject"><%= texts.SUBJECT %></label> 
+                                        </div>
+                                        <div class="input-field col s12 no-m">
+                                            <input name="subject[teacher]" type="text" id="teacher" class="validate" maxlength="20" value="<%= subject.teacher %>">
+                                            <label for="teacher"><%= texts.TEACHER %></label>
+                                        </div>
+                                        <div class="input-field col s12 no-m color-picker color-picker-modal">
+                                            <select name="subject[color]">
+                                                <option value="" disabled selected><%= texts.PICK_COLOR %></option>
+                                                <option value="red" <%= (subject.color == 'red')? 'selected': '' %>><%= texts.RED %></option>
+                                                <option value="pink" <%= (subject.color == 'pink')? 'selected': '' %>><%= texts.PINK %></option>
+                                                <option value="purple" <%= (subject.color == 'purple')? 'selected': '' %>><%= texts.PURPLE %></option>
+                                                <option value="deep-purple" <%= (subject.color == 'deep-purple')? 'selected': '' %>><%= texts.DEEP_PURPLE %></option>
+                                                <option value="indigo" <%= (subject.color == 'indigo')? 'selected': '' %>><%= texts.INDIGO %></option>
+                                                <option value="blue" <%= (subject.color == 'blue')? 'selected': '' %>><%= texts.BLUE %></option>
+                                                <option value="light-blue" <%= (subject.color == 'light-blue')? 'selected': '' %>><%= texts.LIGHT_BLUE %></option>
+                                                <option value="cyan" <%= (subject.color == 'cyan')? 'selected': '' %>><%= texts.CYAN %></option>
+                                                <option value="teal" <%= (subject.color == 'teal')? 'selected': '' %>><%= texts.TEAL %></option>
+                                                <option value="green" <%= (subject.color == 'green')? 'selected': '' %>><%= texts.GREEN %></option>
+                                                <option value="light-green" <%= (subject.color == 'light-green')? 'selected': '' %>><%= texts.LIGHT_GREEN %></option>
+                                                <option value="lime" <%= (subject.color == 'lime')? 'selected': '' %>><%= texts.LIME %></option>
+                                                <option value="yellow" <%= (subject.color == 'yellow')? 'selected': '' %>><%= texts.YELLOW %></option>
+                                                <option value="amber" <%= (subject.color == 'amber')? 'selected': '' %>><%= texts.AMBER %></option>
+                                                <option value="orange" <%= (subject.color == 'orange')? 'selected': '' %>><%= texts.ORANGE %></option>
+                                                <option value="deep-orange" <%= (subject.color == 'deep-orange')? 'selected': '' %>><%= texts.DEEP_ORANGE %></option>
+                                                <option value="brown" <%= (subject.color == 'brown')? 'selected': '' %>><%= texts.BROWN %></option>
+                                                <option value="grey" <%= (subject.color == 'grey')? 'selected': '' %>><%= texts.GREY %></option>
+                                                <option value="blue-grey" <%= (subject.color == 'blue-grey')? 'selected': '' %>><%= texts.BLUE_GREY %></option>
+                                                <option value="black" <%= (subject.color == 'black')? 'selected': '' %>><%= texts.BLACK %></option>
+                                                <option value="white" <%= (subject.color == 'white')? 'selected': '' %>><%= texts.WHITE %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    
+                                    <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat"><%= texts.CANCEL %></a>
+                                    <button class="app-color waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="delete<%= subject._id %>" class="modal">
+                            <div class="modal-content no-m">
+                                <h5 class="center"><%= texts.DELETE_WARNING_SUBJECT %></h5>
+                                <p class="center"><%= texts.DELETE_WARNING_SUBJECT_DES %></p>
                             </div>
                             <div class="modal-footer">
-                                <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/kick" class="btn red waves-effect waves-red"><%= texts.KICK %></a>
-                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat"><%= texts.CANCEL %></a>
+                                <form action="/schools/<%= user.school_id %>/classes/<%= user.class_id %>/subjects/<%= subject._id %>?_method=DELETE" method="POST">
+                                    <a href="#!" class="modal-action modal-close waves-effect btn-flat"><%= texts.CANCEL %></a>
+                                    <button class="waves-effect btn red"><%= texts.DELETE %></button>
+                                </form>
                             </div>
                         </div>
-                    </td>
-                <% } %>
-                
-                <td class="right cell">
-                    <% if(u.power == 2) { %>
-                        <h6 class="green-text green-box">Admin</h6>
-                    <% } else if(u.power == 0) { %>
-                        <h6 class="red-text red-box"><%= texts.RESTRICTED_MEMBER %></h6>
-                    <% } else { %>
-                        <h6 class="yellow-text text-darken-3 yellow-box"><%= texts.CLASSMATE %></h6>
-                    <% } %>
+                        <% } %>
+                    </div>
                 </td>
                 
+                <% }) %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    
+    <div class="row"></div>
+    
+    <div class="card">
+        <div class="card-content no-p-top">
+            <table class="bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="row no-m">
+                                <h5 class="col header no-m"><%= texts.MEMBERS %></h5>
+                                <a class="modal-trigger" href="#userPermissionsInfo"><i class="col grey-text material-icons right">info_outline</i></a>
+                                
+                                <div id="userPermissionsInfo" class="modal">
+                                    <img src="/res/user_permissions.jpg" class="responsive">
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
                 
-                
-            </tr>
-        <% }); %>
-        </tbody>
-    </table>
+                <tbody>
+                <% users.forEach((u) => { %>
+            
+                        <td class="left cell">
+                            <% if(u._id == user._id) {%>
+                                <h6 class="blue-text"><%= texts.YOU %></divh6>
+                            <% } else { %>
+                                <h6><%= u.username ? u.username : u.google_username %></h6>
+                            <% } %>
+                        </td>
+                        
+                        <%if(user.power == 2) {%>
+                            <td class="small-cell right">
+                                
+                                <a class="modal-trigger" href="#more-<%= u._id %>"><i class="material-icons grey-text text-darken-1 right">more_vert</i></a>
+                                
+                                <div id="more-<%= u._id %>" class="modal">
+                                    <div class="modal-content container center">
+                                        
+                                        <h5><%= texts.ROLE%></h5>
+                                    
+                                        <div class="col s12 l4 valign-wrapper m-bot">
+                                            <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/restrict" class="auto">
+                                                <h6 class="red-text red-box <%= u.power == 0 ? 'active' : '' %>"><%= texts.RESTRICTED_MEMBER %></h6>
+                                            </a>
+                                        </div>
+                                        <div class="col s12 l4 valign-wrapper m-bot">
+                                            <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/member" class="auto">
+                                                <h6 class="yellow-text text-darken-3 yellow-box <%= u.power == 1 ? 'active' : '' %>"><%= texts.CLASSMATE %></h6>
+                                            </a>
+                                        </div>
+                                        <div class="col s12 l4 valign-wrapper m-bot">
+                                            <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/admin" class="auto">
+                                                <h6 class="green-text green-box <%= u.power == 2 ? 'active' : '' %>">Admin</h6>
+                                            </a>
+                                        </div>
+                                        <p><br></p>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="/schools/<%=user.school_id%>/classes/<%=user.class_id%>/users/<%=u._id%>/kick" class="btn red waves-effect waves-red"><%= texts.KICK %></a>
+                                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat"><%= texts.CANCEL %></a>
+                                    </div>
+                                </div>
+                            </td>
+                        <% } %>
+                        
+                        <td class="right cell">
+                            <% if(u.power == 2) { %>
+                                <h6 class="green-text green-box">Admin</h6>
+                            <% } else if(u.power == 0) { %>
+                                <h6 class="red-text red-box"><%= texts.RESTRICTED_MEMBER %></h6>
+                            <% } else { %>
+                                <h6 class="yellow-text text-darken-3 yellow-box"><%= texts.CLASSMATE %></h6>
+                            <% } %>
+                        </td>
+                        
+                        
+                        
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <% include ../partials/footer %>

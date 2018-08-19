@@ -60,7 +60,7 @@ router.post('/register', mid.isNotLoggedIn, (req, res) => {
 });
 
 // GET select school route
-router.get('/selectSchool', mid.isLoggedIn, (req, res) => {
+router.get('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     School.find({})
     .then(schools => {
         res.render('auth/selectSchool', {
@@ -84,7 +84,7 @@ router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     School.findOne({name: req.body.school})
     .then(school => {
         // update users school
-        return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined}}, {new: true}); // return promise
+        return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined, subjects: []}}, {new: true}); // return promise
         
     }, err => {
         // handle error while finding school
@@ -93,7 +93,7 @@ router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
         // login updated user
         req.login(user, err => {
 
-            if(err) return fun.error(req, res, err, 'Error while signing up', '/');
+            if(err) return fun.error(req, res, err, 'Error while signing in', '/');
 
             res.redirect('/selectClass');
         });
@@ -104,7 +104,7 @@ router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
 });
 
 // GET select class route
-router.get('/selectClass', mid.isLoggedIn, (req, res) => {
+router.get('/selectClass', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // make sure user is in a school
     if(req.user.school_id != undefined) {
         // find all classes in school
@@ -125,30 +125,86 @@ router.get('/selectClass', mid.isLoggedIn, (req, res) => {
 
 // POST select class route
 router.post('/selectClass', mid.updateUser, mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
-    // check inputs
-    req.checkBody('clas', 'Class field cannot be empty').notEmpty();
-    // handle input errors
-    const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
     
-    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: req.body.clas}}, {new: true})
-    .then(user => {
-        req.login(user, err => {
-            // handle possible error
-            if(err) {return fun.error(req, res, err, 'Error while signing up', '/')}
-
-            res.redirect(`/classes/${req.body.clas}/homework`);
+    // make sure user is in a school
+    if(req.user.school_id != undefined) {
+        // check inputs
+        req.checkBody('clas', 'Class field cannot be empty').notEmpty();
+        // handle input errors
+        const errors = req.validationErrors();
+        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectClass')}
+        
+        User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: req.body.clas, subjects: []}}, {new: true})
+        .then(user => {
+            req.login(user, err => {
+                // handle possible error
+                if(err) {return fun.error(req, res, err, 'Error while signing in', '/')}
+    
+                res.redirect(`/selectSubjects`);
+            });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
         });
-    }, err => {
-        // handle error
-        fun.error(req, res, err, 'Error while adding you to the school', '/selectSchool');
-    });
+    } else {
+        // user is in no school => select school
+        res.redirect('/selectSchool');
+    }
+});
+
+// GET select subjects route
+router.get('/selectSubjects', mid.updateUser, mid.isLoggedIn, (req, res) => {
+    // make sure user is in a class
+    if(req.user.class_id != undefined) {
+        // find users class
+        Class.findById(req.user.class_id).populate('subjects')
+        .then(clas => {
+            // render ejs templante with classes subjects
+            res.render('auth/selectSubjects', {
+                r: clas
+            });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while loading your class', '/');
+        });
+    } else {
+        // user is in no class => select class
+        res.redirect('/selectClass');
+    }
+});
+
+// POST select subjects route
+router.post('/selectSubjects', mid.updateUser, mid.isLoggedIn, (req, res) => {
+    // make sure user is in a class
+    if(req.user.class_id != undefined) {
+        // check inputs
+        req.checkBody('subjects', 'Please select your subjects').notEmpty();
+        // handle input errors
+        const errors = req.validationErrors();
+        if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSubjects')}
+        
+        User.findByIdAndUpdate(req.user._id, { $set: {subjects: req.body.subjects}}, {new: true})
+        .then(user => {
+            // login updated user and redirect to homepage
+            req.login(user, err => {
+                // handle possible error
+                if(err) {return fun.error(req, res, err, 'Error while signing in', '/')}
+                res.redirect(`/classes/${req.user.class_id}/homework`);
+            });
+        }, err => {
+            // handle error
+            fun.error(req, res, err, 'Error while setting your subjects', '/');
+        });
+    } else {
+        // user is in no class => select class
+        res.redirect('/selectClass');
+    }
 });
 
 // Leave Class Route
 router.get('/leaveClass', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // update user
-    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: undefined}}, {new: true})
+    User.findByIdAndUpdate({_id: req.user._id}, { $set: {power: 1, class_id: undefined, subjects: []}}, {new: true})
     .then(user => {
         // redirect to select class
         res.redirect('/selectClass');
@@ -215,19 +271,24 @@ router.get('/auth/google/callback', passport.authenticate('google', {
 // GET user route
 router.get('/accountSettings', mid.isLoggedIn, (req, res) => {
     
-    // find user
-    User.findById({_id: req.user._id}).populate('school_id').populate('class_id').exec()
-    .then(user => {
-        
-        // render ejs template
-        res.render('auth/show', {
-            title: 'TITLE_ACCOUNT_SETTINGS',
-            userR: user
+    if(req.user.class_id != undefined) {
+        // find user
+        User.findById({_id: req.user._id}).populate('school_id').populate('class_id').populate('subjects').exec()
+        .then(user => {
+            
+            // render ejs template
+            res.render('auth/show', {
+                title: 'TITLE_ACCOUNT_SETTINGS',
+                userR: user
+            });
+        }, err => {
+            // handle error while loading user
+            fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.user.class_id}/homework`);
         });
-    }, err => {
-        // handle error while loading user
-        fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.user.class_id}/homework`);
-    });
+    } else {
+        // user is in no class => no settings
+        res.redirect('/selectClass');
+    }
 
 });
 

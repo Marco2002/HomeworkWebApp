@@ -18,39 +18,11 @@
                     <div class="input-field col s12">
                         <select name="homework[subject]" id="homeworkSubject">
                             <option value="" disabled selected><%= texts.CHOOSE_SUBJECT %></option>
-                            <option value="Maths"><%= texts.Maths %></option>
-                            <option value="Language Arts"><%= texts["Language Arts"] %></option>
-                            <option value="Foreign Language 1"><%= texts["Foreign Language 1"] %></option>
-                            <option value="Foreign Language 2"><%= texts["Foreign Language 2"] %></option>
-                            <option value="Foreign Language 3"><%= texts["Foreign Language 3"] %></option>
-                            <option value="Physics"><%= texts.Physics %></option>
-                            <option value="Politics"><%= texts.Politics %></option>
-                            <option value="Science"><%= texts.Science %></option>
-                            <option value="Art"><%= texts.Art %></option>
-                            <option value="Music"><%= texts.Music %></option>
-                            <option value="Geography"><%= texts.Geography %></option>
-                            <option value="History"><%= texts.History %></option>
-                            <option value="Biology"><%= texts.Biology %></option>
-                            <option value="Physical Education"><%= texts["Physical Education"] %></option>
-                            <option value="Philosophy"><%= texts.Philosophy %></option>
-                            <option value="Ethics"><%= texts.Ethics %></option>
-                            <option value="Chemistry"><%= texts.Chemistry %></option>
-                            <option value="Religion"><%= texts.Religion %></option>
-                            <option value="Other"><%= texts.Other %></option>
+                            <% user.subjects.forEach(subject => { %>
+                            <option value="<%= subject._id %>"><%= subject.subject %></option>
+                            <% }) %>
                         </select>
                         <label><%= texts.SUBJECT %></label>
-                    </div>
-                    
-                    <div id="subjectNameModal" class="modal">
-                        <div class="modal-content">
-                            <h5><%= texts.SUBJECT_NAME %></h5>
-                            <div class="input-field">
-                                <input value="" name="homework[subjectName]" id="subjectName" type="text" class="validate" maxlength="20">
-                            </div>
-                            <div class="center">
-                                <a class="app-color btn waves-effect waves-light" id="subjectNameSubmit">OK</a>
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="input-field col s12">

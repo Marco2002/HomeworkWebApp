@@ -18,20 +18,10 @@ const homeworkSchema = new mongoose.Schema({
     
     // subject
     subject: {
-        type: String,
-        // properties
-        required: true,
-        maxlength: 20
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Subject'
     },
-    
-    // subject name (user can change the name of a subject)
-    subjectName: {
-        type: String,
-        // properties
-        required: true,
-        maxlength: 20
-    },
-    
+
     // deadline date
     date: {
         type: Date,

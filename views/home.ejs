@@ -1,4 +1,4 @@
-<% let color, hPrevDate, ePrevDate %>
+<% let hPrevDate, ePrevDate %>
 
 <!DOCTYPE html>
 <html>
@@ -91,61 +91,37 @@
                         <div id="homework">
                             <% if(homework[0]) { %>
                             <% homework.forEach(h => {%>
-                            <!-- Get the color -->
-                            <% switch(h.subject) { case "Maths": %>
-                                <% color="blue"; break; %>
-                                <% case "Language Arts": color="red"; break; %>
-                                <% case "Foreign Language 1": color="yellow"; break; %>
-                                <% case "Foreign Language 2": color="purple"; break; %>
-                                <% case "Foreign Language 3": color="pink accent-2"; break; %>
-                                <% case "Music": color="teal accent-4"; break; %>
-                                <% case "History": color="indigo"; break; %>
-                                <% case "Geography": color="brown"; break; %>
-                                <% case "Biology": color="green"; break; %>
-                                <% case "Physical Education": color="green accent-4"; break; %>
-                                <% case "Politics": color="grey"; break; %>
-                                <% case "Religion": color="amber"; break; %>
-                                <% case "Philosophy": color="cyan"; break; %>
-                                <% case "Ethics": color="light-blue"; break; %>
-                                <% case "Physics": color="deep-purple"; break; %>
-                                <% case "Science": color="blue-grey";  break; %>
-                                <% case "Chemistry": color="deep-orange";  break; %>
-                                <% case "Art": color="pink"; break; %>
-                                <% case "Other": color="white"; break; %>
-                            <% } %>
                             
                             <% if(hPrevDate != h.d) { %>
                                 <div class="col s12">
-                                    <p class="no-margin-bottom bold grey-text text-darken-2"><%= texts.UNTIL %> <%=h.d%></p>
-                                    <hr>
+                                    <p class="no-margin-bottom bold grey-text"><%= texts.UNTIL %> <%=h.d%></p>
+                                    <p class="divider home-divider"></p>
                                 </div>
                             <% } %>
                             <% hPrevDate = h.d%>
                         
                             <div class="col s12 l6">
                                 <a href="/classes/<%=h.class_id%>/homework/<%=h._id%>">
-                                    <div class="card <%=color%> black-text card-margin">
-                                        <div class="card-content" >
-                                            <div class="row no-m">
-                                                <div class="col s12">
-                                                    <div class="row no-m">
-                                                        <div class="card-title">
-                                                        <% if(h.subjectName != h.subject) { %>
-                                                            <%= h.subjectName %>
-                                                        <% } else { %>
-                                                            <%= texts[h.subject] %>
-                                                        <% } %>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col s12">
-                                                    <div class="row no-m">
-                                                        <h4 class="no-m"><%= h.title %></h4>
-                                                    </div>
+                                    <div class="card home-card <%=h.subject.color%> <%= h.subject.color == 'black' ? 'white-text' : 'black-text'%>">
+                                        <div class="row no-m">
+                                            <div class="col">
+                                                <div class="row no-m">
+                                                    <div class="card-title no-m card-subject"><%= h.subject.subject %></div>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="col right">
+                                                <div class="row no-m">
+                                                    <div class="card-title no-m card-teacher"><%= h.subject.teacher %></div>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="col s12">
+                                                <div class="row no-m">
+                                                    <h5 class="no-m"><%= h.title %></h5>
+                                                </div>
+                                            </div>
                                         </div>
+                                            
                                     </div>
                                 </a>
                             </div> 
@@ -155,60 +131,34 @@
                         <div id="exams">
                             <% if(exams[0]) { %>
                             <% exams.forEach(e => { %>
-                            <!-- Get the color -->
-                            <% switch(e.subject) { case "Maths": %>
-                                <% color="blue"; break; %>
-                                <% case "Language Arts": color="red"; break; %>
-                                <% case "Foreign Language 1": color="yellow"; break; %>
-                                <% case "Foreign Language 2": color="purple"; break; %>
-                                <% case "Foreign Language 3": color="pink accent-2"; break; %>
-                                <% case "Music": color="teal accent-4"; break; %>
-                                <% case "History": color="indigo"; break; %>
-                                <% case "Geography": color="brown"; break; %>
-                                <% case "Biology": color="green"; break; %>
-                                <% case "Physical Education": color="green accent-4"; break; %>
-                                <% case "Politics": color="grey"; break; %>
-                                <% case "Religion": color="amber"; break; %>
-                                <% case "Philosophy": color="cyan"; break; %>
-                                <% case "Ethics": color="light-blue"; break; %>
-                                <% case "Physics": color="deep-purple"; break; %>
-                                <% case "Science": color="blue-grey";  break; %>
-                                <% case "Chemistry": color="deep-orange";  break; %>
-                                <% case "Art": color="pink"; break; %>
-                                <% case "Other": color="white"; break; %>
-                            <% } %>
                             
                             <% if(ePrevDate != e.d) { %>
                                 <div class="col s12">
-                                    <p class="no-margin-bottom bold grey-text text-darken-2"><%=e.d%></p>
-                                    <hr>
+                                    <p class="no-margin-bottom bold grey-text"><%=e.d%></p>
+                                    <p class="divider home-divider"></p>
                                 </div>
                             <% } %>
                             <% ePrevDate = e.d%>
                     
                             <div class="col s12 l6">
                                 <a href="/classes/<%=e.class_id%>/exams/<%=e._id%>">
-                                    <div class="card <%=color%> black-text card-margin">
-                                        <div class="card-content">
-                                            <div class="row no-m">
-                                                <div class="col s12">
-                                                    <div class="row no-m">
-                                                        <div class="card-title">
-                                                            <% if(e.subjectName != e.subject) { %>
-                                                                <%= e.subjectName %>
-                                                            <% } else { %>
-                                                                <%= texts[e.subject] %>
-                                                            <% } %>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col s12">
-                                                    <div class="row no-m">
-                                                        <h4 class="no-m"><%= e.title %></h4>
-                                                    </div>
+                                    <div class="card <%= e.subject.color%> <%= e.subject.color == 'black' ? 'white-text' : 'black-text'%> black-text home-card">
+                                        <div class="row no-m">
+                                            <div class="col">
+                                                <div class="row no-m">
+                                                    <div class="card-title no-m card-subject"><%= e.subject.subject %></div>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="col right">
+                                                <div class="row no-m">
+                                                    <div class="card-title no-m card-teacher"><%= e.subject.teacher %></div>
+                                                </div>
+                                            </div>
+                                            <div class="col s12">
+                                                <div class="row no-m">
+                                                    <h5 class="no-m"><%= e.title %></h5>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>

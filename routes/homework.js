@@ -17,34 +17,45 @@ const Class = require('../models/class');
 const router  = express.Router({mergeParams: true});
 
 // Index Route
-router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, (req, res) => {
+router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.hasSelectedSubjects, (req, res) => {
     
     // variables
-    let _homework, _exams;
+    let _homework = [];
+    let _exams = [];
     
     // get homework sorted by date
-    Homework.find({class_id: req.params.class_id}).sort({date: 1}).exec()
+    Homework.find({class_id: req.params.class_id}).populate('subject').sort({date: 1}).exec()
     .then(homework => {
-        // format date of all homework
-        for(h of homework) {
-            h.d = `${h.date.getDate()}.${h.date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
-        };
-        // store homework in variable
-        _homework = homework;
+        // check if user has homework subject
+        for(let h of homework) {
+            for(let s of req.user.subjects) {
+                if(s._id.equals(h.subject._id)) {
+                    // user has subject => format date and push into final homework
+                    h.d = `${h.date.getDate()}.${h.date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
+                    _homework.push(h);
+                    break;
+                }
+            }
+        }
         
         // get exams
-        return Exam.find({class_id: req.params.class_id}).sort({date: 1}).exec();
+        return Exam.find({class_id: req.params.class_id}).populate('subject').sort({date: 1}).exec();
         
     }, err => {
         // handle error while loading homework
         fun.error(req, res, err, 'Error in the backend server, please try again later', `/classes/${req.params.class_id}/homework`);
     }).then(exams => {
-        // format date of all exams
-        for(e of exams) {
-            e.d = `${e.date.getDate()}.${e.date.getMonth()}`;// useing 'd' becouse 'date' cannot be overwritten
+        // check if user has exams subject
+        for(let e of exams) {
+            for(let s of req.user.subjects) {
+                if(s._id.equals(e.subject._id)) {
+                    // user has subject => format date and push into final exams
+                    e.d = `${e.date.getDate()}.${e.date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
+                    _exams.push(e);
+                    break;
+                }
+            }
         }
-        // store exams
-        _exams = exams;
         
         // get class and school
         return Class.findById({_id: req.params.class_id}).populate('school_id').exec();
@@ -83,8 +94,7 @@ router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, r
     req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
     req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();
     req.checkBody('homework[description]', 'Description field cannot be empty').notEmpty().len(1, 600);
-    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
-    req.checkBody('homework[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty();
     // handle input errors
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, errors, errors[0].msg, `/classes/${req.params.class_id}/homework/new`)}
@@ -117,13 +127,13 @@ router.post('/', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, r
 // Show Route
 router.get('/:id', mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
     // find homework
-    Homework.findById({_id: req.params.id})
+    Homework.findById({_id: req.params.id}).populate('subject')
     .then(homework => {
         // format date
         homework.d = moment(homework.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
         // render ejs template
         res.render('homework/show', {
-            title: homework.subjectName,
+            title: homework.subject.subject,
             r: homework
         });
     }, err => {
@@ -148,7 +158,7 @@ router.delete('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (r
 // Edit Route
 router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req, res) => {
     // find homework
-    Homework.findById({_id: req.params.id})
+    Homework.findById({_id: req.params.id}).populate('subject')
     .then( homework => {
         
         // format date
@@ -171,8 +181,7 @@ router.put('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req,
     req.checkBody('homework[title]', 'Title field cannot be empty').notEmpty().len(1, 40);
     req.checkBody('homework[date]', 'Date field cannot be empty').notEmpty();
     req.checkBody('homework[description]', 'Description field cannot be empty').notEmpty().len(1, 600);
-    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty().len(1, 20);
-    req.checkBody('homework[subjectName]', 'Subject name field cannot be empty').notEmpty().len(1, 20);
+    req.checkBody('homework[subject]', 'Homework subject field cannot be empty').notEmpty();
     // handle input errors
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, `/classes/${req.params.class_id}/homework/${req.params.id}/edit`)}

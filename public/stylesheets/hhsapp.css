@@ -9,3 +9,7 @@
 #body-home {
 	margin-top: 0!important;
 }
+
+ul.dropdown-content.select-dropdown li span {
+    color: #5A9016!important;
+}

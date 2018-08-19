@@ -1,38 +1,15 @@
-<% let color, textColor %>
-<% switch(r.subject) { case "Maths": %>
-    <% color="blue"; textColor="white"; break; %>
-    <% case "Language Arts": color="red"; textColor="white"; break; %>
-    <% case "Foreign Language 1": color="yellow"; textColor="black"; break; %>
-    <% case "Foreign Language 2": color="purple"; textColor="white"; break; %>
-    <% case "Foreign Language 3": color="pink accent-2"; textColor="white"; break; %>
-    <% case "Music": color="teal accent-4"; textColor="white"; break; %>
-    <% case "History": color="indigo"; textColor="white"; break; %>
-    <% case "Geography": color="brown"; textColor="white"; break; %>
-    <% case "Biology": color="green"; textColor="white"; break; %>
-    <% case "Physical Education": color="green accent-4"; textColor="white"; break; %>
-    <% case "Politics": color="grey"; textColor="white"; break; %>
-    <% case "Religion": color="amber"; textColor="white"; break; %>
-    <% case "Philosophy": color="cyan"; textColor="white"; break; %>
-    <% case "Ethics": color="light-blue"; textColor="white"; break; %>
-    <% case "Physics": color="deep-purple"; textColor="white"; break; %>
-    <% case "Science": color="blue-grey"; textColor="white"; break; %>
-    <% case "Chemistry": color="deep-orange"; textColor="white"; break; %>
-    <% case "Art": color="pink"; textColor="white"; break; %>
-    <% case "Other": color="white"; textColor="black"; break; %>
-<% } %>
-
 <% include ../partials/header %>
 
 <div class="container">
     
     <% include ../partials/flash %>
     
-    <div class="card <%= color %> <%=textColor%>-text">
+    <div class="card <%= r.subject.color %> <%= r.subject.color == 'black' ? 'white-text' : '' %>">
         <div class="card-content">
             
             <div class="container">
                 
-                 <div class="row">
+                <div class="row">
                     <h4 class="no-m center-align"><%= r.title %></h4>
                 </div>
                 
@@ -57,12 +34,12 @@
                 <% } %>
                 
                 <div class="row"></div>
-                <p class="divider"></p>
+                <p class="divider <%= r.subject.color == 'black' ? 'white' : 'black' %>"></p>
                 <div class="row"></div>
                 
                 <% if(user.power > 0) { %>
-                    <a href="/classes/<%=r.class_id%>/exams/<%=r._id%>/edit"><i class="left material-icons <%=textColor%>-text">create</i></a>
-                    <a class="modal-trigger" href="#warning"><i class="left material-icons <%=textColor%>-text">delete</i></a>
+                    <a href="/classes/<%=r.class_id%>/exams/<%=r._id%>/edit"><i class="left material-icons <%= r.subject.color == 'black' ? 'white-text' : 'black-text' %>">create</i></a>
+                    <a class="modal-trigger" href="#warning"><i class="left material-icons black-text <%= r.subject.color == 'black' ? 'white-text' : 'black-text' %>">delete</i></a>
                     
                     <div id="warning" class="modal black-text">
                         <div class="modal-content">
@@ -78,7 +55,7 @@
                     </div>
                 <% } %>
                 
-                <p class="col right s8 right-align"><%= texts.UNTIL %> <%=r.d%></p>
+                <p class="col right right-align bold"><%=r.d%></p>
                 <div class="card-margin-bot"></div>
             </div>
         </div>

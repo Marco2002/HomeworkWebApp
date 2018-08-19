@@ -31,14 +31,19 @@ const userSchema = new mongoose.Schema({
     // school ref
     school_id: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'School',
+        ref: 'School'
     },
     
     // class ref
     class_id: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Class',
+        ref: 'Class'
     },
+    
+    subjects: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Subject'
+    }],
     
     // boolean value for isAdmin
     power: {

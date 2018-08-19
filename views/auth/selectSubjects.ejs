@@ -1,0 +1,38 @@
+<% include ../partials/headerBasic %>
+
+<div class="app-color full-height">
+    <div class="container">
+        <div class="row no-m">
+            <div class="col s12 l8 push-l2">
+                <div class="margin"></div>
+                <% include ../partials/flash %>
+                <div class="card">
+                    <div class="card-content">
+                        <h4 class="center"><%= texts.SELECT_SUBJECTS %></h4>
+                        <form action="/selectSubjects" method="POST">
+                            <% r.subjects.forEach(subject => { %>
+                            
+                            <a class="card row valign-wrapper subject-card black-text">
+                                <div class="<%= subject.color %> subject-border"></div>
+                                <h6 class="col s5 bold truncate <%= subject.color == 'white' ? 'black' : subject.color %>-text"><%= subject.subject %></h6>
+                                <h6 class="col">-</h6>
+                                <h6 class="col s5 truncate"><%= subject.teacher %></h6>
+                                
+                                <input class="col s1 pull-s11 right right-align filled-in blue" name="subjects" value="<%=subject._id%>" type="checkbox" id="<%=subject._id%>" />
+                                <label for="<%=subject._id%>"></label>
+                            </a>
+                            
+                            <% }) %>
+
+                            <div class="row no-m center">
+                                <button class="app-color waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footerBasic %>

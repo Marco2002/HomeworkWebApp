@@ -40,28 +40,6 @@ $(function() {
         $('select').material_select();
     });
     
-    // check which subject
-    $('#homeworkSubject').change(function() {
-        $('#subjectNameModal').modal({dismissible: false});
-        var subject = $('#homeworkSubject')[0].value;
-        
-        if ((subject == 'Other') || (subject == 'Foreign Language 1') || (subject == 'Foreign Language 2') || (subject == 'Foreign Language 3')) {
-            $('#subjectNameModal').modal('open');
-            $('#subjectName').val('');
-        } else {
-            $('#subjectName').val(subject);
-        }
-    });
-    
-    // subject modal close
-    $('#subjectNameSubmit').click(function() {
-        if($('#subjectName').val() != undefined && $('#subjectName').val() != '') {
-            $('#subjectNameModal').modal('close');
-        } else {
-            Materialize.toast('Please enter a subject name!', 4000);
-        }
-    });
-    
     // Form Configuration
     $('#btn-submit').click(function() {
         
@@ -111,20 +89,19 @@ $(function() {
     
         if(formConfigTitle() && formConfigDate() && formConfigDes() && formConfigSubject() == true) {
             $('.hide').remove();
-            $('#subjectName').prop('disabled', false);
             $('#form').submit();
         }
     });
 
-    // Add Topic
-    $('#btnAddTopic').click(function() {
+    // add topic or subject container
+    $('#btnAddContainer').click(function() {
         
         $('.hide').first().removeClass('hide');
     });
     
-    // Remove Topic
-    $('#btnRemoveTopic').click(function() {
-        $('#topicContainer:not(.hide)').last().addClass('hide');
+    // remove topic or subject container
+    $('#btnRemoveContainer').click(function() {
+        $('#container:not(.hide)').last().addClass('hide');
     });
     
     // Close Alert
@@ -144,7 +121,7 @@ $(function() {
         window.location.replace('/?clang=' + lang);
     });
     
-    // Redirect to add homework or add exam page
+    // Redirect to add homework or add exam page (float btn)
     $('#redirectToAddPage').click(function() {
         // read class_id from url
         var class_id = window.location.pathname.split('/')[2];
@@ -155,6 +132,12 @@ $(function() {
             // exams tab is active => redirect to add exam
             window.location = '/classes/' + class_id + '/exams/new';
         }
+    });
+    
+    // select subject on click on card
+    $('.subject-card').click(function() {
+        var checkBox = $(this).find('input');
+        checkBox.prop('checked', !checkBox.prop('checked'));
     });
     
     console.log('script.js file active');

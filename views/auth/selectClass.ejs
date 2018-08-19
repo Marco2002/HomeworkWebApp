@@ -13,7 +13,7 @@
                         <form action="/selectClass" method="POST">
                             <div class="row">
                                 <div class="valign-wrapper">
-                                    <div class="input-field col s6 l9">
+                                    <div class="input-field col s10">
                                         <select name="clas" id="class">
                                             <option value="" disabled selected><%= texts.SELECT_CLASS %></option>
                                             <% results.forEach(clas => { %>
@@ -22,12 +22,12 @@
                                         </select>
                                         <label><%= texts.CLASS %></label>
                                     </div>
-                                    <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s6 l3 app-color"><%= texts.ADD_CLASS %></a>
+                                    <a href="/schools/<%=user.school_id%>/classes/new" target="_blank" class="waves-effect waves-light btn col s2 app-color"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row no-m center">
-                                <button class="app-color waves-effect waves-light btn"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+                                <button class="app-color waves-effect waves-light btn"><%= texts.NEXT %><i class="material-icons right">navigate_next</i></button>
                             </div>
                         </form>
                     </div>
