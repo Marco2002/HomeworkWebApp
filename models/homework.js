@@ -34,7 +34,7 @@ const homeworkSchema = new mongoose.Schema({
         type: String,
         // properties
         required: true,
-        maxlength: 60
+        maxlength: 600
     },
     
     // class ref

@@ -114,7 +114,7 @@ router.get('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
     // variables
     let clas;
     
-    Class.findById({_id: req.params.class_id}).populate('subjects')
+    Class.findById({_id: req.params.class_id}).populate({ path: 'subjects', options: { sort: { subject: 1 } } })
     .then(c => {
         
         // save clas
@@ -310,38 +310,15 @@ router.put('/:class_id/subjects/:id', mid.isLoggedIn, mid.isPartOfSchool, mid.is
 
 // Destroy subject
 router.delete('/:class_id/subjects/:id', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-    // remove subject from users subjects list
-    User.find({subjects: req.params._id})
-    .then(users => {
-        console.log(users)
-        
-        // loop through users
-        users.forEach(u => {
-            // find and remove subject in subject array
-            console.log(u.subjects)
-            const index = u.subjects.indexOf(req.params._id);
-            u.subjects.splice(index, 1);
-            console.log(u.subjects)
-            // update user
-            u.save(err => {
-                // handle error
-                if(err) return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-            });
-        });
-        
-        // delete subject from db
-        Subject.deleteOne({_id: req.params.id}, err => {
-            // handle error while deleting subject
-            if(err) return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-            
-            // flash message and redirect user
-            req.flash('success', 'Deleted subject');
-            res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
-        });
-        
-    }, err => {
-        // handle error while removing subject from users subjects list
+
+    // delete subject from db
+    Subject.deleteOne({_id: req.params.id}, err => {
+        // handle error while deleting subject
         if(err) return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+        
+        // flash message and redirect user
+        req.flash('success', 'Deleted subject');
+        res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
     
 });

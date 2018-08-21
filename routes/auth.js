@@ -157,7 +157,7 @@ router.get('/selectSubjects', mid.updateUser, mid.isLoggedIn, (req, res) => {
     // make sure user is in a class
     if(req.user.class_id != undefined) {
         // find users class
-        Class.findById(req.user.class_id).populate('subjects')
+        Class.findById(req.user.class_id).populate({ path: 'subjects', options: { sort: { subject: 1 } } })
         .then(clas => {
             // render ejs templante with classes subjects
             res.render('auth/selectSubjects', {
