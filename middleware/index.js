@@ -7,6 +7,7 @@ const fun = require('../functions');
 
 // Models
 const User = require('../models/user');
+const Class = require('../models/class');
 
 let middlewareObj = {};
 
@@ -141,6 +142,20 @@ middlewareObj.updateUser = (req, res, next) => {
     }, err => {
         // handle error
         fun.error(req, res, err, 'Error while updating session', `/classes/${req.user.class_id}/homework`);
+    });
+};
+
+middlewareObj.classHasSubjects = (req, res, next) => {
+    // find class
+    Class.findById({_id: req.params.class_id})
+    .then(clas => {
+        // check if class has more than one subejct
+        clas.subjects.length > 1
+            ? next()
+            : fun.error(req, res, '', 'Cannot delete the last subject', `/schools/${req.user.school_id}/classes/${req.user.class_id}/`);
+    }, err => {
+        // handle error
+        fun.error(req, res, err, 'Error while updating session', `/schools/${req.user.school_id}/classes/${req.user.class_id}/`);
     });
 };
 

@@ -11,6 +11,8 @@ const mid = require('../middleware');
 const Class = require('../models/class');
 const Subject = require('../models/subject');
 const User = require('../models/user');
+const Homework = require('../models/homework');
+const Exam = require('../models/exam');
 
 const router = express.Router({mergeParams: true});
 
@@ -309,16 +311,63 @@ router.put('/:class_id/subjects/:id', mid.isLoggedIn, mid.isPartOfSchool, mid.is
 });
 
 // Destroy subject
-router.delete('/:class_id/subjects/:id', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, (req, res) => {
-
-    // delete subject from db
-    Subject.deleteOne({_id: req.params.id}, err => {
-        // handle error while deleting subject
-        if(err) return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+router.delete('/:class_id/subjects/:id', mid.isLoggedIn, mid.isPartOfSchool, mid.isPartOfClass, mid.isAdmin, mid.classHasSubjects, (req, res) => {
+    
+    User.find({class_id: req.params.class_id})
+    .then(users => {
+        // remove subject from subjects
+        users.forEach(user => {
+            user.subjects.remove(req.params.id);
+            user.save(err => {
+                // handle error
+                if(err) return fun.error(req, res, err, 'Error while deleteing subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}/`);
+            });
+        });
         
+        // delete subject from class' subjects list
+        return Class.findById({_id: req.params.class_id});
+        
+    }, err => {
+        // handle error
+        return fun.error(req, res, err, 'Error while deleteing subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}/`);
+        
+    }).then(clas => {
+        // remove subject from subjects list
+        clas.subjects.remove(req.params.id);
+        clas.save(err => {
+            // handle error
+            if(err) return fun.error(req, res, err, 'Error while deleteing subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}/`);
+        });
+        
+        // delete homework in that subject
+        return Homework.deleteMany({subject: req.params.id});
+        
+    }, err => {
+        // handle error
+        return fun.error(req, res, err, 'Error while deleteing subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}/`);
+        
+    }).then(homework => {
+        // delete exams in that subject
+        return Exam.deleteMany({subject: req.params.id});
+        
+    }, err => {
+        // handle error while deleting subject
+        return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+        
+    }).then(exam => {
+        // delete subject
+        return Subject.deleteOne({_id: req.params.id});
+    }, err => {
+        // handle error while deleting subject
+        return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+        
+    }).then( subject => {
         // flash message and redirect user
         req.flash('success', 'Deleted subject');
         res.redirect(`/schools/${req.params.school_id}/classes/${req.params.class_id}`);
+    }, err => {
+        // handle error while deleting subject
+        return fun.error(req, res, err, 'Error while deleting subject', `/schools/${req.params.school_id}/classes/${req.params.class_id}`);
     });
     
 });
