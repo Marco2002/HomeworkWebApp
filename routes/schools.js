@@ -23,11 +23,15 @@ router.post('/', mid.isLoggedIn, mid.isDev, (req, res) => {
     
     // check inputs
     req.checkBody('school[name]', 'School-name must be between 4-30 characters long').notEmpty().len(4, 30);
+    req.checkBody('school[password]', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
+    req.checkBody('reenterPassword', 'Passwords do not match, please try again').equals(req.body.school.password);
         
     // handle input errors
     const errors = req.validationErrors();
     if(errors) {return fun.error(req, res, '', errors[0].msg, '/schools/new')}
     
+    // hash school password
+    req.body.school.password = passwordHash.generate(req.body.school.password);
     
     // create school from body
     const school = new School(req.body.school);

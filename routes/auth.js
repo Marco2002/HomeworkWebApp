@@ -76,16 +76,21 @@ router.get('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
 router.post('/selectSchool', mid.isLoggedIn, mid.isNotLastAdmin, (req, res) => {
     // check if inputs are correct
     req.checkBody('school', 'School field cannot be empty').notEmpty();
-
+    req.checkBody('schoolPassword', 'Password must be at least 4 characters long').notEmpty().len(4, 100);
     // handle input errors
     const errors = req.validationErrors();
-    if(errors) {return fun.error(req, res, '', errors[0].msg, '/selectSchool')}
+    if(errors) fun.error(req, res, '', errors[0].msg, '/selectSchool');
     
     School.findOne({name: req.body.school})
     .then(school => {
-        // update users school
-        return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined, subjects: []}}, {new: true}); // return promise
-        
+        // verify school password
+        if(passwordHash.verify(req.body.schoolPassword, school.password)) {
+            // right password => update users school
+            return User.findByIdAndUpdate({ _id: req.user._id }, { $set: {school_id: school._id, class_id: undefined, subjects: []}}, {new: true}); // return promise
+        } else {
+            // wrong password
+            return fun.error(req, res, '', 'Wrong school password', '/selectSchool');
+        }
     }, err => {
         // handle error while finding school
         fun.error(req, res, err, "Couldn't find your school", '/selectSchool');
