@@ -53,6 +53,14 @@ const userSchema = new mongoose.Schema({
         default: 1
     },
     
+    theme: {
+        type: String,
+        // properties
+        required: true,
+        default: 'light',
+        maxlength: 5
+    },
+    
     // google oauth
     // google username (can doesn't have to be unique)
     google_username: {

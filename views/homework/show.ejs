@@ -1,6 +1,6 @@
 <% include ../partials/header %>
 
-<div class="container margin-to-nav">
+<div class="container margin-to-nav black-text">
     
     <% include ../partials/flash %>
     
@@ -30,14 +30,14 @@
                         </div>
                         <form action="/classes/<%=r.class_id%>/homework/<%=r.id%>?_method=DELETE" method="POST">
                             <div class="modal-footer">
-                                <a class="modal-action modal-close modal-button waves-effect waves-light btn grey lighten-2 black-text"><%= texts.CANCEL %></a>
+                                <a class="modal-action modal-close modal-button btn-flat"><%= texts.CANCEL %></a>
                                 <button class="waves-effect waves-light btn red accent-4"><%= texts.DELETE %></button>
                             </div>
                         </form>
                     </div>
                 <% } %>
                 
-                <p class="col right s8 right-align bold"><%= texts.UNTIL %> <%=r.d%></p>
+                <p class="col right s8 right-align bold"><%= texts[r.day] %> <%=r.d%></p>
                 <div class="card-margin-bot"></div>
                 
             </div>

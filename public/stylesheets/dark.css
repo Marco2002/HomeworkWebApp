@@ -1,0 +1,24 @@
+body {
+    background-color: #212121;
+}
+
+.app-color {
+    background-color: #0d47a1!important;
+}
+
+.card, .modal, .modal .modal-footer, div ul.dropdown-content.select-dropdown, #slide-out {
+    background-color: #424242;
+}
+
+body, .side-nav li>a, i, label, .modal .btn-flat, .modal {
+    color: #fff!important;
+}
+
+.home-card i {
+    color: inherit!important;
+}
+
+
+ul .divider, .divider {
+    background-color: #9e9e9e;
+}

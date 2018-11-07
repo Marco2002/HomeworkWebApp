@@ -130,7 +130,7 @@ router.get('/:class_id', mid.isLoggedIn, mid.updateUser, mid.isPartOfSchool, mid
     }).then(users => {
         // render ejs template
         res.render('classes/show', {
-            title: 'TITLE_CLASS_SETTINGS',
+            title: 'TITLE_HOMEWORK',
             clas: clas,
             users: users
         });

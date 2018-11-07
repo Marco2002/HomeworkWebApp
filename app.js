@@ -22,10 +22,12 @@ const i18n = require('i18n-express');
 const mongoose = require('mongoose');
 const passwordHash = require('password-hash');
 const minify = require('express-minify');
-const uglifyJS = require('uglify-js')
+const uglifyJS = require('uglify-js');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const MongoStore = require('connect-mongo')(expressSession);
+
+const fun = require('./functions');
 
 // Models
 const User = require('./models/user');
@@ -72,7 +74,7 @@ mongoose.connect(process.env.MONGO_DB, { useNewUrlParser: true }) // mongoDB url
     console.log(`connected to DB: ${mongoose.connection.db.databaseName}`);
 }, err => {
     // handle error
-    console.log(err);
+    console.error(err);
 });
 
 mongoose.connection.on('connected', () => { // when connected to mongoDB
@@ -125,6 +127,26 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         translationsPath: path.join(__dirname, 'i18n'), // path ./i18n
         siteLangs: ['en', 'de'] // languages
     }));
+    
+    // theme change
+    app.use((req, res, next) => {
+        // check if theme was changed
+        if(req.query.theme && req.user.theme != req.query.theme) {
+            // change req.user.theme
+            req.user.theme = req.query.theme;
+            // update user in db
+            User.findByIdAndUpdate({_id: req.user._id}, { $set: {theme: req.query.theme}}, {new: true})
+            .then(user => {
+                // all done
+                next();
+            }, err => {
+                // handle error while updating user
+                fun.error(req, res, err, 'Error while changing theme', `/accountSettings`);
+            });
+        } else {
+            next();
+        }
+    });
     
     // ejs Paramenters
     app.use((req, res, next) => {
@@ -218,7 +240,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         Homework.deleteMany({date: {$lt: date}}, err => {
             // log err if it exisits
             if(err) {
-                console.log(err);
+                console.error(err);
             }
             // success
             console.log(`deleted homework at date: ${date}`);
@@ -227,7 +249,7 @@ mongoose.connection.on('connected', () => { // when connected to mongoDB
         Exam.deleteMany({date: {$lt: date}}, err => {
             // log err if it exisits
             if(err) {
-                console.log(err);
+                console.error(err);
             }
             // success
             console.log(`deleted exams at date: ${date}`);

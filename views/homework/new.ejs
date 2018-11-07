@@ -4,7 +4,7 @@
     <% include ../partials/flash %>
     <div class="card">
         <div class="row"></div>
-        <form method="POST" action="/classes/<%=user.class_id%>/homework" id="form">
+        <form method="POST" action="/classes/<%=user.class_id%>/homework" id="form" >
             <div class="container">
                 <div class="row no-m">
                     <div class="input-field col s12 m6">
@@ -31,9 +31,10 @@
                     </div>
                 </div>
             </div>
+            
         </form>
         <div class="row center">
-            <button class="app-color btn waves-effect waves-light" id="btn-submit"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
+            <button class="app-color btn waves-effect waves-light" name="action" id="btn-submit"><%= texts.SUBMIT %><i class="material-icons right">send</i></button>
         </div>
         <div class="row"></div>
     </div>

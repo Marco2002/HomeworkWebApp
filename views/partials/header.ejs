@@ -11,11 +11,16 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <!-- main.css -->
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        <!-- dark theme -->
+        <% if(user && user.theme == 'dark') { %>
+            <link rel="stylesheet" href="/stylesheets/dark.css" type="text/css" />
+        <% } %>
         <!-- HelmholtzApp -->
         <% if(typeof hhsapp !== 'undefined') { %>
             <link rel="stylesheet" href="/stylesheets/hhsapp.css" type="text/css" />
         <% } %>
         
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body id="no-mp">
@@ -26,6 +31,14 @@
                     <div class="col s12 right" id="no-mp">
                         <div class="nav-wrapper app-color">
                             <div class="container">
+                                <% if(title == 'TITLE_HOMEWORK') { %>
+                            
+                                <div class="brand-logo center">
+                                    <img class="margin-logo logo responsive" src="/res/homework_title.png">
+                                </div>
+                                            
+                                <% } else {%>
+                                
                                 <ul><li><div class="nav-title-width brand-logo center truncate">
  
                                     <% if(texts[title]) { %>
@@ -38,6 +51,8 @@
     
                                     <% } %>
                                 </div></li></ul>
+                                
+                                <% } %>
     
                                 <ul><li><a href="/classes/<%= user.class_id %>/homework"><i class="material-icons">arrow_back</i></a></li></ul>
                                 

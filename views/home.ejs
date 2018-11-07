@@ -13,11 +13,16 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <!-- main.css -->
         <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
+        <!-- dark theme -->
+        <% if(user.theme == 'dark') { %>
+            <link rel="stylesheet" href="/stylesheets/dark.css" type="text/css" />
+        <% } %>
         <!-- HelmholtzApp -->
         <% if(typeof hhsapp !== 'undefined') { %>
             <link rel="stylesheet" href="/stylesheets/hhsapp.css" type="text/css" />
         <% } %>
         
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body id="no-mp">
@@ -94,7 +99,7 @@
                             
                             <% if(hPrevDate != h.d) { %>
                                 <div class="col s12">
-                                    <p class="no-margin-bottom bold grey-text"><%= texts.UNTIL %> <%=h.d%></p>
+                                    <p class="no-margin-bottom bold grey-text"><%= texts[h.day] %> <%=h.d%></p>
                                     <p class="divider home-divider"></p>
                                 </div>
                             <% } %>
@@ -104,24 +109,21 @@
                                 <a href="/classes/<%=h.class_id%>/homework/<%=h._id%>">
                                     <div class="card home-card <%=h.subject.color%> <%= h.subject.color == 'black' ? 'white-text' : 'black-text'%>">
                                         <div class="row no-m">
-                                            <div class="col">
-                                                <div class="row no-m">
-                                                    <div class="card-title no-m card-subject"><%= h.subject.subject %></div>
-                                                </div>
+                                            <div class="col row no-m">
+                                                <div class="card-title no-m card-subject"><%= h.subject.subject %></div>
                                             </div>
-                                            <div class="col right">
-                                                <div class="row no-m">
-                                                    <div class="card-title no-m card-teacher"><%= h.subject.teacher %></div>
-                                                </div>
-                                            </div>
-                                        
-                                            <div class="col s12">
-                                                <div class="row no-m">
-                                                    <h5 class="no-m"><%= h.title %></h5>
-                                                </div>
+                                            <div class="col right row no-m">
+                                                <div class="card-title no-m card-teacher"><%= h.subject.teacher %></div>
                                             </div>
                                         </div>
-                                            
+                                        <div class="row no-m">
+                                            <div class="col row no-m">
+                                                <h5 class="no-m"><%= h.title %></h5>
+                                            </div>
+                                            <div class="col right row no-m expand-btn">
+                                                <i class="material-icons small">arrow_drop_down</i>
+                                            </div>
+                                        </div> 
                                     </div>
                                 </a>
                             </div> 
@@ -134,7 +136,7 @@
                             
                             <% if(ePrevDate != e.d) { %>
                                 <div class="col s12">
-                                    <p class="no-margin-bottom bold grey-text"><%=e.d%></p>
+                                    <p class="no-margin-bottom bold grey-text"><%= texts[e.day] %> <%=e.d%></p>
                                     <p class="divider home-divider"></p>
                                 </div>
                             <% } %>

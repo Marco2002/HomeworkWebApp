@@ -6,6 +6,8 @@ $(function() {
     
     // get homework or exam page
     var url = window.location.pathname;
+    // file collection index
+    var fileIndex = 0;
     
     $('ul.tabs').tabs(
         'select_tab', url.substring(url.lastIndexOf('/') + 1), {
@@ -118,7 +120,14 @@ $(function() {
     $('#lang_submit').click(function() {
         var lang = $('#selectedLang option:selected').val();
         
-        window.location.replace('/?clang=' + lang);
+        window.location.replace(url + '?clang=' + lang);
+    });
+    
+    // theme submit button
+    $('#theme_submit').click(function() {
+        var theme = $('input:radio[name="theme"]:checked').val();
+        
+        window.location.replace(url + '?theme=' + theme);
     });
     
     // Redirect to add homework or add exam page (float btn)
@@ -138,6 +147,14 @@ $(function() {
     $('.subject-card').click(function() {
         var checkBox = $(this).find('input');
         checkBox.prop('checked', !checkBox.prop('checked'));
+    });
+    
+    // prevent form from submitting multiple times
+    $('body').on('submit', 'form', function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
     });
     
     console.log('script.js file active');

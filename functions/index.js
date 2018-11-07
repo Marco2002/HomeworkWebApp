@@ -3,7 +3,7 @@ let functionsObj = {};
 // function for a complete error handle
 functionsObj.error = (req, res, err, msg, path) => {
     // log error
-    if(err !== "") console.log(err);
+    if(err !== "") console.error(err);
     // flash error
     req.flash("error", msg);
     // redirect user

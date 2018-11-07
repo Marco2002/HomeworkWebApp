@@ -57,6 +57,21 @@
                 </div>
                 <div class="col s3 l2"><button id="lang_submit" class="btn-flat"><i class="material-icons">send</i></button></div>
             </div>
+            <p class="divider"></p>
+            <div class="row valign-wrapper">
+                <div class="col s3 l4 bold"><%= texts.THEME %>:</div>
+                <div class="col s6 center">
+                    <p class="btn-theme col">
+                        <input name="theme" <%= user.theme=='light' ? 'checked' : '' %> type="radio" id="light" value="light"/>
+                        <label for="light"><%= texts.THEME_LIGHT %></label>
+                    </p>
+                    <p class="btn-theme col">
+                        <input name="theme" <%= user.theme=='dark' ? 'checked' : '' %> type="radio" id="dark" value="dark"/>
+                        <label for="dark"><%= texts.THEME_DARK %></label>
+                    </p>
+                </div>
+                <div class="col s3 l2"><button id="theme_submit" class="btn-flat"><i class="material-icons">send</i></button></div>
+            </div>
         </div>
     </div>
 </div>

@@ -283,7 +283,7 @@ router.get('/accountSettings', mid.isLoggedIn, (req, res) => {
             
             // render ejs template
             res.render('auth/show', {
-                title: 'TITLE_ACCOUNT_SETTINGS',
+                title: 'TITLE_SETTINGS',
                 userR: user
             });
         }, err => {

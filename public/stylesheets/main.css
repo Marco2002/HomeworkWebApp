@@ -6,9 +6,19 @@ p, h1, h2, h3, h4, h5 {
     background-color: #2196f3!important; 
 }
 
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #2196f3!important;
+    border-color: #2196f3!important;
+}
+
 .no-m {
     margin-bottom: 0!important;
     margin-top: 0!important;
+}
+
+.btn-theme {
+    display: inline;
+    float: none!important;
 }
 
 .red-box {
@@ -143,6 +153,10 @@ img.logo {
 .tabs .indicator {
     height: 3px!important;
     background-color: #FFFFFF!important;
+}
+
+label {
+    color: #000;
 }
 
 .carousel .carousel-item {
@@ -398,4 +412,22 @@ div.color-picker-modal div ul.dropdown-content.select-dropdown {
 
 .no-p-top {
     padding-top: 0!important;
+}
+
+input.valid:not([type]), input.valid:not([type]):focus, input[type=text].valid:not(.browser-default), input[type=text].valid:not(.browser-default):focus, input[type=password].valid:not(.browser-default), input[type=password].valid:not(.browser-default):focus, input[type=email].valid:not(.browser-default), input[type=email].valid:not(.browser-default):focus, input[type=url].valid:not(.browser-default), input[type=url].valid:not(.browser-default):focus, input[type=time].valid:not(.browser-default), input[type=time].valid:not(.browser-default):focus, input[type=date].valid:not(.browser-default), input[type=date].valid:not(.browser-default):focus, input[type=datetime].valid:not(.browser-default), input[type=datetime].valid:not(.browser-default):focus, input[type=datetime-local].valid:not(.browser-default), input[type=datetime-local].valid:not(.browser-default):focus, input[type=tel].valid:not(.browser-default), input[type=tel].valid:not(.browser-default):focus, input[type=number].valid:not(.browser-default), input[type=number].valid:not(.browser-default):focus, input[type=search].valid:not(.browser-default), input[type=search].valid:not(.browser-default):focus, textarea.materialize-textarea.valid, textarea.materialize-textarea.valid:focus, .select-wrapper.valid>input.select-dropdown {
+   border-bottom: 1px solid #2196f3 !important;
+   box-shadow: 0 1px 0 0 #2196f3 !important;
+}
+ 
+.input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
+    color: #2196f3 !important;
+}
+
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3 !important;
+    box-shadow: 0 1px 0 0 #2196f3 !important;
+}
+
+.expand-btn {
+    height: 27px;
 }

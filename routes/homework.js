@@ -6,6 +6,7 @@
 const express = require('express');
 const moment = require('moment');
 const sanitizeHtml = require('sanitize-html');
+const decode = require('unescape');
 const mid = require('../middleware');
 const fun = require('../functions');
 
@@ -15,6 +16,8 @@ const Exam = require('../models/exam');
 const Class = require('../models/class');
 
 const router  = express.Router({mergeParams: true});
+
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Index Route
 router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.hasSelectedSubjects, (req, res) => {
@@ -31,7 +34,8 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.hasSelect
             for(let s of req.user.subjects) {
                 if(s._id.equals(h.subject._id)) {
                     // user has subject => format date and push into final homework
-                    h.d = `${h.date.getDate()}.${h.date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
+                    h.d = moment(h.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
+                    h.day = weekdays[h.date.getDay()];
                     _homework.push(h);
                     break;
                 }
@@ -50,7 +54,8 @@ router.get('/', mid.isLoggedIn, mid.updateUser, mid.isPartOfClass, mid.hasSelect
             for(let s of req.user.subjects) {
                 if(s._id.equals(e.subject._id)) {
                     // user has subject => format date and push into final exams
-                    e.d = `${e.date.getDate()}.${e.date.getMonth()}`; // useing 'd' becouse 'date' cannot be overwritten
+                    e.d = moment(e.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
+                    e.day = weekdays[e.date.getDay()];
                     _exams.push(e);
                     break;
                 }
@@ -131,6 +136,7 @@ router.get('/:id', mid.isLoggedIn, mid.isPartOfClass, (req, res) => {
     .then(homework => {
         // format date
         homework.d = moment(homework.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
+        homework.day = weekdays[homework.date.getDay()];
         // render ejs template
         res.render('homework/show', {
             title: homework.subject.subject,
@@ -163,6 +169,9 @@ router.get('/:id/edit', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, 
         
         // format date
         homework.d = moment(homework.date).format('DD.MM'); // useing 'd' becouse 'date' cannot be overwritten
+        // format description and title
+        homework.description = decode(String(homework.description).replace(/<br\ \/>/g, ""));
+        
         // render ejs template
         res.render('homework/edit', {
             title: 'TITLE_EDIT_HOMEWORK',
@@ -191,7 +200,7 @@ router.put('/:id', mid.isLoggedIn, mid.isPartOfClass, mid.isNotRestricted, (req,
     // format date
     h.date = moment(h.date, 'DD.MM.YYYY').format('YYYY-MM-DD');
     // sanitize description input and replace 'enter' with <br> for showing in multiple lines
-    h.description = sanitizeHtml(String(h.description).replace(/\r/gi, '<br>'), {
+    h.description = sanitizeHtml(String(h.description).replace(/\r/gi, '<br />'), {
         allowedTags: ['br']
     });
     
