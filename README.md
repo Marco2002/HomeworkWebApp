@@ -8,7 +8,7 @@ One howework planner for the whole class
 ## Installing
 
 1. clone repository
-```git clone https://github.com/Marco2002/HmwkWebApp.git```
+```git clone https://github.com/Marco2002/HomeworkWebApp.git```
 
 2. install dependencies
 ```npm install```
