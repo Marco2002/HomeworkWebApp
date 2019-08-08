@@ -26,6 +26,9 @@ One howework planner for the whole class
         - MONGO_DB,
         - VERSION,
         - DEV_USERNAME
+        - GOOGLE_AUTH_CLIENT_ID
+        - GOOGLE_AUTH_CLIENT_SECRET
+        - GOOGLE_AUTH_CLIENT_CALLBACK
 
 4. create minify-cache directory
 ```mkdir minify-cache```
