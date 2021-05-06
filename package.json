@@ -41,7 +41,7 @@
     "unescape": "^1.0.1",
     "mpath": ">=0.5.1",
     "bson": ">=1.0.5",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.21",
     "lodash.mergewith": ">=4.6.2"
   },
   "devDependencies": {
