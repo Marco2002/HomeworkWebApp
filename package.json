@@ -36,7 +36,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "password-hash": "^1.2.2",
-    "sanitize-html": "^1.18.2",
+    "sanitize-html": "^2.3.2",
     "uglify-js": "^3.4.3",
     "unescape": "^1.0.1",
     "mpath": ">=0.5.1",
