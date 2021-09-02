@@ -39,7 +39,7 @@
     "sanitize-html": "^1.18.2",
     "uglify-js": "^3.4.3",
     "unescape": "^1.0.1",
-    "mpath": ">=0.5.1",
+    "mpath": ">=0.8.4",
     "bson": ">=1.0.5",
     "lodash": ">=4.17.13",
     "lodash.mergewith": ">=4.6.2"
